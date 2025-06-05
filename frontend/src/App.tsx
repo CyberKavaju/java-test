@@ -6,6 +6,7 @@ import Quiz from './components/Quiz';
 import TestResults from './components/TestResults';
 import Report from './components/Report';
 import Import from './components/Import';
+import { QuestionManagement } from './components/QuestionManagement';
 import './App.css';
 
 // Mobile performance optimizations
@@ -258,6 +259,7 @@ function AppRoutes() {
             <a href="/" onClick={() => setMobileMenuOpen(false)}>Home</a>
             <a href="/report" onClick={() => setMobileMenuOpen(false)}>Report</a>
             <a href="/import" onClick={() => setMobileMenuOpen(false)}>Import</a>
+            <a href="/questions" onClick={() => setMobileMenuOpen(false)}>Questions</a>
           </div>
         </nav>
 
@@ -267,6 +269,7 @@ function AppRoutes() {
             <Route path="/test" element={<TestPage />} />
             <Route path="/report" element={<Report />} />
             <Route path="/import" element={<Import />} />
+            <Route path="/questions" element={<QuestionManagement />} />
           </Routes>
         </main>
       </div>

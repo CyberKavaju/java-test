@@ -1,3 +1,5 @@
+// Types for the Java Test application
+
 export interface Question {
   id: number;
   domain: string;
@@ -8,11 +10,9 @@ export interface Question {
   option_c: string;
   option_d?: string;
   option_e?: string;
-}
-
-export interface QuestionWithAnswer extends Question {
   correct_answer: string;
-  explanation: string;
+  explanation?: string;
+  created_at?: string;
 }
 
 export interface Answer {

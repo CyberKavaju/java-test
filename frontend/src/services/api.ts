@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { Question, Answer, TestResult, UserStats, TestSession, TopicStats, QuestionPerformance, PerformanceTrend } from '../types';
+import type { Question, Answer, TestResult, UserStats, TestSession, TopicStats, QuestionPerformance, PerformanceTrend } from '../types/index.js';
 
 const API_BASE_URL = 'http://localhost:3001/api';
 
@@ -124,6 +124,66 @@ export const apiService = {
         'Content-Type': 'multipart/form-data',
       },
     });
+    return response.data;
+  },
+
+  // CRUD operations for question management
+  
+  // Get all questions with pagination and filtering
+  async getQuestions(params?: {
+    page?: number;
+    limit?: number;
+    domain?: string;
+    topic?: string;
+    search?: string;
+  }): Promise<{
+    questions: Question[];
+    pagination: {
+      page: number;
+      limit: number;
+      total: number;
+      totalPages: number;
+    };
+  }> {
+    const queryParams = new URLSearchParams();
+    if (params?.page) queryParams.append('page', params.page.toString());
+    if (params?.limit) queryParams.append('limit', params.limit.toString());
+    if (params?.domain) queryParams.append('domain', params.domain);
+    if (params?.topic) queryParams.append('topic', params.topic);
+    if (params?.search) queryParams.append('search', params.search);
+
+    const response = await api.get(`/questions?${queryParams.toString()}`);
+    return response.data;
+  },
+
+  // Get a single question by ID
+  async getQuestion(id: number): Promise<Question> {
+    const response = await api.get(`/questions/${id}`);
+    return response.data.question;
+  },
+
+  // Create a new question
+  async createQuestion(question: Omit<Question, 'id' | 'created_at'>): Promise<{ questionId: number }> {
+    const response = await api.post('/questions', question);
+    return response.data;
+  },
+
+  // Update an existing question
+  async updateQuestion(id: number, question: Omit<Question, 'id' | 'created_at'>): Promise<void> {
+    await api.put(`/questions/${id}`, question);
+  },
+
+  // Delete a question
+  async deleteQuestion(id: number): Promise<void> {
+    await api.delete(`/questions/${id}`);
+  },
+
+  // Get filter options (domains and topics)
+  async getFilterOptions(): Promise<{
+    domains: string[];
+    topics: string[];
+  }> {
+    const response = await api.get('/questions/meta/filters');
     return response.data;
   }
 };

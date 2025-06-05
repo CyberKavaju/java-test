@@ -579,6 +579,397 @@ app.post('/api/import/questions', upload.single('file'), async (req, res) => {
     }
 });
 
+// CRUD endpoints for question management
+
+// Get all questions with pagination and filtering
+app.get('/api/questions', async (req, res) => {
+    try {
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const offset = (page - 1) * limit;
+        const domain = req.query.domain;
+        const topic = req.query.topic;
+        const search = req.query.search;
+
+        let whereClause = '';
+        let queryParams = [];
+
+        if (domain || topic || search) {
+            const conditions = [];
+            if (domain) {
+                conditions.push('domain = ?');
+                queryParams.push(domain);
+            }
+            if (topic) {
+                conditions.push('topic = ?');
+                queryParams.push(topic);
+            }
+            if (search) {
+                conditions.push('(question_text LIKE ? OR explanation LIKE ?)');
+                queryParams.push(`%${search}%`, `%${search}%`);
+            }
+            whereClause = 'WHERE ' + conditions.join(' AND ');
+        }
+
+        // Get total count
+        const countQuery = `SELECT COUNT(*) as total FROM questions ${whereClause}`;
+        const totalResult = await new Promise((resolve, reject) => {
+            db.db.get(countQuery, queryParams, (err, row) => {
+                if (err) reject(err);
+                else resolve(row.total);
+            });
+        });
+
+        // Get questions with pagination
+        const questionsQuery = `
+            SELECT * FROM questions 
+            ${whereClause}
+            ORDER BY created_at DESC 
+            LIMIT ? OFFSET ?
+        `;
+        const questions = await new Promise((resolve, reject) => {
+            db.db.all(questionsQuery, [...queryParams, limit, offset], (err, rows) => {
+                if (err) reject(err);
+                else resolve(rows);
+            });
+        });
+
+        res.json({
+            success: true,
+            questions,
+            pagination: {
+                page,
+                limit,
+                total: totalResult,
+                totalPages: Math.ceil(totalResult / limit)
+            }
+        });
+    } catch (error) {
+        console.error('Error fetching questions:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to fetch questions'
+        });
+    }
+});
+
+// Get a single question by ID
+app.get('/api/questions/:id', async (req, res) => {
+    try {
+        const questionId = parseInt(req.params.id);
+        
+        const question = await new Promise((resolve, reject) => {
+            db.db.get('SELECT * FROM questions WHERE id = ?', [questionId], (err, row) => {
+                if (err) reject(err);
+                else resolve(row);
+            });
+        });
+
+        if (!question) {
+            return res.status(404).json({
+                success: false,
+                error: 'Question not found'
+            });
+        }
+
+        res.json({
+            success: true,
+            question
+        });
+    } catch (error) {
+        console.error('Error fetching question:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to fetch question'
+        });
+    }
+});
+
+// Create a new question
+app.post('/api/questions', async (req, res) => {
+    try {
+        const {
+            domain,
+            topic,
+            question_text,
+            option_a,
+            option_b,
+            option_c,
+            option_d,
+            option_e,
+            correct_answer,
+            explanation
+        } = req.body;
+
+        // Validate required fields
+        const requiredFields = ['domain', 'topic', 'question_text', 'option_a', 'option_b', 'option_c', 'correct_answer'];
+        const missingFields = requiredFields.filter(field => !req.body[field] || req.body[field].trim() === '');
+        
+        if (missingFields.length > 0) {
+            return res.status(400).json({
+                success: false,
+                error: `Missing required fields: ${missingFields.join(', ')}`
+            });
+        }
+
+        // Validate correct_answer
+        const validAnswers = ['A', 'B', 'C', 'D', 'E'];
+        if (!validAnswers.includes(correct_answer.toUpperCase())) {
+            return res.status(400).json({
+                success: false,
+                error: 'Correct answer must be A, B, C, D, or E'
+            });
+        }
+
+        // Check for duplicate question
+        const exists = await db.questionExists(question_text);
+        if (exists) {
+            return res.status(400).json({
+                success: false,
+                error: 'A question with this text already exists'
+            });
+        }
+
+        // Insert new question
+        const questionId = await new Promise((resolve, reject) => {
+            db.db.run(
+                `INSERT INTO questions (domain, topic, question_text, option_a, option_b, option_c, option_d, option_e, correct_answer, explanation)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                [
+                    domain.trim(),
+                    topic.trim(),
+                    question_text.trim(),
+                    option_a.trim(),
+                    option_b.trim(),
+                    option_c.trim(),
+                    option_d ? option_d.trim() : null,
+                    option_e ? option_e.trim() : null,
+                    correct_answer.toUpperCase().trim(),
+                    explanation ? explanation.trim() : null
+                ],
+                function(err) {
+                    if (err) reject(err);
+                    else resolve(this.lastID);
+                }
+            );
+        });
+
+        res.status(201).json({
+            success: true,
+            questionId,
+            message: 'Question created successfully'
+        });
+    } catch (error) {
+        console.error('Error creating question:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to create question'
+        });
+    }
+});
+
+// Update an existing question
+app.put('/api/questions/:id', async (req, res) => {
+    try {
+        const questionId = parseInt(req.params.id);
+        const {
+            domain,
+            topic,
+            question_text,
+            option_a,
+            option_b,
+            option_c,
+            option_d,
+            option_e,
+            correct_answer,
+            explanation
+        } = req.body;
+
+        // Check if question exists
+        const existingQuestion = await new Promise((resolve, reject) => {
+            db.db.get('SELECT * FROM questions WHERE id = ?', [questionId], (err, row) => {
+                if (err) reject(err);
+                else resolve(row);
+            });
+        });
+
+        if (!existingQuestion) {
+            return res.status(404).json({
+                success: false,
+                error: 'Question not found'
+            });
+        }
+
+        // Validate required fields
+        const requiredFields = ['domain', 'topic', 'question_text', 'option_a', 'option_b', 'option_c', 'correct_answer'];
+        const missingFields = requiredFields.filter(field => !req.body[field] || req.body[field].trim() === '');
+        
+        if (missingFields.length > 0) {
+            return res.status(400).json({
+                success: false,
+                error: `Missing required fields: ${missingFields.join(', ')}`
+            });
+        }
+
+        // Validate correct_answer
+        const validAnswers = ['A', 'B', 'C', 'D', 'E'];
+        if (!validAnswers.includes(correct_answer.toUpperCase())) {
+            return res.status(400).json({
+                success: false,
+                error: 'Correct answer must be A, B, C, D, or E'
+            });
+        }
+
+        // Check for duplicate question text (excluding current question)
+        const duplicateExists = await new Promise((resolve, reject) => {
+            db.db.get('SELECT id FROM questions WHERE question_text = ? AND id != ?', [question_text, questionId], (err, row) => {
+                if (err) reject(err);
+                else resolve(!!row);
+            });
+        });
+
+        if (duplicateExists) {
+            return res.status(400).json({
+                success: false,
+                error: 'A question with this text already exists'
+            });
+        }
+
+        // Update question
+        await new Promise((resolve, reject) => {
+            db.db.run(
+                `UPDATE questions SET 
+                    domain = ?, topic = ?, question_text = ?, option_a = ?, option_b = ?, option_c = ?, 
+                    option_d = ?, option_e = ?, correct_answer = ?, explanation = ?
+                 WHERE id = ?`,
+                [
+                    domain.trim(),
+                    topic.trim(),
+                    question_text.trim(),
+                    option_a.trim(),
+                    option_b.trim(),
+                    option_c.trim(),
+                    option_d ? option_d.trim() : null,
+                    option_e ? option_e.trim() : null,
+                    correct_answer.toUpperCase().trim(),
+                    explanation ? explanation.trim() : null,
+                    questionId
+                ],
+                function(err) {
+                    if (err) reject(err);
+                    else resolve();
+                }
+            );
+        });
+
+        res.json({
+            success: true,
+            message: 'Question updated successfully'
+        });
+    } catch (error) {
+        console.error('Error updating question:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to update question'
+        });
+    }
+});
+
+// Delete a question
+app.delete('/api/questions/:id', async (req, res) => {
+    try {
+        const questionId = parseInt(req.params.id);
+
+        // Check if question exists
+        const existingQuestion = await new Promise((resolve, reject) => {
+            db.db.get('SELECT * FROM questions WHERE id = ?', [questionId], (err, row) => {
+                if (err) reject(err);
+                else resolve(row);
+            });
+        });
+
+        if (!existingQuestion) {
+            return res.status(404).json({
+                success: false,
+                error: 'Question not found'
+            });
+        }
+
+        // Check if question has been used in tests
+        const hasAttempts = await new Promise((resolve, reject) => {
+            db.db.get('SELECT COUNT(*) as count FROM user_attempts WHERE question_id = ?', [questionId], (err, row) => {
+                if (err) reject(err);
+                else resolve(row.count > 0);
+            });
+        });
+
+        if (hasAttempts) {
+            return res.status(400).json({
+                success: false,
+                error: 'Cannot delete question that has been used in tests. Consider disabling it instead.'
+            });
+        }
+
+        // Delete question
+        await new Promise((resolve, reject) => {
+            db.db.run('DELETE FROM questions WHERE id = ?', [questionId], function(err) {
+                if (err) reject(err);
+                else resolve();
+            });
+        });
+
+        // Also clean up any question stats
+        await new Promise((resolve, reject) => {
+            db.db.run('DELETE FROM question_stats WHERE question_id = ?', [questionId], function(err) {
+                if (err) reject(err);
+                else resolve();
+            });
+        });
+
+        res.json({
+            success: true,
+            message: 'Question deleted successfully'
+        });
+    } catch (error) {
+        console.error('Error deleting question:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to delete question'
+        });
+    }
+});
+
+// Get unique domains and topics for filters
+app.get('/api/questions/meta/filters', async (req, res) => {
+    try {
+        const domains = await new Promise((resolve, reject) => {
+            db.db.all('SELECT DISTINCT domain FROM questions ORDER BY domain', [], (err, rows) => {
+                if (err) reject(err);
+                else resolve(rows.map(row => row.domain));
+            });
+        });
+
+        const topics = await new Promise((resolve, reject) => {
+            db.db.all('SELECT DISTINCT topic FROM questions ORDER BY topic', [], (err, rows) => {
+                if (err) reject(err);
+                else resolve(rows.map(row => row.topic));
+            });
+        });
+
+        res.json({
+            success: true,
+            domains,
+            topics
+        });
+    } catch (error) {
+        console.error('Error fetching filters:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to fetch filter options'
+        });
+    }
+});
+
 // Start server
 const startServer = async () => {
     await initializeDatabase();
@@ -588,6 +979,4 @@ const startServer = async () => {
     });
 };
 
-startServer().catch(console.error);
-
-module.exports = app;
+startServer();
