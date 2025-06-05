@@ -7,10 +7,29 @@ import TestResults from './components/TestResults';
 import Report from './components/Report';
 import './App.css';
 
+// Mobile performance optimizations
+const isMobile = () => {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+};
+
+// Prevent double-tap zoom on mobile
+if (isMobile()) {
+  let lastTouchEnd = 0;
+  document.addEventListener('touchend', function(event) {
+    const now = (new Date()).getTime();
+    if (now - lastTouchEnd <= 300) {
+      event.preventDefault();
+    }
+    lastTouchEnd = now;
+  }, false);
+}
+
 function Home() {
   const { state, dispatch } = useApp();
   const [loading, setLoading] = useState(false);
   const [serverStatus, setServerStatus] = useState<boolean | null>(null);
+  const [pullToRefresh, setPullToRefresh] = useState(false);
+  const [touchStartY, setTouchStartY] = useState(0);
 
   useEffect(() => {
     // Check server status on component mount
@@ -19,7 +38,38 @@ function Home() {
       setServerStatus(isHealthy);
     };
     checkServer();
+
+    // Performance optimization: Preload critical resources
+    if (isMobile()) {
+      // Reduce animation performance impact on mobile
+      document.documentElement.style.setProperty('--animation-speed', '0.1s');
+    }
   }, []);
+
+  // Pull to refresh functionality
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStartY(e.touches[0].clientY);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isMobile()) return;
+    
+    const touchY = e.touches[0].clientY;
+    const pullDistance = touchY - touchStartY;
+    
+    if (pullDistance > 100 && window.scrollY === 0) {
+      setPullToRefresh(true);
+    }
+  };
+
+  const handleTouchEnd = async () => {
+    if (pullToRefresh) {
+      setPullToRefresh(false);
+      // Refresh server status
+      const isHealthy = await apiService.healthCheck();
+      setServerStatus(isHealthy);
+    }
+  };
 
   const startNewTest = async () => {
     try {
@@ -91,6 +141,12 @@ function Home() {
           View Performance Report
         </a>
       </div>
+
+      {pullToRefresh && (
+        <div className="pull-to-refresh">
+          <p>🔄 Refreshing...</p>
+        </div>
+      )}
     </div>
   );
 }
@@ -167,6 +223,12 @@ function TestPage() {
 }
 
 function AppRoutes() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
+
   return (
     <Router>
       <div className="app">
@@ -174,9 +236,16 @@ function AppRoutes() {
           <div className="nav-brand">
             <a href="/">Java Test App</a>
           </div>
-          <div className="nav-links">
-            <a href="/">Home</a>
-            <a href="/report">Report</a>
+          <button 
+            className="mobile-menu-toggle"
+            onClick={toggleMobileMenu}
+            aria-label="Toggle mobile menu"
+          >
+            ☰
+          </button>
+          <div className={`nav-links ${mobileMenuOpen ? 'mobile-open' : ''}`}>
+            <a href="/" onClick={() => setMobileMenuOpen(false)}>Home</a>
+            <a href="/report" onClick={() => setMobileMenuOpen(false)}>Report</a>
           </div>
         </nav>
 

@@ -1,0 +1,31 @@
+{
+  "name": "Java Test - Adaptive Quiz Platform",
+  "short_name": "Java Test",
+  "description": "Practice for the Oracle Certified Associate Java SE 8 Programmer I exam",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f0f0f",
+  "theme_color": "#1e3a8a",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/vite.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["education", "productivity"],
+  "shortcuts": [
+    {
+      "name": "Start New Test",
+      "url": "/",
+      "description": "Begin a new practice test"
+    },
+    {
+      "name": "View Report",
+      "url": "/report",
+      "description": "Check your performance history"
+    }
+  ]
+}

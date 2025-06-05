@@ -55,6 +55,35 @@ export default function Quiz() {
   const { state, dispatch } = useApp();
   const { currentTest } = state;
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
+  // Minimum swipe distance required
+  const minSwipeDistance = 50;
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe && currentQuestionIndex < currentTest.questions.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    }
+    if (isRightSwipe && currentQuestionIndex > 0) {
+      setCurrentQuestionIndex(currentQuestionIndex - 1);
+    }
+  };
 
   const handleSubmitTest = useCallback(() => {
     dispatch({ type: 'END_TEST' });
@@ -127,7 +156,12 @@ export default function Quiz() {
       </div>
 
       <div className="quiz-content">
-        <div className="question-section">
+        <div 
+          className="question-section"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
           <QuizQuestion
             question={currentQuestion}
             questionNumber={currentQuestionIndex + 1}
