@@ -169,9 +169,20 @@ export default function Quiz() {
             onAnswerSelect={handleAnswerSelect}
           />
         </div>
+        <div className="footer-spacer"></div>
+      </div>
 
-        <div className="navigation-section">
-          <div className="question-grid">
+      <div className="navigation-footer">
+        <button
+          className="nav-btn-footer nav-btn-previous"
+          disabled={currentQuestionIndex === 0}
+          onClick={() => setCurrentQuestionIndex(currentQuestionIndex - 1)}
+        >
+          Previous
+        </button>
+        
+        <div className="progress-bar-container">
+          <div className="question-progress-grid">
             {currentTest.questions.map((_, index) => {
               const questionId = currentTest.questions[index].id;
               const isAnswered = currentTest.answers.some(a => a.questionId === questionId);
@@ -180,40 +191,33 @@ export default function Quiz() {
               return (
                 <button
                   key={index}
-                  className={`question-nav-btn ${isCurrent ? 'current' : ''} ${isAnswered ? 'answered' : ''}`}
+                  className={`progress-dot ${isCurrent ? 'current' : ''} ${isAnswered ? 'answered' : ''}`}
                   onClick={() => goToQuestion(index)}
+                  title={`Question ${index + 1}`}
                 >
                   {index + 1}
                 </button>
               );
             })}
           </div>
-
-          <div className="nav-buttons">
-            <button
-              disabled={currentQuestionIndex === 0}
-              onClick={() => setCurrentQuestionIndex(currentQuestionIndex - 1)}
-            >
-              Previous
-            </button>
-            
-            {currentQuestionIndex < currentTest.questions.length - 1 ? (
-              <button
-                onClick={() => setCurrentQuestionIndex(currentQuestionIndex + 1)}
-              >
-                Next
-              </button>
-            ) : (
-              <button
-                className="submit-btn"
-                disabled={!canSubmit}
-                onClick={handleSubmitTest}
-              >
-                Submit Test ({currentTest.answers.length}/{currentTest.questions.length})
-              </button>
-            )}
-          </div>
         </div>
+
+        {currentQuestionIndex < currentTest.questions.length - 1 ? (
+          <button
+            className="nav-btn-footer nav-btn-next"
+            onClick={() => setCurrentQuestionIndex(currentQuestionIndex + 1)}
+          >
+            Next
+          </button>
+        ) : (
+          <button
+            className="nav-btn-footer submit-btn"
+            disabled={!canSubmit}
+            onClick={handleSubmitTest}
+          >
+            Submit Test
+          </button>
+        )}
       </div>
     </div>
   );
