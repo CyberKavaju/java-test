@@ -195,6 +195,99 @@ class Database {
         });
     }
 
+    // Check if a question already exists (by question text)
+    async questionExists(questionText) {
+        const query = `SELECT id FROM questions WHERE question_text = ?`;
+        
+        return new Promise((resolve, reject) => {
+            this.db.get(query, [questionText], (err, row) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(!!row);
+                }
+            });
+        });
+    }
+
+    // Import questions with duplicate checking
+    async importQuestions(questions) {
+        const results = {
+            imported: 0,
+            skipped: 0,
+            errors: 0,
+            errorRows: []
+        };
+
+        const stmt = this.db.prepare(`
+            INSERT INTO questions (domain, topic, question_text, option_a, option_b, option_c, option_d, option_e, correct_answer, explanation)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `);
+
+        return new Promise((resolve, reject) => {
+            this.db.serialize(async () => {
+                this.db.run("BEGIN TRANSACTION");
+                
+                try {
+                    for (let i = 0; i < questions.length; i++) {
+                        const question = questions[i];
+                        
+                        // Check for duplicates
+                        const exists = await this.questionExists(question.question_text);
+                        if (exists) {
+                            results.skipped++;
+                            continue;
+                        }
+
+                        try {
+                            await new Promise((resolveStmt, rejectStmt) => {
+                                stmt.run([
+                                    question.domain,
+                                    question.topic,
+                                    question.question_text,
+                                    question.option_a,
+                                    question.option_b,
+                                    question.option_c,
+                                    question.option_d || null,
+                                    question.option_e || null,
+                                    question.correct_answer,
+                                    question.explanation
+                                ], function(err) {
+                                    if (err) {
+                                        rejectStmt(err);
+                                    } else {
+                                        resolveStmt();
+                                    }
+                                });
+                            });
+                            results.imported++;
+                        } catch (error) {
+                            results.errors++;
+                            results.errorRows.push({
+                                rowIndex: i,
+                                errors: [error.message]
+                            });
+                        }
+                    }
+                    
+                    this.db.run("COMMIT", (err) => {
+                        stmt.finalize();
+                        if (err) {
+                            reject(err);
+                        } else {
+                            resolve(results);
+                        }
+                    });
+                } catch (error) {
+                    this.db.run("ROLLBACK", () => {
+                        stmt.finalize();
+                        reject(error);
+                    });
+                }
+            });
+        });
+    }
+
     close() {
         if (this.db) {
             this.db.close();

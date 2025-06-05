@@ -59,5 +59,71 @@ export const apiService = {
     } catch {
       return false;
     }
+  },
+
+  // Get total question count
+  async getQuestionCount(): Promise<number> {
+    try {
+      const response = await api.get('/questions/count');
+      return response.data.count;
+    } catch {
+      return 0;
+    }
+  },
+
+  // Preview CSV import
+  async previewImport(formData: FormData): Promise<{
+    valid: Array<{
+      domain: string;
+      topic: string;
+      question_text: string;
+      option_a: string;
+      option_b: string;
+      option_c: string;
+      option_d?: string;
+      option_e?: string;
+      correct_answer: string;
+      explanation: string;
+    }>;
+    duplicates: Array<{
+      rowIndex: number;
+      question_text: string;
+      reason: string;
+    }>;
+    errors: Array<{
+      rowIndex: number;
+      errors: string[];
+    }>;
+  }> {
+    const response = await api.post('/import/preview', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  },
+
+  // Import questions from CSV
+  async importQuestions(formData: FormData): Promise<{
+    success: boolean;
+    imported: number;
+    skipped: number;
+    errors: number;
+    message: string;
+    details?: {
+      importedQuestions: number;
+      skippedDuplicates: number;
+      errorRows: Array<{
+        rowIndex: number;
+        errors: string[];
+      }>;
+    };
+  }> {
+    const response = await api.post('/import/questions', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
   }
 };

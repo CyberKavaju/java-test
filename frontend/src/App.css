@@ -138,6 +138,13 @@ body {
   color: #9ca3af;
 }
 
+.hero-section .question-count {
+  font-size: 0.95rem;
+  color: #10b981;
+  font-weight: 500;
+  margin-top: 0.5rem;
+}
+
 .test-info {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1565,35 +1572,6 @@ input:focus-visible,
   
   .option-label {
     padding: 0.6rem;
-    font-size: 0.9rem;
-  }
-  
-  .option-key {
-    min-width: 1.25rem;
-  }
-  
-  .result-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-  }
-  
-  .answers {
-    margin-bottom: 0.75rem;
-  }
-  
-  .answer-row {
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-  
-  .answer-label {
-    min-width: auto;
-    font-size: 0.9rem;
-  }
-  
-  .explanation {
-    padding: 0.75rem;
     font-size: 0.9rem;
   }
 }

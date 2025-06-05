@@ -5,6 +5,7 @@ import { apiService } from './services/api';
 import Quiz from './components/Quiz';
 import TestResults from './components/TestResults';
 import Report from './components/Report';
+import Import from './components/Import';
 import './App.css';
 
 // Mobile performance optimizations
@@ -31,12 +32,19 @@ function Home() {
   const [serverStatus, setServerStatus] = useState<boolean | null>(null);
   const [pullToRefresh, setPullToRefresh] = useState(false);
   const [touchStartY, setTouchStartY] = useState(0);
+  const [questionCount, setQuestionCount] = useState<number>(0);
 
   useEffect(() => {
     // Check server status on component mount
     const checkServer = async () => {
       const isHealthy = await apiService.healthCheck();
       setServerStatus(isHealthy);
+      
+      // Fetch question count if server is healthy
+      if (isHealthy) {
+        const count = await apiService.getQuestionCount();
+        setQuestionCount(count);
+      }
     };
     checkServer();
 
@@ -106,6 +114,7 @@ function Home() {
         <h1>Java SE 8 Programmer I (1Z0-808)</h1>
         <h2>Mock Test Application</h2>
         <p>Practice for the Oracle Certified Associate Java SE 8 Programmer I exam</p>
+        <p className="question-count">Database contains {questionCount} questions</p>
       </div>
 
       <div className="test-info">
@@ -248,6 +257,7 @@ function AppRoutes() {
           <div className={`nav-links ${mobileMenuOpen ? 'mobile-open' : ''}`}>
             <a href="/" onClick={() => setMobileMenuOpen(false)}>Home</a>
             <a href="/report" onClick={() => setMobileMenuOpen(false)}>Report</a>
+            <a href="/import" onClick={() => setMobileMenuOpen(false)}>Import</a>
           </div>
         </nav>
 
@@ -256,6 +266,7 @@ function AppRoutes() {
             <Route path="/" element={<Home />} />
             <Route path="/test" element={<TestPage />} />
             <Route path="/report" element={<Report />} />
+            <Route path="/import" element={<Import />} />
           </Routes>
         </main>
       </div>
