@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { AppProvider, useApp } from './context/AppContext';
 import { apiService } from './services/api';
 import Quiz from './components/Quiz';
@@ -26,6 +26,7 @@ if (isMobile()) {
 
 function Home() {
   const { state, dispatch } = useApp();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [serverStatus, setServerStatus] = useState<boolean | null>(null);
   const [pullToRefresh, setPullToRefresh] = useState(false);
@@ -76,6 +77,7 @@ function Home() {
       setLoading(true);
       const questions = await apiService.getRandomQuestions(state.userId, 25);
       dispatch({ type: 'START_TEST', payload: { questions } });
+      navigate('/test');
     } catch (error) {
       console.error('Failed to start test:', error);
       alert('Failed to load questions. Please check if the server is running.');
