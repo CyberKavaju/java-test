@@ -85,7 +85,8 @@
   background: #374151;
 }
 
-.question-text {
+/* Question text in table - limit width for better table layout */
+.questions-table .question-text {
   max-width: 300px;
   word-wrap: break-word;
 }

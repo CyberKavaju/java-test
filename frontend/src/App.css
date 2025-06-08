@@ -456,6 +456,8 @@ body {
   border-radius: 6px;
   border-left: 4px solid #3b82f6;
   color: #e5e7eb;
+  width: 100%;
+  max-width: 100%;
 }
 
 .question-text pre {
