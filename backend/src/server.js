@@ -323,6 +323,84 @@ app.get('/api/report', async (req, res) => {
     }
 });
 
+// Get detailed question performance with user attempts
+app.get('/api/question-details', async (req, res) => {
+    try {
+        const userId = req.query.userId || 'default_user';
+        
+        // Get detailed question performance with user attempts
+        const questionDetails = await new Promise((resolve, reject) => {
+            db.db.all(
+                `SELECT 
+                    q.id,
+                    q.domain,
+                    q.topic,
+                    q.question_text,
+                    q.option_a,
+                    q.option_b,
+                    q.option_c,
+                    q.option_d,
+                    q.option_e,
+                    q.correct_answer,
+                    q.explanation,
+                    qs.correct_count,
+                    qs.wrong_count,
+                    qs.total_attempts,
+                    CASE 
+                        WHEN qs.total_attempts = 0 THEN 'gray'
+                        WHEN qs.correct_count * 1.0 / qs.total_attempts >= 0.8 THEN 'green'
+                        WHEN qs.correct_count * 1.0 / qs.total_attempts >= 0.5 THEN 'yellow'
+                        ELSE 'red'
+                    END as performance_color,
+                    ROUND(qs.correct_count * 100.0 / NULLIF(qs.total_attempts, 0), 2) as success_rate
+                 FROM questions q
+                 LEFT JOIN question_stats qs ON q.id = qs.question_id
+                 WHERE qs.total_attempts > 0
+                 ORDER BY success_rate ASC`,
+                [],
+                (err, rows) => {
+                    if (err) reject(err);
+                    else resolve(rows);
+                }
+            );
+        });
+        
+        // Get user attempts for each question
+        for (let question of questionDetails) {
+            const attempts = await new Promise((resolve, reject) => {
+                db.db.all(
+                    `SELECT 
+                        ua.selected_answer,
+                        ua.is_correct,
+                        ua.attempt_timestamp
+                     FROM user_attempts ua
+                     WHERE ua.user_id = ? AND ua.question_id = ?
+                     ORDER BY ua.attempt_timestamp DESC
+                     LIMIT 10`,
+                    [userId, question.id],
+                    (err, rows) => {
+                        if (err) reject(err);
+                        else resolve(rows);
+                    }
+                );
+            });
+            question.user_attempts = attempts;
+        }
+        
+        res.json({
+            success: true,
+            questionDetails
+        });
+        
+    } catch (error) {
+        console.error('Error fetching detailed question performance:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to fetch detailed question performance'
+        });
+    }
+});
+
 // Health check endpoint
 app.get('/api/health', (req, res) => {
     res.json({ success: true, message: 'Server is running' });

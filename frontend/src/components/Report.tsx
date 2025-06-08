@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { apiService } from '../services/api';
-import type { QuestionPerformance, PerformanceTrend, UserStats, TestSession, TopicStats } from '../types';
+import type { QuestionPerformance, PerformanceTrend, UserStats, TestSession, TopicStats, DetailedQuestionPerformance } from '../types';
 
 export default function Report() {
   const [reportData, setReportData] = useState<{
@@ -13,20 +13,27 @@ export default function Report() {
     testSessions: TestSession[];
     topicStats: TopicStats[];
   } | null>(null);
+
+  const [detailedQuestions, setDetailedQuestions] = useState<{
+    questionDetails: DetailedQuestionPerformance[];
+  } | null>(null);
   
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'overview' | 'performance' | 'topics'>('overview');
+  const [expandedQuestions, setExpandedQuestions] = useState<Set<number>>(new Set());
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [report, history] = await Promise.all([
+        const [report, history, detailed] = await Promise.all([
           apiService.getReport(),
-          apiService.getUserHistory()
+          apiService.getUserHistory(),
+          apiService.getDetailedQuestionPerformance()
         ]);
         setReportData(report);
         setUserHistory(history);
+        setDetailedQuestions(detailed);
       } catch (error) {
         console.error('Failed to fetch report data:', error);
       } finally {
@@ -55,11 +62,23 @@ export default function Report() {
     }
   };
 
+  const toggleQuestionExpanded = (questionId: number) => {
+    setExpandedQuestions(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(questionId)) {
+        newSet.delete(questionId);
+      } else {
+        newSet.add(questionId);
+      }
+      return newSet;
+    });
+  };
+
   if (loading) {
     return <div className="loading">Loading report...</div>;
   }
 
-  if (!reportData || !userHistory) {
+  if (!reportData || !userHistory || !detailedQuestions) {
     return <div className="error">Failed to load report data</div>;
   }
 
@@ -129,7 +148,7 @@ export default function Report() {
                     {Math.round(session.time_taken / 60)} min
                   </div>
                   <div className="session-date">
-                    {new Date(session.completed_at).toLocaleDateString()}
+                    {new Date(session.completed_at).toLocaleDateString()} {new Date(session.completed_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </div>
                 </div>
               ))}
@@ -140,35 +159,118 @@ export default function Report() {
 
       {activeTab === 'performance' && (
         <div className="performance-tab">
+          <h3>Detailed Question Review</h3>
           <div className="performance-summary">
-            <h3>Question Performance Summary</h3>
             <div className="performance-legend">
               <span><span style={{ color: getPerformanceColor('green') }}>🟢 Green:</span> 80%+ success rate</span>
               <span><span style={{ color: getPerformanceColor('yellow') }}>🟡 Yellow:</span> 50-79% success rate</span>
               <span><span style={{ color: getPerformanceColor('red') }}>🔴 Red:</span> &lt;50% success rate</span>
             </div>
           </div>
+          <div className="detailed-questions-list">
+            {detailedQuestions.questionDetails.map((question) => {
+              const isExpanded = expandedQuestions.has(question.id);
+              return (
+                <div key={question.id} className="detailed-question-card">
+                  <div 
+                    className="question-header clickable" 
+                    onClick={() => toggleQuestionExpanded(question.id)}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    <div className="question-meta">
+                      <span className="performance-indicator">
+                        {getPerformanceEmoji(question.performance_color)}
+                      </span>
+                      <span className="topic-badge">{question.topic}</span>
+                      <span className="domain-badge">{question.domain}</span>
+                      <span className="success-rate">{question.success_rate}%</span>
+                    </div>
+                    <div className="attempts-summary">
+                      <span>✅ {question.correct_count}</span>
+                      <span>❌ {question.wrong_count}</span>
+                      <span>Total: {question.total_attempts}</span>
+                    </div>
+                    <div className="expand-indicator">
+                      {isExpanded ? '▼' : '▶'}
+                    </div>
+                  </div>
 
-          <div className="question-performance-list">
-            {reportData.questionPerformance.map((question) => (
-              <div key={question.id} className="performance-item">
-                <div className="performance-header">
-                  <span className="performance-indicator">
-                    {getPerformanceEmoji(question.performance_color)}
-                  </span>
-                  <span className="topic-badge">{question.topic}</span>
-                  <span className="success-rate">{question.success_rate}%</span>
+                  {isExpanded && (
+                    <div className="question-content">
+                      <div className="question-text">
+                        <h4>Question:</h4>
+                        <p>{question.question_text}</p>
+                      </div>
+
+                      <div className="answer-options">
+                        <h4>Answer Options:</h4>
+                        <div className="options-grid">
+                          <div className={`option ${question.correct_answer === 'A' ? 'correct' : ''}`}>
+                            <span className="option-label">A)</span>
+                            <span className="option-text">{question.option_a}</span>
+                            {question.correct_answer === 'A' && <span className="correct-indicator">✓ Correct</span>}
+                          </div>
+                          <div className={`option ${question.correct_answer === 'B' ? 'correct' : ''}`}>
+                            <span className="option-label">B)</span>
+                            <span className="option-text">{question.option_b}</span>
+                            {question.correct_answer === 'B' && <span className="correct-indicator">✓ Correct</span>}
+                          </div>
+                          <div className={`option ${question.correct_answer === 'C' ? 'correct' : ''}`}>
+                            <span className="option-label">C)</span>
+                            <span className="option-text">{question.option_c}</span>
+                            {question.correct_answer === 'C' && <span className="correct-indicator">✓ Correct</span>}
+                          </div>
+                          {question.option_d && (
+                            <div className={`option ${question.correct_answer === 'D' ? 'correct' : ''}`}>
+                              <span className="option-label">D)</span>
+                              <span className="option-text">{question.option_d}</span>
+                              {question.correct_answer === 'D' && <span className="correct-indicator">✓ Correct</span>}
+                            </div>
+                          )}
+                          {question.option_e && (
+                            <div className={`option ${question.correct_answer === 'E' ? 'correct' : ''}`}>
+                              <span className="option-label">E)</span>
+                              <span className="option-text">{question.option_e}</span>
+                              {question.correct_answer === 'E' && <span className="correct-indicator">✓ Correct</span>}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      {question.explanation && (
+                        <div className="explanation">
+                          <h4>Explanation:</h4>
+                          <p>{question.explanation}</p>
+                        </div>
+                      )}
+
+                      {question.user_attempts.length > 0 && (
+                        <div className="user-attempts">
+                          <h4>Your Attempts:</h4>
+                          <div className="attempts-list">
+                            {question.user_attempts.map((attempt, index) => (
+                              <div key={index} className={`attempt-item ${attempt.is_correct ? 'correct' : 'incorrect'}`}>
+                                <div className="attempt-details">
+                                  <span className="attempt-answer">
+                                    You selected: <strong>{attempt.selected_answer}</strong>
+                                  </span>
+                                  <span className={`attempt-result ${attempt.is_correct ? 'correct' : 'incorrect'}`}>
+                                    {attempt.is_correct ? '✅ Correct' : '❌ Incorrect'}
+                                  </span>
+                                </div>
+                                <div className="attempt-time">
+                                  {new Date(attempt.attempt_timestamp).toLocaleDateString()} {new Date(attempt.attempt_timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
-                <div className="performance-stats">
-                  <span>✅ {question.correct_count}</span>
-                  <span>❌ {question.wrong_count}</span>
-                  <span>Total: {question.total_attempts}</span>
-                </div>
-                <div className="question-preview">
-                  {question.question_text.substring(0, 100)}...
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}

@@ -70,3 +70,29 @@ export interface PerformanceTrend {
   correct_answers: number;
   daily_success_rate: number;
 }
+
+export interface UserAttempt {
+  selected_answer: string;
+  is_correct: boolean;
+  attempt_timestamp: string;
+}
+
+export interface DetailedQuestionPerformance {
+  id: number;
+  domain: string;
+  topic: string;
+  question_text: string;
+  option_a: string;
+  option_b: string;
+  option_c: string;
+  option_d?: string;
+  option_e?: string;
+  correct_answer: string;
+  explanation?: string;
+  correct_count: number;
+  wrong_count: number;
+  total_attempts: number;
+  performance_color: 'green' | 'yellow' | 'red' | 'gray';
+  success_rate: number;
+  user_attempts: UserAttempt[];
+}

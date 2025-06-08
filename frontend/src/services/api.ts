@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { Question, Answer, TestResult, UserStats, TestSession, TopicStats, QuestionPerformance, PerformanceTrend } from '../types/index.js';
+import type { Question, Answer, TestResult, UserStats, TestSession, TopicStats, QuestionPerformance, PerformanceTrend, DetailedQuestionPerformance } from '../types/index.js';
 
 const API_BASE_URL = 'http://localhost:3001/api';
 
@@ -48,6 +48,14 @@ export const apiService = {
     performanceTrend: PerformanceTrend[];
   }> {
     const response = await api.get(`/report?userId=${userId}`);
+    return response.data;
+  },
+
+  // Get detailed question performance with user attempts
+  async getDetailedQuestionPerformance(userId: string = 'default_user'): Promise<{
+    questionDetails: DetailedQuestionPerformance[];
+  }> {
+    const response = await api.get(`/question-details?userId=${userId}`);
     return response.data;
   },
 
