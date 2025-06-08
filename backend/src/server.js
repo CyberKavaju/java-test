@@ -1048,6 +1048,88 @@ app.get('/api/questions/meta/filters', async (req, res) => {
     }
 });
 
+// Export questions as CSV
+app.get('/api/questions/export/csv', async (req, res) => {
+    try {
+        const { domain, topic, search } = req.query;
+        
+        // Build query
+        let query = 'SELECT * FROM questions WHERE 1=1';
+        const params = [];
+        
+        if (domain) {
+            query += ' AND domain = ?';
+            params.push(domain);
+        }
+        
+        if (topic) {
+            query += ' AND topic = ?';
+            params.push(topic);
+        }
+        
+        if (search) {
+            query += ' AND (question_text LIKE ? OR domain LIKE ? OR topic LIKE ?)';
+            const searchTerm = `%${search}%`;
+            params.push(searchTerm, searchTerm, searchTerm);
+        }
+        
+        query += ' ORDER BY id';
+        
+        const questions = await new Promise((resolve, reject) => {
+            db.db.all(query, params, (err, rows) => {
+                if (err) reject(err);
+                else resolve(rows);
+            });
+        });
+        
+        // Generate CSV content
+        const csvHeader = 'ID,Domain,Topic,Question,Option A,Option B,Option C,Option D,Option E,Correct Answer,Explanation,Created At\n';
+        
+        const csvRows = questions.map(q => {
+            // Escape CSV values that contain commas, quotes, or newlines
+            const escapeCSV = (value) => {
+                if (value == null) return '';
+                const str = String(value);
+                if (str.includes(',') || str.includes('"') || str.includes('\n') || str.includes('\r')) {
+                    return '"' + str.replace(/"/g, '""') + '"';
+                }
+                return str;
+            };
+            
+            return [
+                q.id,
+                escapeCSV(q.domain),
+                escapeCSV(q.topic),
+                escapeCSV(q.question_text),
+                escapeCSV(q.option_a),
+                escapeCSV(q.option_b),
+                escapeCSV(q.option_c),
+                escapeCSV(q.option_d || ''),
+                escapeCSV(q.option_e || ''),
+                escapeCSV(q.correct_answer),
+                escapeCSV(q.explanation || ''),
+                escapeCSV(q.created_at || '')
+            ].join(',');
+        }).join('\n');
+        
+        const csvContent = csvHeader + csvRows;
+        
+        // Set headers for file download
+        const filename = `questions_export_${new Date().toISOString().split('T')[0]}.csv`;
+        res.setHeader('Content-Type', 'text/csv');
+        res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+        
+        res.send(csvContent);
+        
+    } catch (error) {
+        console.error('Error exporting CSV:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to export questions to CSV'
+        });
+    }
+});
+
 // Start server
 const startServer = async () => {
     await initializeDatabase();

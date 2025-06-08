@@ -90,7 +90,7 @@ High-quality mock exams are arguably the most critical component of a candidate'
 
 * **Enthuware:** Consistently praised as a top-tier provider, often described as offering questions highly similar to the actual exam, coupled with comprehensive explanations.26  
 * **Sybex Practice Tests:** Offers a large pool of over 1,000 unique questions with expert explanations and an interactive online learning environment.13  
-* **Whizlabs:** A reputable provider offering sample questions and full simulators.5 While some sources suggest its questions might be simpler, they remain valuable for initial practice and building confidence.
+* **Main:** A reputable provider offering sample questions and full simulators.5 While some sources suggest its questions might be simpler, they remain valuable for initial practice and building confidence.
 
 The iterative process of taking mock exams and then meticulously reviewing all explanations, especially for missed questions, functions as a powerful self-diagnostic mechanism. This active feedback loop, which involves identifying and rectifying conceptual misunderstandings, is significantly more effective than passively consuming study material. It allows for a targeted refinement of knowledge, transforming weaknesses into strengths.
 
@@ -402,7 +402,7 @@ Working With Java Data Types,Object References,What is the output of the followi
 2. Java vs PHP: Which to Choose for Your Project? \- TatvaSoft Blog, accessed on June 6, 2025, [https://www.tatvasoft.com/outsourcing/2024/04/java-vs-php.html](https://www.tatvasoft.com/outsourcing/2024/04/java-vs-php.html)  
 3. PHP vs Java: Programming Language Showdown 2025 \- Bacancy Technology, accessed on June 6, 2025, [https://www.bacancytechnology.com/blog/php-vs-java](https://www.bacancytechnology.com/blog/php-vs-java)  
 4. Exam 1Z0-808: Java SE 8 Programmer I \- Oracle MyLearn, accessed on June 6, 2025, [https://mylearn.oracle.com/ou/exam/java-se-8-programmer-i-1z0-808/40805/110679/170387](https://mylearn.oracle.com/ou/exam/java-se-8-programmer-i-1z0-808/40805/110679/170387)  
-5. Oracle Certified Associate Java SE 8 Programmer(1Z0-808) \- Whizlabs, accessed on June 6, 2025, [https://www.whizlabs.com/blog/study-guide-oracle-certified-java-se8/](https://www.whizlabs.com/blog/study-guide-oracle-certified-java-se8/)  
+5. Oracle Certified Associate Java SE 8 Programmer(1Z0-808) \- Main, accessed on June 6, 2025, [https://www.Main.com/blog/study-guide-oracle-certified-java-se8/](https://www.Main.com/blog/study-guide-oracle-certified-java-se8/)  
 6. How To Crack Java Certification \- I Programmer, accessed on June 6, 2025, [https://www.i-programmer.info/professional-programmer/67-certification/12054-how-to-crack-java-certification.html](https://www.i-programmer.info/professional-programmer/67-certification/12054-how-to-crack-java-certification.html)  
 7. Oracle Java Certification \- Pass the Associate 1Z0-808 Exam. from Udemy | Class Central, accessed on June 6, 2025, [https://www.classcentral.com/course/udemy-oracle-java-associate-certification-exam-course-1z0-808-23408](https://www.classcentral.com/course/udemy-oracle-java-associate-certification-exam-course-1z0-808-23408)  
 8. Oracle Certified Associate Java SE 8 Programmer I 1Z0-808 Practice Tests: 260+ Questions to assess your OCA preparation (Java Certification) \- Amazon.com, accessed on June 6, 2025, [https://www.amazon.com/Certified-Associate-Programmer-1Z0-808-Practice/dp/1976704030](https://www.amazon.com/Certified-Associate-Programmer-1Z0-808-Practice/dp/1976704030)  

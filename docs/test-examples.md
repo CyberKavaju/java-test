@@ -1,15 +1,15 @@
 # Java Test Questions Collection
 
-## Whizlabs Questions
+## Main Questions
 
 ### Question 1
 
 **Domain:** Other  
 **Question:** What will be the output of following program code?
 
-```java
+<code>
 import java.io.*;
-public class Whizlabs{
+public class Main{
     public static void main(String args[]){
         try{
             int whizData[] = new int[10];
@@ -19,7 +19,7 @@ public class Whizlabs{
         }
     }
 }
-```
+</code>
 
 **Options:**
 
@@ -37,11 +37,11 @@ public class Whizlabs{
 **Domain:** Other  
 **Question:** Choose the correct options to complete the following program code. (Select 2 options.)
 
-```java
+<code>
 1. public void method() _____ Exception {
 2. _____ Exception();
 }
-```
+</code>
 
 **Options:**
 
@@ -60,9 +60,9 @@ public class Whizlabs{
 **Domain:** Other  
 **Question:** Which exception will the following statement generate?
 
-```java
+<code>
 int array[] = new int[-2];
-```
+</code>
 
 **Options:**
 
@@ -81,8 +81,8 @@ int array[] = new int[-2];
 **Domain:** Other  
 **Question:** What will be the output of following program code?
 
-```java
-1. public class Whizlabs {
+<code>
+1. public class Main {
 2.     public static void main(String[] args) {
 3.         int sum = 0;
 4.         
@@ -92,7 +92,7 @@ int array[] = new int[-2];
 8.         System.out.println(" = " + sum);
 9.     }
 10. }
-```
+</code>
 
 **Options:**
 
@@ -128,9 +128,9 @@ int array[] = new int[-2];
 **Domain:** Other  
 **Question:** What will be the output of this program code?
 
-```java
+<code>
 import java.lang.*;
-public class Whizlabs{
+public class Main{
     public static void main(String[] args){
         try{
             double number = Double.valueOf("1200");
@@ -140,7 +140,7 @@ public class Whizlabs{
         System.out.println(number);
     }
 }
-```
+</code>
 
 **Options:**
 
@@ -157,8 +157,8 @@ public class Whizlabs{
 **Domain:** Other  
 **Question:** Choose the options that can replace the text "abc" in the above code. (Select 2 options)
 
-```java
-public class Whizlabs {
+<code>
+public class Main {
     public static void main(String[] args){
         int[] testData = {1,2,3};
         for (abc) {
@@ -166,7 +166,7 @@ public class Whizlabs {
         }
     }
 }
-```
+</code>
 
 **Options:**
 
@@ -187,11 +187,11 @@ public class Whizlabs {
 **Topic:** Handling Exceptions  
 **Question:** Code:
 
-```java
+<code>
 public static void main(String[] args){
     Float number = Float.valueOf(args[0]);
 }
-```
+</code>
 
 Which of the following exceptions possible with above statement? (Choose two)
 
@@ -223,7 +223,7 @@ Which of the following exceptions possible with above statement? (Choose two)
 **Topic:** Working with Methods and Encapsulation  
 **Question:** Code:
 
-```java
+<code>
 1. package epracticelabs;
 2.
 3. public class A {
@@ -240,7 +240,7 @@ Which of the following exceptions possible with above statement? (Choose two)
 14.         System.out.println(a.y + y);
 15.     }
 16. }
-```
+</code>
 
 What is the output?
 
@@ -259,7 +259,7 @@ What is the output?
 **Topic:** Imports  
 **Question:** Code:
 
-```java
+<code>
 1. import java.util.Random;
 2. import java.lang.System;
 3. import java.util.*;
@@ -272,7 +272,7 @@ What is the output?
 10.        System.out.println(r.nextInt(10));
 11.    }
 12. }
-```
+</code>
 
 Which lines contains redundant imports that not necessary for this code to compile?
 
@@ -291,7 +291,7 @@ Which lines contains redundant imports that not necessary for this code to compi
 **Topic:** Working with Selected classes from the Java API  
 **Question:** Code:
 
-```java
+<code>
 1. import java.time.LocalDate;
 2.
 3. public class MyExamCloudOCajps{
@@ -302,7 +302,7 @@ Which lines contains redundant imports that not necessary for this code to compi
 8.         System.out.println(date.getYear() +" "+ date.getMonth() +" "+ date.getDayOfMonth());
 9.     }
 10. }
-```
+</code>
 
 What is the output?
 
@@ -358,7 +358,7 @@ What is the output?
 **Topic:** Working With Java Data Types  
 **Question:** Code:
 
-```java
+<code>
 1. public class MyExamCloudOCAIPs {
 2.
 3.     static int y = 10;
@@ -368,7 +368,7 @@ What is the output?
 7.         System.out.println(y + MyExamCloudOCAIPs.y);
 8.     }
 9. }
-```
+</code>
 
 What is the output?
 
@@ -389,9 +389,9 @@ What is the output?
 **Topic:** Working With Java Data Types  
 **Question:** Which of the following will convert following string to a primitive float?
 
-```java
+<code>
 String str = "1.2";
-```
+</code>
 
 **Options:**
 
@@ -404,7 +404,7 @@ String str = "1.2";
 
 **1. What is the output of the following code?**
 
-```java
+<code>
 public class Test {
     public static void main(String[] args) {
         int x = 5;
@@ -412,7 +412,7 @@ public class Test {
         System.out.println(y);
     }
 }
-```
+</code>
 
 A. 10
 B. 11
@@ -433,11 +433,11 @@ D. `static void main(String args)`
 
 **3. What will be the result of the following code?**
 
-```java
+<code>
 String s = "Hello";
 s.concat(" World");
 System.out.println(s);
-```
+</code>
 
 A. Hello
 B. Hello World
@@ -494,12 +494,12 @@ D. All of the above
 
 **9. What is printed?**
 
-```java
+<code>
 int i = 10;
 int j = 5;
 int result = i++ + ++j;
 System.out.println(result);
-```
+</code>
 
 A. 15
 B. 16
@@ -610,14 +610,14 @@ D. count()
 
 **21. What will it print?**
 
-```java
+<code>
 public class Q21 {
     public static void main(String[] args) {
         int x = 10;
         System.out.println(x++ + ++x);
     }
 }
-```
+</code>
 
 A. 21
 B. 22
@@ -629,7 +629,7 @@ D. 19
 
 **22. What will it print?**
 
-```java
+<code>
 public class Q22 {
     public static void main(String[] args) {
         boolean b = false;
@@ -639,7 +639,7 @@ public class Q22 {
             System.out.println("False");
     }
 }
-```
+</code>
 
 A. True
 B. False
@@ -651,7 +651,7 @@ D. Runtime Exception
 
 **23. What will it print?**
 
-```java
+<code>
 public class Q23 {
     public static void main(String[] args) {
         String s1 = "java";
@@ -659,7 +659,7 @@ public class Q23 {
         System.out.println(s1 == s2);
     }
 }
-```
+</code>
 
 A. true
 B. false
@@ -671,14 +671,14 @@ D. Runtime Exception
 
 **24. What will it print?**
 
-```java
+<code>
 public class Q24 {
     public static void main(String[] args) {
         int x = 5;
         System.out.println((x > 2) ? (x < 4) ? 10 : 8 : 7);
     }
 }
-```
+</code>
 
 A. 10
 B. 8
@@ -690,7 +690,7 @@ D. Compilation Error
 
 **25. What will it print?**
 
-```java
+<code>
 public class Q25 {
     public static void main(String[] args) {
         int[] arr = {1, 2, 3};
@@ -699,7 +699,7 @@ public class Q25 {
         }
     }
 }
-```
+</code>
 
 A. 1 2 3
 B. 3 2 1
@@ -711,14 +711,14 @@ D. Compilation Error
 
 **26. What will it print?**
 
-```java
+<code>
 public class Q26 {
     public static void main(String[] args) {
         String s = null;
         System.out.println(s + "world");
     }
 }
-```
+</code>
 
 A. world
 B. nullworld
@@ -730,7 +730,7 @@ D. NullPointerException
 
 **27. What will it print?**
 
-```java
+<code>
 public class Q27 {
     public static void main(String[] args) {
         String s1 = new String("OCA");
@@ -738,7 +738,7 @@ public class Q27 {
         System.out.println(s1 == s2);
     }
 }
-```
+</code>
 
 A. true
 B. false
@@ -750,7 +750,7 @@ D. NullPointerException
 
 **28. What will it print?**
 
-```java
+<code>
 public class Q28 {
     public static void main(String[] args) {
         int x = 7;
@@ -758,7 +758,7 @@ public class Q28 {
         System.out.println(x % y);
     }
 }
-```
+</code>
 
 A. 2
 B. 1
@@ -770,7 +770,7 @@ D. 0
 
 **29. What will it print?**
 
-```java
+<code>
 public class Q29 {
     public static void main(String[] args) {
         int x = 2;
@@ -779,7 +779,7 @@ public class Q29 {
         System.out.println(x);
     }
 }
-```
+</code>
 
 A. 16
 B. 13
@@ -791,14 +791,14 @@ D. 8
 
 **30. What will it print?**
 
-```java
+<code>
 public class Q30 {
     public static void main(String[] args) {
         int[] arr = new int[2];
         System.out.println(arr[0]);
     }
 }
-```
+</code>
 
 A. 0
 B. null
@@ -810,7 +810,7 @@ D. Exception
 
 **31. What will it print?**
 
-```java
+<code>
 public class Q31 {
     public static void main(String[] args) {
         String str = "abc";
@@ -818,7 +818,7 @@ public class Q31 {
         System.out.println(str);
     }
 }
-```
+</code>
 
 A. abc
 B. ABC
@@ -830,7 +830,7 @@ D. NullPointerException
 
 **32. What will it print?**
 
-```java
+<code>
 public class Q32 {
     public static void main(String[] args) {
         int i = 0;
@@ -839,7 +839,7 @@ public class Q32 {
         } while(i++ < 2);
     }
 }
-```
+</code>
 
 A. 0 1 2
 B. 0 1 2 3
@@ -851,7 +851,7 @@ D. Infinite loop
 
 **33. What will it print?**
 
-```java
+<code>
 public class Q33 {
     public static void main(String[] args) {
         int x = 5;
@@ -859,7 +859,7 @@ public class Q33 {
         System.out.println(x > 2 && y < 15);
     }
 }
-```
+</code>
 
 A. true
 B. false
@@ -871,14 +871,14 @@ D. Exception
 
 **34. What will it print?**
 
-```java
+<code>
 public class Q34 {
     public static void main(String[] args) {
         String str = "Java";
         System.out.println(str.charAt(2));
     }
 }
-```
+</code>
 
 A. v
 B. a
@@ -890,7 +890,7 @@ D. Compilation Error
 
 **35. What will it print?**
 
-```java
+<code>
 public class Q35 {
     public static void main(String[] args) {
         int a = 10, b = 20;
@@ -898,7 +898,7 @@ public class Q35 {
         System.out.println(max);
     }
 }
-```
+</code>
 
 A. 10
 B. 20
@@ -910,7 +910,7 @@ D. Compilation Error
 
 **36. What will it print?**
 
-```java
+<code>
 public class Q36 {
     public static void main(String[] args) {
         int x = 0;
@@ -919,7 +919,7 @@ public class Q36 {
         }
     }
 }
-```
+</code>
 
 A. Zero
 B. Nothing
@@ -931,7 +931,7 @@ D. Runtime Exception
 
 **37. What will it print?**
 
-```java
+<code>
 public class Q37 {
     public static void main(String[] args) {
         byte b = 127;
@@ -939,7 +939,7 @@ public class Q37 {
         System.out.println(b);
     }
 }
-```
+</code>
 
 A. 127
 B. 128
@@ -951,13 +951,13 @@ D. Compilation Error
 
 **38. What will it print?**
 
-```java
+<code>
 public class Q38 {
     public static void main(String[] args) {
         System.out.println(10 + 20 + "30");
     }
 }
-```
+</code>
 
 A. 30
 B. 1030
@@ -969,7 +969,7 @@ D. 3030.0
 
 **39. What will it print?**
 
-```java
+<code>
 public class Q39 {
     public static void main(String[] args) {
         String a = "Hello";
@@ -977,7 +977,7 @@ public class Q39 {
         System.out.println(a == b);
     }
 }
-```
+</code>
 
 A. true
 B. false
@@ -989,7 +989,7 @@ D. Runtime Exception
 
 **40. What will it print?**
 
-```java
+<code>
 public class Q40 {
     public static void main(String[] args) {
         final int x = 100;
@@ -997,7 +997,7 @@ public class Q40 {
         System.out.println(b);
     }
 }
-```
+</code>
 
 A. 100
 B. Compilation Error
@@ -1009,7 +1009,7 @@ D. Runtime Exception
 
 **41. What will it print?**
 
-```java
+<code>
 public class Q41 {
     public static void main(String[] args) {
         int[][] matrix = new int[2][];
@@ -1018,7 +1018,7 @@ public class Q41 {
         System.out.println(matrix[0].length + matrix[1].length);
     }
 }
-```
+</code>
 
 A. 4
 B. 5
@@ -1030,14 +1030,14 @@ D. Compilation Error
 
 **42. What will it print?**
 
-```java
+<code>
 public class Q42 {
     public static void main(String[] args) {
         int[] arr = {1, 2, 3};
         System.out.println(arr[3]);
     }
 }
-```
+</code>
 
 A. 3
 B. IndexOutOfBoundsException
@@ -1049,7 +1049,7 @@ D. null
 
 **43. What will it print?**
 
-```java
+<code>
 public class Q43 {
     public static void main(String[] args) {
         int[] a = {1, 2, 3};
@@ -1058,7 +1058,7 @@ public class Q43 {
         System.out.println(a[0]);
     }
 }
-```
+</code>
 
 A. 1
 B. 10
@@ -1070,14 +1070,14 @@ D. Compilation Error
 
 **44. What will it print?**
 
-```java
+<code>
 public class Q44 {
     public static void main(String[] args) {
         String[] names = new String[2];
         System.out.println(names[0].length());
     }
 }
-```
+</code>
 
 A. 0
 B. null
@@ -1089,7 +1089,7 @@ D. NullPointerException
 
 **45. What will it print?**
 
-```java
+<code>
 public class Q45 {
     public static void main(String[] args) {
         try {
@@ -1100,7 +1100,7 @@ public class Q45 {
         }
     }
 }
-```
+</code>
 
 A. Caught: java.lang.Exception
 B. Caught: java.lang.ArrayIndexOutOfBoundsException
@@ -1112,7 +1112,7 @@ D. Runtime Error
 
 **46. What will it print?**
 
-```java
+<code>
 public class Q46 {
     public static void main(String[] args) {
         try {
@@ -1122,7 +1122,7 @@ public class Q46 {
         }
     }
 }
-```
+</code>
 
 A. Invalid format
 B. abc
@@ -1134,7 +1134,7 @@ D. Runtime Error
 
 **47. What will it print?**
 
-```java
+<code>
 public class Q47 {
     public static void main(String[] args) {
         String[] vals = new String[]{"one", "two", "three"};
@@ -1142,7 +1142,7 @@ public class Q47 {
             System.out.print(s + " ");
     }
 }
-```
+</code>
 
 A. one two three
 B. three two one
@@ -1154,14 +1154,14 @@ D. Runtime Error
 
 **48. What will it print?**
 
-```java
+<code>
 public class Q48 {
     public static void main(String[] args) {
         int[][] grid = new int[1][2];
         System.out.println(grid.length + " " + grid[0].length);
     }
 }
-```
+</code>
 
 A. 1 2
 B. 2 1
@@ -1173,14 +1173,14 @@ D. 1 0
 
 **49. What will happen?**
 
-```java
+<code>
 public class Q49 {
     public static void main(String[] args) {
         int[] arr = new int[-2];
         System.out.println("Length: " + arr.length);
     }
 }
-```
+</code>
 
 A. Length: -2
 B. Compilation Error
@@ -1192,7 +1192,7 @@ D. 0
 
 **50. What will it print?**
 
-```java
+<code>
 public class Q50 {
     public static void main(String[] args) {
         try {
@@ -1202,7 +1202,7 @@ public class Q50 {
         }
     }
 }
-```
+</code>
 
 A. Divide by zero!
 B. 0
@@ -1214,7 +1214,7 @@ D. Runtime Exception
 
 **51. What will it print?**
 
-```java
+<code>
 public class Q51 {
     public static void main(String[] args) {
         int[] data = {10, 20, 30};
@@ -1223,7 +1223,7 @@ public class Q51 {
         }
     }
 }
-```
+</code>
 
 A. 10 20 30
 B. 10 20 30 0
@@ -1235,7 +1235,7 @@ D. ArrayIndexOutOfBoundsException
 
 **52. What will it print?**
 
-```java
+<code>
 public class Q52 {
     public static void main(String[] args) {
         String[][] text = new String[2][];
@@ -1244,7 +1244,7 @@ public class Q52 {
         System.out.println(text[1][0]);
     }
 }
-```
+</code>
 
 A. A
 B. B
@@ -1256,14 +1256,14 @@ D. null
 
 **53. What will it print?**
 
-```java
+<code>
 public class Q53 {
     public static void main(String[] args) {
         int[] nums = new int[0];
         System.out.println(nums.length);
     }
 }
-```
+</code>
 
 A. 0
 B. 1
@@ -1275,7 +1275,7 @@ D. Exception
 
 **54. What will it print?**
 
-```java
+<code>
 public class Q54 {
     public static void main(String[] args) {
         String[] list = null;
@@ -1286,7 +1286,7 @@ public class Q54 {
         }
     }
 }
-```
+</code>
 
 A. null
 B. Caught NPE
@@ -1298,7 +1298,7 @@ D. Runtime Error
 
 **55. What will it print?**
 
-```java
+<code>
 public class Q55 {
     public static void main(String[] args) {
         try {
@@ -1308,7 +1308,7 @@ public class Q55 {
         }
     }
 }
-```
+</code>
 
 A. Bad input
 B. Caught: Bad input
@@ -1320,7 +1320,7 @@ D. IllegalArgumentException
 
 **56. What will it print?**
 
-```java
+<code>
 public class Q56 {
     public static void main(String[] args) {
         int[] values = {1, 2, 3, 4};
@@ -1329,7 +1329,7 @@ public class Q56 {
         }
     }
 }
-```
+</code>
 
 A. 4 3 2 1
 B. 1 2 3 4
@@ -1341,7 +1341,7 @@ D. Runtime Error
 
 **57. What will it print?**
 
-```java
+<code>
 public class Q57 {
     public static void main(String[] args) {
         try {
@@ -1351,7 +1351,7 @@ public class Q57 {
         }
     }
 }
-```
+</code>
 
 A. Format error
 B. 10.5
@@ -1363,7 +1363,7 @@ D. Runtime Error
 
 **58. What will it print?**
 
-```java
+<code>
 public class Q58 {
     public static void main(String[] args) {
         Object[] obj = new String[2];
@@ -1371,7 +1371,7 @@ public class Q58 {
         System.out.println("Done");
     }
 }
-```
+</code>
 
 A. Done
 B. Compilation Error
@@ -1383,14 +1383,14 @@ D. null
 
 **59. What will it print?**
 
-```java
+<code>
 public class Q59 {
     public static void main(String[] args) {
         String[] arr = {"one", "two", "three"};
         System.out.println(arr[arr.length]);
     }
 }
-```
+</code>
 
 A. three
 B. Compilation Error
@@ -1402,7 +1402,7 @@ D. Runtime Error
 
 **60. What will it print?**
 
-```java
+<code>
 public class Q60 {
     public static void main(String[] args) {
         try {
@@ -1414,7 +1414,7 @@ public class Q60 {
         }
     }
 }
-```
+</code>
 
 A. Caught runtime
 B. Boom
@@ -1426,7 +1426,7 @@ D. Compilation Error
 
 **61. What will it print?**
 
-```java
+<code>
 public class Q61 {
     public static void main(String[] args) {
         int i = 10;
@@ -1435,7 +1435,7 @@ public class Q61 {
         }
     }
 }
-```
+</code>
 
 A. Equal
 B. Nothing
@@ -1449,7 +1449,7 @@ D. Runtime Error
 
 **62. What will it print?**
 
-```java
+<code>
 public class Q62 {
     static int x;
     public static void main(String[] args) {
@@ -1457,7 +1457,7 @@ public class Q62 {
         System.out.println(x);
     }
 }
-```
+</code>
 
 A. 0
 B. Compilation Error
@@ -1471,7 +1471,7 @@ D. null
 
 **63. What will it print?**
 
-```java
+<code>
 public class Q63 {
     public static void main(String[] args) {
         byte b = 10;
@@ -1479,7 +1479,7 @@ public class Q63 {
         System.out.println(b);
     }
 }
-```
+</code>
 
 A. 11
 B. Compilation Error
@@ -1493,14 +1493,14 @@ D. Runtime Error
 
 **64. What will it print?**
 
-```java
+<code>
 public class Q64 {
     public static void main(String[] args) {
         long x = 10_000;
         System.out.println(x);
     }
 }
-```
+</code>
 
 A. 10000
 B. Compilation Error
@@ -1514,7 +1514,7 @@ D. 10,000
 
 **65. What will it print?**
 
-```java
+<code>
 public class Q65 {
     public static void main(String[] args) {
         String s1 = "Hello";
@@ -1522,7 +1522,7 @@ public class Q65 {
         System.out.println(s1 == s2);
     }
 }
-```
+</code>
 
 A. true
 B. false
@@ -1536,13 +1536,13 @@ D. Runtime Error
 
 **66. What will it print?**
 
-```java
+<code>
 public class Q66 {
     public static void main(String[] args) {
         System.out.println("1" + 2 + 3);
     }
 }
-```
+</code>
 
 A. 123
 B. 6
@@ -1556,14 +1556,14 @@ D. 15
 
 **67. What will it print?**
 
-```java
+<code>
 public class Q67 {
     public static void main(String[] args) {
         char c = 65;
         System.out.println(c);
     }
 }
-```
+</code>
 
 A. A
 B. 65
@@ -1577,14 +1577,14 @@ D. null
 
 **68. What will it print?**
 
-```java
+<code>
 public class Q68 {
     public static void main(String[] args) {
         double d = 5 / 2;
         System.out.println(d);
     }
 }
-```
+</code>
 
 A. 2.0
 B. 2.5
@@ -1598,13 +1598,13 @@ D. Runtime Exception
 
 **69. What will it print?**
 
-```java
+<code>
 public class Q69 {
     public static void main(String[] args) {
         System.out.println(10 + 20 + "30");
     }
 }
-```
+</code>
 
 A. 30
 B. 1030
@@ -1618,14 +1618,14 @@ D. 3020
 
 **70. What will it print?**
 
-```java
+<code>
 public class Q70 {
     public static void main(String[] args) {
         int[] arr = new int[]{1, 2, 3};
         System.out.println(arr.length());
     }
 }
-```
+</code>
 
 A. 3
 B. Compilation Error
@@ -1639,14 +1639,14 @@ D. 0
 
 **71. What will it print?**
 
-```java
+<code>
 public class Q71 {
     public static void main(String[] args) {
         Object o = new int[]{1, 2, 3};
         System.out.println(o instanceof Object);
     }
 }
-```
+</code>
 
 A. true
 B. false
@@ -1660,7 +1660,7 @@ D. Runtime Exception
 
 **72. What will it print?**
 
-```java
+<code>
 public class Q72 {
     public static void main(String[] args) {
         int a = 5;
@@ -1668,7 +1668,7 @@ public class Q72 {
         System.out.println(a);
     }
 }
-```
+</code>
 
 A. 8
 B. 8.5
@@ -1682,7 +1682,7 @@ D. Runtime Error
 
 **73. What will it print?**
 
-```java
+<code>
 public class Q73 {
     static int x = 10;
     public static void main(String[] args) {
@@ -1690,7 +1690,7 @@ public class Q73 {
         System.out.println(x);
     }
 }
-```
+</code>
 
 A. 10
 B. 20
@@ -1704,14 +1704,14 @@ D. Runtime Error
 
 **74. What will it print?**
 
-```java
+<code>
 public class Q74 {
     public static void main(String[] args) {
         int[] a = new int[3];
         System.out.println(a[3]);
     }
 }
-```
+</code>
 
 A. 0
 B. 3
@@ -1723,7 +1723,7 @@ D. ArrayIndexOutOfBoundsException
 
 **75. What will it print?**
 
-```java
+<code>
 public class Q75 {
     public static void main(String[] args) {
         final int x = 100;
@@ -1731,7 +1731,7 @@ public class Q75 {
         System.out.println(b);
     }
 }
-```
+</code>
 
 A. 100
 B. Compilation Error
@@ -1745,7 +1745,7 @@ D. Runtime Error
 
 **76. What will it print?**
 
-```java
+<code>
 public class Q76 {
     public static void main(String[] args) {
         short s = 10;
@@ -1753,7 +1753,7 @@ public class Q76 {
         System.out.println(s);
     }
 }
-```
+</code>
 
 A. 50
 B. Compilation Error
@@ -1767,13 +1767,13 @@ D. 10
 
 **77. What will it print?**
 
-```java
+<code>
 public class Q77 {
     public static void main(String[] args) {
         System.out.println(true ? "yes" : 10);
     }
 }
-```
+</code>
 
 A. yes
 B. 10
@@ -1787,7 +1787,7 @@ D. Runtime Error
 
 **78. What will it print?**
 
-```java
+<code>
 public class Q78 {
     public static void main(String[] args) {
         int i = 0;
@@ -1796,7 +1796,7 @@ public class Q78 {
         System.out.print("C");
     }
 }
-```
+</code>
 
 A. ABC
 B. BAC
@@ -1808,7 +1808,7 @@ D. Compilation Error
 
 **79. What will it print?**
 
-```java
+<code>
 public class Q79 {
     public static void main(String[] args) {
         int x = 5;
@@ -1818,7 +1818,7 @@ public class Q79 {
         }
     }
 }
-```
+</code>
 
 A. Five
 B. Default
@@ -1832,14 +1832,14 @@ D. Compilation Error
 
 **80. What will it print?**
 
-```java
+<code>
 public class Q80 {
     public static void main(String[] args) {
         String str = "null";
         System.out.println(str == null);
     }
 }
-```
+</code>
 
 A. true
 B. false

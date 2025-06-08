@@ -2,7 +2,7 @@ const initialQuestions = [
     {
         domain: "Other",
         topic: "Arrays and Exception Handling",
-        question_text: "What will be the output of following program code?\n\n```java\nimport java.io.*;\npublic class Whizlabs{\n    public static void main(String args[]){\n        int[] array = new int[10];\n        System.out.println(\"Accessing Element Eleven: \" + array[10]);\n    }\n}\n```",
+        question_text: "What will be the output of following program code?\n\n<code>\nimport java.io.*;\npublic class Main{\n    public static void main(String args[]){\n        int[] array = new int[10];\n        System.out.println(\"Accessing Element Eleven: \" + array[10]);\n    }\n}\n</code>",
         option_a: "Compilation Fails.",
         option_b: "Oops. Identified Exception : java.lang.ArrayIndexOutOfBoundsException: 10",
         option_c: "Accessing Element Eleven: 0",
@@ -14,7 +14,7 @@ const initialQuestions = [
     {
         domain: "Other",
         topic: "Exception Handling",
-        question_text: "Choose the correct options to complete the following program code. (Select 2 options.)\n\n```java\n1. public void method() _____ Exception {\n2. _____ Exception();\n}\n```",
+        question_text: "Choose the correct options to complete the following program code. (Select 2 options.)\n\n<code>\n1. public void method() _____ Exception {\n2. _____ Exception();\n}\n</code>",
         option_a: "Fill throws in line 1",
         option_b: "Fill throws new in Line 1",
         option_c: "Fill throw new in line 2",
@@ -26,7 +26,7 @@ const initialQuestions = [
     {
         domain: "Other",
         topic: "Arrays and Exception Handling",
-        question_text: "Which exception will the following statement generate?\n\n```java\nint array[] = new int[-2];\n```",
+        question_text: "Which exception will the following statement generate?\n\n<code>\nint array[] = new int[-2];\n</code>",
         option_a: "NullPointerException",
         option_b: "NegativeArraySizeException",
         option_c: "ArrayIndexOutOfBoundsException",  
@@ -38,7 +38,7 @@ const initialQuestions = [
     {
         domain: "Other",
         topic: "Loop Constructs and Variable Scope",
-        question_text: "What will be the output of following program code?\n\n```java\n1. public class Whizlabs {\n2.     public static void main(String[] args) {\n3.         int sum = 0;\n4.         \n5.         for(int x = 0; x < 10; x++)\n6.             sum += x;\n7.         System.out.print(\"sum for 0 to \" + x);\n8.         System.out.println(\" = \" + sum);\n9.     }\n10. }\n```",
+        question_text: "What will be the output of following program code?\n\n<code>\n1. public class Main {\n2.     public static void main(String[] args) {\n3.         int sum = 0;\n4.         \n5.         for(int x = 0; x < 10; x++)\n6.             sum += x;\n7.         System.out.print(\"sum for 0 to \" + x);\n8.         System.out.println(\" = \" + sum);\n9.     }\n10. }\n</code>",
         option_a: "sum for 0 to 9 = 45",
         option_b: "sum for 0 to 10 = 45", 
         option_c: "Compilation fails due to an error in line 6.",
@@ -62,7 +62,7 @@ const initialQuestions = [
     {
         domain: "Handling Exceptions",
         topic: "Exception Handling",
-        question_text: "Code:\n\n```java\npublic static void main(String[] args){\n    Float number = Float.valueOf(args[0]);\n}\n```\n\nWhich of the following exceptions possible with above statement? (Choose three)",
+        question_text: "Code:\n\n<code>\npublic static void main(String[] args){\n    Float number = Float.valueOf(args[0]);\n}\n</code>\n\nWhich of the following exceptions possible with above statement? (Choose three)",
         option_a: "IllegalArgumentException",
         option_b: "NumberFormatException", 
         option_c: "ArrayIndexOutOfBoundsException",
@@ -86,7 +86,7 @@ const initialQuestions = [
     {
         domain: "Working with Methods and Encapsulation",
         topic: "Inheritance and Access Modifiers",
-        question_text: "Code:\n\n```java\n1. package epracticelabs;\n2.\n3. public class A {\n4.     protected int y = 15;\n5. }\n6. package elab;\n7.\n8. import epracticelabs.A;\n9.\n10. public class B extends A{\n11.     int y = 10;\n12.     public void print(){\n13.         A a = new A();\n14.         System.out.println(a.y + y);\n15.     }\n16. }\n```\n\nWhat is the output?",
+        question_text: "Code:\n\n<code>\n1. package epracticelabs;\n2.\n3. public class A {\n4.     protected int y = 15;\n5. }\n6. package elab;\n7.\n8. import epracticelabs.A;\n9.\n10. public class B extends A{\n11.     int y = 10;\n12.     public void print(){\n13.         A a = new A();\n14.         System.out.println(a.y + y);\n15.     }\n16. }\n</code>\n\nWhat is the output?",
         option_a: "20",
         option_b: "25",
         option_c: "30", 
@@ -98,7 +98,7 @@ const initialQuestions = [
     {
         domain: "Imports",
         topic: "Import Statements",
-        question_text: "Code:\n\n```java\n1. import java.util.Random;\n2. import java.lang.System;\n3. import java.util.*;\n4. import java.lang.*;\n5.\n6. public class MyExamCloudOcajps {\n7.\n8.     public static void main(String[] args) {\n9.         Random r = new Random();\n10.        System.out.println(r.nextInt(10));\n11.    }\n12. }\n```\n\nWhich lines contains redundant imports that not necessary for this code to compile?",
+        question_text: "Code:\n\n<code>\n1. import java.util.Random;\n2. import java.lang.System;\n3. import java.util.*;\n4. import java.lang.*;\n5.\n6. public class MyExamCloudOcajps {\n7.\n8.     public static void main(String[] args) {\n9.         Random r = new Random();\n10.        System.out.println(r.nextInt(10));\n11.    }\n12. }\n</code>\n\nWhich lines contains redundant imports that not necessary for this code to compile?",
         option_a: "Only lines 1 and 2",
         option_b: "Only lines 1,2 and 3",
         option_c: "Only lines 2,3 and 4",
@@ -110,7 +110,7 @@ const initialQuestions = [
     {
         domain: "Working with Selected classes from the Java API",
         topic: "Date and Time API",
-        question_text: "Code:\n\n```java\n1. import java.time.LocalDate;\n2.\n3. public class MyExamCloudOCajps{\n4.     public static void main(String[] args) {\n5.         LocalDate date = LocalDate.parse(\"2014-12-30\");\n6.         date = date.plusDays(2);\n7.         date.plusHours(12);\n8.         System.out.println(date.getYear() +\" \"+ date.getMonth() +\" \"+ date.getDayOfMonth());\n9.     }\n10. }\n```\n\nWhat is the output?",
+        question_text: "Code:\n\n<code>\n1. import java.time.LocalDate;\n2.\n3. public class MyExamCloudOCajps{\n4.     public static void main(String[] args) {\n5.         LocalDate date = LocalDate.parse(\"2014-12-30\");\n6.         date = date.plusDays(2);\n7.         date.plusHours(12);\n8.         System.out.println(date.getYear() +\" \"+ date.getMonth() +\" \"+ date.getDayOfMonth());\n9.     }\n10. }\n</code>\n\nWhat is the output?",
         option_a: "2015 JANUARY 1",
         option_b: "2015 JANUARY 2",
         option_c: "2014 JANUARY 3",

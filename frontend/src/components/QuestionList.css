@@ -16,6 +16,12 @@
   color: #f9fafb;
 }
 
+.header-buttons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
 .filters {
   margin-bottom: 20px;
   padding: 20px;

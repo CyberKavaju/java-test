@@ -100,6 +100,34 @@ export const QuestionList: React.FC<QuestionListProps> = ({ onEditQuestion, onCr
     setCurrentPage(1);
   };
 
+  const handleExportCSV = async () => {
+    try {
+      const blob = await apiService.exportQuestionsCSV(filters);
+      
+      // Create download link
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      
+      // Generate filename with current date and applied filters
+      const date = new Date().toISOString().split('T')[0];
+      let filename = `questions_export_${date}`;
+      if (filters.domain) filename += `_${filters.domain}`;
+      if (filters.topic) filename += `_${filters.topic}`;
+      if (filters.search) filename += `_search`;
+      filename += '.csv';
+      
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('Error exporting CSV:', err);
+      setError('Failed to export questions to CSV');
+    }
+  };
+
   if (loading && questions.length === 0) {
     return <div className="loading">Loading questions...</div>;
   }
@@ -108,9 +136,14 @@ export const QuestionList: React.FC<QuestionListProps> = ({ onEditQuestion, onCr
     <div className="question-list">
       <div className="question-list-header">
         <h2>Question Management</h2>
-        <button onClick={onCreateNew} className="btn btn-primary">
-          Add New Question
-        </button>
+        <div className="header-buttons">
+          <button onClick={handleExportCSV} className="btn btn-secondary">
+            Export CSV
+          </button>
+          <button onClick={onCreateNew} className="btn btn-primary">
+            Add New Question
+          </button>
+        </div>
       </div>
 
       {/* Filters */}

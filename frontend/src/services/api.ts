@@ -193,5 +193,22 @@ export const apiService = {
   }> {
     const response = await api.get('/questions/meta/filters');
     return response.data;
+  },
+
+  // Export all questions as CSV
+  async exportQuestionsCSV(filters?: {
+    domain?: string;
+    topic?: string;
+    search?: string;
+  }): Promise<Blob> {
+    const queryParams = new URLSearchParams();
+    if (filters?.domain) queryParams.append('domain', filters.domain);
+    if (filters?.topic) queryParams.append('topic', filters.topic);
+    if (filters?.search) queryParams.append('search', filters.search);
+
+    const response = await api.get(`/questions/export/csv?${queryParams.toString()}`, {
+      responseType: 'blob'
+    });
+    return response.data;
   }
 };

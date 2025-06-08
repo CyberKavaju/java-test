@@ -2,7 +2,7 @@ domain,topic,question_text,option_a,option_b,option_c,option_d,option_e,correct_
 Other,Other,"What will be the output of following program code?
 
 import java.io.*;
-public class Whizlabs{
+public class Main{
     public static void main(String args[]){…}
 }","Compilation Fails.","Oops. Identified Exception : java.lang.ArrayIndexOutOfBoundsException: 10","Accessing Element Eleven: 0","Oops. Identified Exception java.lang.NoDataFoundException.",,"B","Array is declared with 10 elements. Then the code tries to access the 11th index element of the array which throws a standard exception java.lang.ArrayIndexOutOfBoundsException."
 Other,Other,"Choose the correct options to complete the following program code. (Select 2 options.)
@@ -15,7 +15,7 @@ Other,Other,"Which exception will the following statement generate?
 int array[] = new int[-2];","NullPointerException","NegativeArraySizeException","ArrayIndexOutOfBoundsException","IndexOutOfBoundsException","The statement executes without any exception.","B","In the given statement we can see that we have passed a negative value for creating int array, which results in a NegativeArraySizeException."
 Other,Other,"What will be the output of following program code?
 
-1. public class Whizlabs {
+1. public class Main {
 2.     public static void main(String[] args) {
 3.         int sum = 0;
 4.         
@@ -29,12 +29,12 @@ Other,Other,"Which of the following is valid for compiling java source file with
 Other,Other,"What will be the output of this program code?
 
 import java.lang.*;
-public class Whizlabs{
+public class Main{
     public static void main(String[] args){…}
 }","0","1200","Runtime exception NumberFormatException is generated.","Compilation fails due to an error at line 6.","Compilation fails due to an error at line 9.","E",""
 Other,Other,"Choose the options that can replace the text ""abc"" in the above code. (Select 2 options)
 
-public class Whizlabs {
+public class Main {
     public static void main(String[] args){…}
 }","int i : testData","int i = 0; i < 3; i++","i = 0; i < 3; i++","int i","i < 3","A","Option A: for each loop condition. Option B: generic for loop condition."
 Handling Exceptions,Handling Exceptions,"Code:

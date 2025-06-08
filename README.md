@@ -41,22 +41,22 @@ Before running this application, make sure you have the following installed:
 
 ### 1. Clone the Repository
 
-```bash
+</code>bash
 git clone <your-repository-url>
 cd java-test
-```
+</code>
 
 ### 2. Quick Start (Recommended)
 
 For the fastest setup, use the root-level scripts that handle both frontend and backend:
 
-```bash
+</code>bash
 # Install all dependencies for both frontend and backend
 npm run install-all
 
 # Start both frontend and backend development servers
 npm run dev
-```
+</code>
 
 This will start:
 
@@ -69,7 +69,7 @@ If you prefer to set up each part separately:
 
 #### Backend Setup
 
-```bash
+</code>bash
 # Navigate to backend directory
 cd backend
 
@@ -78,11 +78,11 @@ npm install
 
 # Start the backend server
 npm run dev
-```
+</code>
 
 #### Frontend Setup
 
-```bash
+</code>bash
 # Open a new terminal and navigate to frontend directory
 cd frontend
 
@@ -91,7 +91,7 @@ npm install
 
 # Start the development server
 npm run dev
-```
+</code>
 
 ## Usage
 
@@ -113,7 +113,7 @@ The backend provides the following REST API endpoints:
 
 ## Project Structure
 
-```text
+</code>text
 java-test/
 ├── backend/                 # Node.js/Express backend
 │   ├── src/
@@ -131,36 +131,36 @@ java-test/
 │   ├── public/
 │   └── package.json
 └── docs/                   # Project documentation
-```
+</code>
 
 ## Scripts
 
 ### Root Scripts (Recommended)
 
-```bash
+</code>bash
 npm run dev        # Start both frontend and backend development servers
 npm run install-all # Install dependencies for both frontend and backend
 npm start          # Start both frontend and backend in production mode
 npm run build      # Build frontend for production
 npm test           # Run backend tests
-```
+</code>
 
 ### Backend Scripts
 
-```bash
+</code>bash
 npm start       # Start production server
 npm run dev     # Start development server with nodemon
 npm test        # Run tests
-```
+</code>
 
 ### Frontend Scripts
 
-```bash
+</code>bash
 npm run dev     # Start development server
 npm run build   # Build for production
 npm run preview # Preview production build
 npm run lint    # Run ESLint
-```
+</code>
 
 ## Development
 
@@ -182,7 +182,7 @@ The application uses SQLite with the following main tables:
 
 Run the test suite:
 
-```bash
+</code>bash
 # Backend tests
 cd backend
 npm test
@@ -190,7 +190,7 @@ npm test
 # Frontend tests (if available)
 cd frontend
 npm test
-```
+</code>
 
 ## Contributing
 

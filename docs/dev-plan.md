@@ -50,7 +50,7 @@ it will be locally hosted for now, but you can use: Vercel, Railway, or Render f
 
 ## ⚙️ System Architecture Overview
 
-```text
+</code>text
 
 [ React Frontend ]
    |
@@ -72,7 +72,7 @@ it will be locally hosted for now, but you can use: Vercel, Railway, or Render f
    |-- user_attempts (user_id, question_id, result, timestamp)
    |-- test_sessions (id, user_id, question_ids[], time_taken, score)
    |-- question_stats (question_id, wrong_count, correct_count)
-```
+</code>
 
 ---
 
@@ -80,7 +80,7 @@ it will be locally hosted for now, but you can use: Vercel, Railway, or Render f
 
 ### Random 25 Question Selection Logic
 
-```sql
+</code>sql
 SELECT * FROM questions 
 WHERE id NOT IN (
   SELECT question_id 
@@ -89,7 +89,7 @@ WHERE id NOT IN (
 ) 
 ORDER BY RANDOM() 
 LIMIT 25;
-```
+</code>
 
 If question pool is exhausted, reset.
 
