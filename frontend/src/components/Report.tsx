@@ -21,6 +21,19 @@ export default function Report() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'overview' | 'performance' | 'topics'>('overview');
   const [expandedQuestions, setExpandedQuestions] = useState<Set<number>>(new Set());
+  const [expandedRecommendations, setExpandedRecommendations] = useState<Set<string>>(new Set());
+
+  const toggleRecommendationExpand = (topic: string) => {
+    setExpandedRecommendations(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(topic)) {
+        newSet.delete(topic);
+      } else {
+        newSet.add(topic);
+      }
+      return newSet;
+    });
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -110,25 +123,6 @@ export default function Report() {
 
       {activeTab === 'overview' && (
         <div className="overview-tab">
-          <div className="recommendations">
-            <h3>Study Recommendations</h3>
-            <div className="recommendations-list">
-              {userHistory.topicStats
-                .filter(topic => topic.success_rate < 70)
-                .sort((a, b) => a.success_rate - b.success_rate)
-                .map((topic) => (
-                  <div key={topic.topic} className="recommendation-item">
-                    <span className="priority">🎯</span>
-                    <div className="recommendation-content">
-                      <strong>Focus on: {topic.topic}</strong>
-                      <p>Current success rate: {topic.success_rate}%. Consider reviewing this topic.</p>
-                    </div>
-                  </div>
-                ))
-              }
-            </div>
-          </div>
-
           <div className="stats-grid">
             <div className="stat-card">
               <h3>Total Attempts</h3>
@@ -328,6 +322,43 @@ export default function Report() {
                 </div>
               </div>
             ))}
+          </div>
+
+          <div className="recommendations">
+            <h3>Study Recommendations</h3>
+            <div className="recommendations-list">
+              {userHistory.topicStats
+                .filter(topic => topic.success_rate < 70)
+                .sort((a, b) => a.success_rate - b.success_rate)
+                .map((topic) => {
+                  const isExpanded = expandedRecommendations.has(topic.topic);
+                  return (
+                    <div key={topic.topic} className={`recommendation-item ${isExpanded ? 'expanded' : 'collapsed'}`}>
+                      <div 
+                        className="recommendation-header"
+                        onClick={() => toggleRecommendationExpand(topic.topic)}
+                      >
+                        <span className="priority">🎯</span>
+                        <span className="recommendation-title">Focus on: {topic.topic}</span>
+                        <span className={`expand-icon ${isExpanded ? 'expanded' : ''}`}>
+                          {isExpanded ? '▼' : '▶'}
+                        </span>
+                      </div>
+                      {isExpanded && (
+                        <div className="recommendation-content">
+                          <p>Current success rate: {topic.success_rate}%. Consider reviewing this topic.</p>
+                          <div className="recommendation-details">
+                            <span>Attempts: {topic.total_attempts}</span>
+                            <span>Correct: {topic.correct_answers}</span>
+                            <span>Needs improvement</span>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })
+              }
+            </div>
           </div>
         </div>
       )}
