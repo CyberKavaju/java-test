@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { apiService } from '../services/api';
+import ImprovementGraph from './ImprovementGraph';
 import type { QuestionPerformance, PerformanceTrend, UserStats, TestSession, TopicStats, DetailedQuestionPerformance } from '../types';
 
 export default function Report() {
@@ -22,6 +23,7 @@ export default function Report() {
   const [activeTab, setActiveTab] = useState<'overview' | 'performance' | 'topics'>('overview');
   const [expandedQuestions, setExpandedQuestions] = useState<Set<number>>(new Set());
   const [expandedRecommendations, setExpandedRecommendations] = useState<Set<string>>(new Set());
+  const [performanceFilter, setPerformanceFilter] = useState<'all' | 'green' | 'yellow' | 'red'>('all');
 
   const toggleRecommendationExpand = (topic: string) => {
     setExpandedRecommendations(prev => {
@@ -33,6 +35,63 @@ export default function Report() {
       }
       return newSet;
     });
+  };
+
+  const getJavaDocumentationLink = (topic: string) => {
+    // Map topics to specific Java documentation URLs
+    const topicMappings: { [key: string]: string } = {
+      'Arrays': 'https://docs.oracle.com/javase/tutorial/java/nutsandbolts/arrays.html',
+      'Loops': 'https://docs.oracle.com/javase/tutorial/java/nutsandbolts/for.html',
+      'Conditionals': 'https://docs.oracle.com/javase/tutorial/java/nutsandbolts/if.html',
+      'Methods': 'https://docs.oracle.com/javase/tutorial/java/javaOO/methods.html',
+      'Classes': 'https://docs.oracle.com/javase/tutorial/java/javaOO/classes.html',
+      'Objects': 'https://docs.oracle.com/javase/tutorial/java/javaOO/objects.html',
+      'Inheritance': 'https://docs.oracle.com/javase/tutorial/java/IandI/subclasses.html',
+      'Polymorphism': 'https://docs.oracle.com/javase/tutorial/java/IandI/polymorphism.html',
+      'Encapsulation': 'https://docs.oracle.com/javase/tutorial/java/javaOO/accesscontrol.html',
+      'Abstraction': 'https://docs.oracle.com/javase/tutorial/java/IandI/abstract.html',
+      'Interfaces': 'https://docs.oracle.com/javase/tutorial/java/IandI/createinterface.html',
+      'Exception Handling': 'https://docs.oracle.com/javase/tutorial/essential/exceptions/',
+      'Collections': 'https://docs.oracle.com/javase/tutorial/collections/',
+      'Generics': 'https://docs.oracle.com/javase/tutorial/java/generics/',
+      'Streams': 'https://docs.oracle.com/javase/8/docs/api/java/util/stream/package-summary.html',
+      'Lambda Expressions': 'https://docs.oracle.com/javase/tutorial/java/javaOO/lambdaexpressions.html',
+      'Threads': 'https://docs.oracle.com/javase/tutorial/essential/concurrency/',
+      'File I/O': 'https://docs.oracle.com/javase/tutorial/essential/io/',
+      'String Manipulation': 'https://docs.oracle.com/javase/tutorial/java/data/strings.html',
+      'Data Types': 'https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html',
+      'Variables': 'https://docs.oracle.com/javase/tutorial/java/nutsandbolts/variables.html',
+      'Operators': 'https://docs.oracle.com/javase/tutorial/java/nutsandbolts/operators.html',
+      'Booleans': 'https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html',
+      'Static': 'https://docs.oracle.com/javase/tutorial/java/javaOO/classvars.html',
+      'Final': 'https://docs.oracle.com/javase/tutorial/java/IandI/final.html',
+      'Packages': 'https://docs.oracle.com/javase/tutorial/java/package/',
+      'Access Modifiers': 'https://docs.oracle.com/javase/tutorial/java/javaOO/accesscontrol.html'
+    };
+
+    // Try exact match first
+    if (topicMappings[topic]) {
+      return topicMappings[topic];
+    }
+
+    // Try partial matches for common patterns
+    const lowerTopic = topic.toLowerCase();
+    if (lowerTopic.includes('array')) return topicMappings['Arrays'];
+    if (lowerTopic.includes('loop') || lowerTopic.includes('for') || lowerTopic.includes('while')) return topicMappings['Loops'];
+    if (lowerTopic.includes('if') || lowerTopic.includes('condition')) return topicMappings['Conditionals'];
+    if (lowerTopic.includes('method') || lowerTopic.includes('function')) return topicMappings['Methods'];
+    if (lowerTopic.includes('class')) return topicMappings['Classes'];
+    if (lowerTopic.includes('object')) return topicMappings['Objects'];
+    if (lowerTopic.includes('inherit')) return topicMappings['Inheritance'];
+    if (lowerTopic.includes('exception') || lowerTopic.includes('error')) return topicMappings['Exception Handling'];
+    if (lowerTopic.includes('collection') || lowerTopic.includes('list') || lowerTopic.includes('set') || lowerTopic.includes('map')) return topicMappings['Collections'];
+    if (lowerTopic.includes('string')) return topicMappings['String Manipulation'];
+    if (lowerTopic.includes('thread') || lowerTopic.includes('concurrency')) return topicMappings['Threads'];
+    if (lowerTopic.includes('file') || lowerTopic.includes('io')) return topicMappings['File I/O'];
+    if (lowerTopic.includes('boolean')) return topicMappings['Booleans'];
+
+    // Default to Java tutorial main page
+    return 'https://docs.oracle.com/javase/tutorial/';
   };
 
   useEffect(() => {
@@ -86,6 +145,20 @@ export default function Report() {
       return newSet;
     });
   };
+
+  const getFilteredQuestions = () => {
+    if (!detailedQuestions?.questionDetails) return [];
+    
+    if (performanceFilter === 'all') {
+      return detailedQuestions.questionDetails;
+    }
+    
+    return detailedQuestions.questionDetails.filter(question => 
+      question.performance_color === performanceFilter
+    );
+  };
+
+  const filteredQuestions = getFilteredQuestions();
 
   if (loading) {
     return <div className="loading">Loading report...</div>;
@@ -146,6 +219,8 @@ export default function Report() {
             </div>
           </div>
 
+          <ImprovementGraph testSessions={userHistory.testSessions} />
+
           <div className="recent-tests">
             <h3>Recent Test Sessions</h3>
             <div className="test-sessions">
@@ -175,15 +250,44 @@ export default function Report() {
           <h3>Detailed Question Review</h3>
           <div className="performance-summary">
             <div className="performance-legend">
-              <span><span style={{ color: getPerformanceColor('green') }}>🟢 Green:</span> 80%+ success rate</span>
-              <span><span style={{ color: getPerformanceColor('yellow') }}>🟡 Yellow:</span> 50-79% success rate</span>
-              <span><span style={{ color: getPerformanceColor('red') }}>🔴 Red:</span> &lt;50% success rate</span>
+              <button 
+                className={`performance-filter-btn ${performanceFilter === 'all' ? 'active' : ''}`}
+                onClick={() => setPerformanceFilter('all')}
+              >
+                📋 All ({detailedQuestions.questionDetails.length})
+              </button>
+              <button 
+                className={`performance-filter-btn green ${performanceFilter === 'green' ? 'active' : ''}`}
+                onClick={() => setPerformanceFilter('green')}
+                style={{ color: getPerformanceColor('green') }}
+              >
+                🟢 Green ({detailedQuestions.questionDetails.filter(q => q.performance_color === 'green').length})
+              </button>
+              <button 
+                className={`performance-filter-btn yellow ${performanceFilter === 'yellow' ? 'active' : ''}`}
+                onClick={() => setPerformanceFilter('yellow')}
+                style={{ color: getPerformanceColor('yellow') }}
+              >
+                🟡 Yellow ({detailedQuestions.questionDetails.filter(q => q.performance_color === 'yellow').length})
+              </button>
+              <button 
+                className={`performance-filter-btn red ${performanceFilter === 'red' ? 'active' : ''}`}
+                onClick={() => setPerformanceFilter('red')}
+                style={{ color: getPerformanceColor('red') }}
+              >
+                🔴 Red ({detailedQuestions.questionDetails.filter(q => q.performance_color === 'red').length})
+              </button>
             </div>
           </div>
           <div className="detailed-questions-list">
-            {detailedQuestions.questionDetails.map((question) => {
-              const isExpanded = expandedQuestions.has(question.id);
-              return (
+            {filteredQuestions.length === 0 ? (
+              <div className="no-questions-found">
+                <p>No questions found for the selected filter.</p>
+              </div>
+            ) : (
+              filteredQuestions.map((question) => {
+                const isExpanded = expandedQuestions.has(question.id);
+                return (
                 <div key={question.id} className="detailed-question-card">
                   <div 
                     className="question-header clickable" 
@@ -283,7 +387,8 @@ export default function Report() {
                   )}
                 </div>
               );
-            })}
+            })
+            )}
           </div>
         </div>
       )}
@@ -351,6 +456,16 @@ export default function Report() {
                             <span>Attempts: {topic.total_attempts}</span>
                             <span>Correct: {topic.correct_answers}</span>
                             <span>Needs improvement</span>
+                          </div>
+                          <div className="recommendation-link">
+                            <a 
+                              href={getJavaDocumentationLink(topic.topic)} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="java-doc-link"
+                            >
+                              📚 Study {topic.topic} in Java Documentation
+                            </a>
                           </div>
                         </div>
                       )}
