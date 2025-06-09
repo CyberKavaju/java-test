@@ -1,0 +1,12 @@
+{
+  "testEnvironment": "node",
+  "testTimeout": 30000,
+  "collectCoverageFrom": [
+    "src/**/*.js",
+    "!src/data/**",
+    "!**/node_modules/**"
+  ],
+  "coverageReporters": ["text", "lcov", "html"],
+  "testPathIgnorePatterns": ["/node_modules/"],
+  "verbose": true
+}

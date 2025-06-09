@@ -210,7 +210,113 @@ class Database {
         });
     }
 
-    // Import questions with duplicate checking
+    // Create a new question
+    async createQuestion(question) {
+        const query = `
+            INSERT INTO questions (domain, topic, question_text, option_a, option_b, option_c, option_d, option_e, correct_answer, explanation)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `;
+
+        return new Promise((resolve, reject) => {
+            this.db.run(query, [
+                question.domain,
+                question.topic,
+                question.question_text,
+                question.option_a,
+                question.option_b,
+                question.option_c,
+                question.option_d || null,
+                question.option_e || null,
+                question.correct_answer,
+                question.explanation || null
+            ], function(err) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(this.lastID);
+                }
+            });
+        });
+    }
+
+    // Get a question by ID
+    async getQuestionById(questionId) {
+        const query = `SELECT * FROM questions WHERE id = ?`;
+        
+        return new Promise((resolve, reject) => {
+            this.db.get(query, [questionId], (err, row) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(row);
+                }
+            });
+        });
+    }
+
+    // Update an existing question
+    async updateQuestion(questionId, question) {
+        const query = `
+            UPDATE questions SET 
+                domain = ?, topic = ?, question_text = ?, option_a = ?, option_b = ?, option_c = ?, 
+                option_d = ?, option_e = ?, correct_answer = ?, explanation = ?
+            WHERE id = ?
+        `;
+
+        return new Promise((resolve, reject) => {
+            this.db.run(query, [
+                question.domain,
+                question.topic,
+                question.question_text,
+                question.option_a,
+                question.option_b,
+                question.option_c,
+                question.option_d || null,
+                question.option_e || null,
+                question.correct_answer,
+                question.explanation || null,
+                questionId
+            ], function(err) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(this.changes > 0);
+                }
+            });
+        });
+    }
+
+    // Delete a question
+    async deleteQuestion(questionId) {
+        const query = `DELETE FROM questions WHERE id = ?`;
+        
+        return new Promise((resolve, reject) => {
+            this.db.run(query, [questionId], function(err) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(this.changes > 0);
+                }
+            });
+        });
+    }
+
+    // Get total question count
+    async getQuestionCount() {
+        const query = `SELECT COUNT(*) as count FROM questions`;
+        
+        return new Promise((resolve, reject) => {
+            this.db.get(query, [], (err, row) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(row.count);
+                }
+            });
+        });
+    }
+
+    // Import questions from CSV with duplicate checking
     async importQuestions(questions) {
         const results = {
             imported: 0,
@@ -219,71 +325,77 @@ class Database {
             errorRows: []
         };
 
-        const stmt = this.db.prepare(`
-            INSERT INTO questions (domain, topic, question_text, option_a, option_b, option_c, option_d, option_e, correct_answer, explanation)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        `);
-
         return new Promise((resolve, reject) => {
-            this.db.serialize(async () => {
+            this.db.serialize(() => {
                 this.db.run("BEGIN TRANSACTION");
                 
-                try {
-                    for (let i = 0; i < questions.length; i++) {
-                        const question = questions[i];
-                        
-                        // Check for duplicates
-                        const exists = await this.questionExists(question.question_text);
-                        if (exists) {
-                            results.skipped++;
-                            continue;
-                        }
-
-                        try {
-                            await new Promise((resolveStmt, rejectStmt) => {
-                                stmt.run([
-                                    question.domain,
-                                    question.topic,
-                                    question.question_text,
-                                    question.option_a,
-                                    question.option_b,
-                                    question.option_c,
-                                    question.option_d || null,
-                                    question.option_e || null,
-                                    question.correct_answer,
-                                    question.explanation
-                                ], function(err) {
-                                    if (err) {
-                                        rejectStmt(err);
+                let completed = 0;
+                const total = questions.length;
+                
+                if (total === 0) {
+                    this.db.run("COMMIT");
+                    return resolve(results);
+                }
+                
+                questions.forEach((question, index) => {
+                    // Check for duplicate question
+                    this.db.get(
+                        'SELECT id FROM questions WHERE question_text = ?',
+                        [question.question_text],
+                        (err, row) => {
+                            if (err) {
+                                results.errors++;
+                                results.errorRows.push({
+                                    rowIndex: index,
+                                    errors: [`Database error: ${err.message}`]
+                                });
+                            } else if (row) {
+                                // Question already exists, skip it
+                                results.skipped++;
+                            } else {
+                                // Insert new question
+                                this.db.run(
+                                    `INSERT INTO questions (domain, topic, question_text, option_a, option_b, option_c, option_d, option_e, correct_answer, explanation)
+                                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                                    [
+                                        question.domain,
+                                        question.topic,
+                                        question.question_text,
+                                        question.option_a,
+                                        question.option_b,
+                                        question.option_c,
+                                        question.option_d || null,
+                                        question.option_e || null,
+                                        question.correct_answer,
+                                        question.explanation || null
+                                    ],
+                                    function(insertErr) {
+                                        if (insertErr) {
+                                            results.errors++;
+                                            results.errorRows.push({
+                                                rowIndex: index,
+                                                errors: [`Insert error: ${insertErr.message}`]
+                                            });
+                                        } else {
+                                            results.imported++;
+                                        }
+                                    }
+                                );
+                            }
+                            
+                            completed++;
+                            if (completed === total) {
+                                this.db.run("COMMIT", (commitErr) => {
+                                    if (commitErr) {
+                                        reject(commitErr);
                                     } else {
-                                        resolveStmt();
+                                        resolve(results);
                                     }
                                 });
-                            });
-                            results.imported++;
-                        } catch (error) {
-                            results.errors++;
-                            results.errorRows.push({
-                                rowIndex: i,
-                                errors: [error.message]
-                            });
+                            }
                         }
-                    }
-                    
-                    this.db.run("COMMIT", (err) => {
-                        stmt.finalize();
-                        if (err) {
-                            reject(err);
-                        } else {
-                            resolve(results);
-                        }
-                    });
-                } catch (error) {
-                    this.db.run("ROLLBACK", () => {
-                        stmt.finalize();
-                        reject(error);
-                    });
-                }
+                    );
+                });
             });
         });
     }
