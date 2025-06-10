@@ -411,7 +411,7 @@ body {
 }
 
 .question-header {
-  margin-bottom: 1.5rem;
+  /*margin-bottom: 1.5rem;*/
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -1231,7 +1231,7 @@ body {
 
 .detailed-question-card .question-header {
   background: #111827;
-  padding: 0.5em 0;
+  padding: 0.5em 0.5em;
   border-bottom: 1px solid #374151;
   transition: background-color 0.2s ease;
 }
@@ -1245,7 +1245,7 @@ body {
   gap: 0.5rem;
   flex-wrap: wrap;
   align-items: center;
-  margin-bottom: 0.5rem;
+  /*margin-bottom: 0.5rem;*/
 }
 
 .detailed-question-card .attempts-summary {
