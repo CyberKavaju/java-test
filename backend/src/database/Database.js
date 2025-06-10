@@ -400,6 +400,24 @@ class Database {
         });
     }
 
+    async getRecommendations() {
+        return new Promise((resolve, reject) => {
+            this.db.all(`SELECT topic, documentation_url FROM recommendations ORDER BY topic`, (err, rows) => {
+                if (err) {
+                    console.error('Error retrieving recommendations:', err);
+                    reject(err);
+                } else {
+                    // Convert rows to a mapping object
+                    const recommendationsMap = {};
+                    rows.forEach(row => {
+                        recommendationsMap[row.topic] = row.documentation_url;
+                    });
+                    resolve(recommendationsMap);
+                }
+            });
+        });
+    }
+
     close() {
         if (this.db) {
             this.db.close();

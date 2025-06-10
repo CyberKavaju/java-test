@@ -78,6 +78,17 @@ export const apiService = {
       return 0;
     }
   },
+  
+  // Get Java documentation recommendations
+  async getRecommendations(): Promise<{ [key: string]: string }> {
+    try {
+      const response = await api.get('/recommendations');
+      return response.data.recommendations;
+    } catch (error) {
+      console.error('Error fetching recommendations:', error);
+      return {};
+    }
+  },
 
   // Preview CSV import
   async previewImport(formData: FormData): Promise<{
