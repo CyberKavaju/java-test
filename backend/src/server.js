@@ -451,6 +451,75 @@ const validateQuestion = (question, rowIndex) => {
     return errors;
 };
 
+// Question formatting functions
+const formatQuestionText = (questionText) => {
+    if (!questionText) return questionText;
+    
+    let formatted = questionText;
+    
+    // Ensure proper code block formatting
+    formatted = formatted.replace(/```java\s*/g, '\n```java\n');
+    formatted = formatted.replace(/```\s*(?!\w)/g, '\n```\n');
+    
+    // Format numbered lines in code examples with proper indentation
+    formatted = formatted.replace(/^(\d+\.\s)/gm, '$1');
+    
+    // Add line breaks after question marks followed by capital letters (new questions/parts)
+    formatted = formatted.replace(/\?\s*(?=[A-Z][a-z])/g, '?\n\n');
+    
+    // Add line breaks before parenthetical instructions
+    formatted = formatted.replace(/\.\s*(\([^)]+\))/g, '.\n$1');
+    
+    // Format "Select X options" instructions
+    formatted = formatted.replace(/(\(Select \d+ options?\.\))/g, '\n$1');
+    
+    // Clean up multiple newlines but preserve intentional spacing
+    formatted = formatted.replace(/\n{3,}/g, '\n\n');
+    formatted = formatted.trim();
+    
+    return formatted;
+};
+
+const formatOptions = (option) => {
+    if (!option) return option;
+    
+    // If option contains code, format it
+    let formatted = option;
+    
+    // Format any inline code
+    formatted = formatted.replace(/```java\s*/g, '\n```java\n');
+    formatted = formatted.replace(/```\s*/g, '\n```\n');
+    
+    // Clean up whitespace
+    formatted = formatted.trim();
+    
+    return formatted;
+};
+
+const formatExplanation = (explanation) => {
+    if (!explanation) return explanation;
+    
+    let formatted = explanation;
+    
+    // Add line breaks after sentences for better readability
+    formatted = formatted.replace(/\.\s+(?=[A-Z])/g, '.\n\n');
+    
+    // Format code references and exceptions
+    formatted = formatted.replace(/(java\.lang\.\w+)/g, '`$1`');
+    formatted = formatted.replace(/(\w+Exception)/g, '`$1`');
+    
+    // Fix double backticks and malformed code formatting
+    formatted = formatted.replace(/`{2,}/g, '`');
+    formatted = formatted.replace(/`java\.lang\.`(\w+)`/g, '`java.lang.$1`');
+    formatted = formatted.replace(/(\w+)Exception`{2,}/g, '$1Exception`');
+    
+    // Clean up extra whitespace
+    formatted = formatted.replace(/\n{3,}/g, '\n\n');
+    formatted = formatted.trim();
+    
+    return formatted;
+};
+
 // Preview CSV import endpoint
 app.post('/api/import/preview', upload.single('file'), async (req, res) => {
     if (!req.file) {
@@ -497,36 +566,37 @@ app.post('/api/import/preview', upload.single('file'), async (req, res) => {
                     errors: questionErrors
                 });
             } else {
-                // Check for duplicates in database
-                try {
-                    const exists = await db.questionExists(data.question_text);
-                    if (exists) {
-                        duplicates.push({
+                    // Check for duplicates in database
+                    try {
+                        const exists = await db.questionExists(data.question_text);
+                        if (exists) {
+                            duplicates.push({
+                                rowIndex,
+                                question_text: data.question_text,
+                                reason: 'Question already exists in database'
+                            });
+                        } else {
+                            // Apply formatting during import processing
+                            questions.push({
+                                domain: data.domain.trim(),
+                                topic: data.topic.trim(),
+                                question_text: formatQuestionText(data.question_text.trim()),
+                                option_a: formatOptions(data.option_a.trim()),
+                                option_b: formatOptions(data.option_b.trim()),
+                                option_c: formatOptions(data.option_c.trim()),
+                                option_d: data.option_d ? formatOptions(data.option_d.trim()) : null,
+                                option_e: data.option_e ? formatOptions(data.option_e.trim()) : null,
+                                correct_answer: data.correct_answer.toUpperCase().trim(),
+                                explanation: formatExplanation(data.explanation ? data.explanation.trim() : '')
+                            });
+                        }
+                    } catch (dbError) {
+                        errors.push({
                             rowIndex,
-                            question_text: data.question_text,
-                            reason: 'Question already exists in database'
-                        });
-                    } else {
-                        questions.push({
-                            domain: data.domain.trim(),
-                            topic: data.topic.trim(),
-                            question_text: data.question_text.trim(),
-                            option_a: data.option_a.trim(),
-                            option_b: data.option_b.trim(),
-                            option_c: data.option_c.trim(),
-                            option_d: data.option_d ? data.option_d.trim() : null,
-                            option_e: data.option_e ? data.option_e.trim() : null,
-                            correct_answer: data.correct_answer.toUpperCase().trim(),
-                            explanation: data.explanation ? data.explanation.trim() : ''
+                            errors: [`Database error: ${dbError.message}`]
                         });
                     }
-                } catch (dbError) {
-                    errors.push({
-                        rowIndex,
-                        errors: [`Database error: ${dbError.message}`]
-                    });
                 }
-            }
         }
 
         // Clean up uploaded file
@@ -581,17 +651,18 @@ app.post('/api/import/questions', upload.single('file'), async (req, res) => {
                             errors: questionErrors
                         });
                     } else {
+                        // Apply formatting during import
                         questions.push({
                             domain: data.domain.trim(),
                             topic: data.topic.trim(),
-                            question_text: data.question_text.trim(),
-                            option_a: data.option_a.trim(),
-                            option_b: data.option_b.trim(),
-                            option_c: data.option_c.trim(),
-                            option_d: data.option_d ? data.option_d.trim() : null,
-                            option_e: data.option_e ? data.option_e.trim() : null,
+                            question_text: formatQuestionText(data.question_text.trim()),
+                            option_a: formatOptions(data.option_a.trim()),
+                            option_b: formatOptions(data.option_b.trim()),
+                            option_c: formatOptions(data.option_c.trim()),
+                            option_d: data.option_d ? formatOptions(data.option_d.trim()) : null,
+                            option_e: data.option_e ? formatOptions(data.option_e.trim()) : null,
                             correct_answer: data.correct_answer.toUpperCase().trim(),
-                            explanation: data.explanation ? data.explanation.trim() : ''
+                            explanation: formatExplanation(data.explanation ? data.explanation.trim() : '')
                         });
                     }
                     rowIndex++;
@@ -808,7 +879,7 @@ app.post('/api/questions', async (req, res) => {
             });
         }
 
-        // Insert new question
+        // Insert new question with formatting applied
         const questionId = await new Promise((resolve, reject) => {
             db.db.run(
                 `INSERT INTO questions (domain, topic, question_text, option_a, option_b, option_c, option_d, option_e, correct_answer, explanation)
@@ -816,14 +887,14 @@ app.post('/api/questions', async (req, res) => {
                 [
                     domain.trim(),
                     topic.trim(),
-                    question_text.trim(),
-                    option_a.trim(),
-                    option_b.trim(),
-                    option_c.trim(),
-                    option_d ? option_d.trim() : null,
-                    option_e ? option_e.trim() : null,
+                    formatQuestionText(question_text.trim()),
+                    formatOptions(option_a.trim()),
+                    formatOptions(option_b.trim()),
+                    formatOptions(option_c.trim()),
+                    option_d ? formatOptions(option_d.trim()) : null,
+                    option_e ? formatOptions(option_e.trim()) : null,
                     correct_answer.toUpperCase().trim(),
-                    explanation ? explanation.trim() : null
+                    formatExplanation(explanation ? explanation.trim() : null)
                 ],
                 function(err) {
                     if (err) reject(err);
@@ -913,7 +984,7 @@ app.put('/api/questions/:id', async (req, res) => {
             });
         }
 
-        // Update question
+        // Update question with formatting applied
         await new Promise((resolve, reject) => {
             db.db.run(
                 `UPDATE questions SET 
@@ -923,14 +994,14 @@ app.put('/api/questions/:id', async (req, res) => {
                 [
                     domain.trim(),
                     topic.trim(),
-                    question_text.trim(),
-                    option_a.trim(),
-                    option_b.trim(),
-                    option_c.trim(),
-                    option_d ? option_d.trim() : null,
-                    option_e ? option_e.trim() : null,
+                    formatQuestionText(question_text.trim()),
+                    formatOptions(option_a.trim()),
+                    formatOptions(option_b.trim()),
+                    formatOptions(option_c.trim()),
+                    option_d ? formatOptions(option_d.trim()) : null,
+                    option_e ? formatOptions(option_e.trim()) : null,
                     correct_answer.toUpperCase().trim(),
-                    explanation ? explanation.trim() : null,
+                    formatExplanation(explanation ? explanation.trim() : null),
                     questionId
                 ],
                 function(err) {

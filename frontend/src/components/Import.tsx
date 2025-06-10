@@ -165,6 +165,20 @@ const Import: React.FC = () => {
           domain,topic,question_text,option_a,option_b,option_c,option_d,option_e,correct_answer,explanation
         </code>
         <p><small>Note: option_d and option_e are optional</small></p>
+        
+        <div className="format-features">
+          <h4>✨ Auto-Formatting Features</h4>
+          <ul>
+            <li>📝 <strong>Question Text:</strong> Proper code block formatting with ```java``` syntax</li>
+            <li>🔢 <strong>Multi-part Questions:</strong> Line breaks after question marks</li>
+            <li>📋 <strong>Instructions:</strong> Clear formatting for "(Select X options)" text</li>
+            <li>💡 <strong>Explanations:</strong> Sentence breaks and code reference formatting</li>
+            <li>🎯 <strong>Java Exceptions:</strong> Automatic backtick formatting for exception names</li>
+          </ul>
+          <p className="format-note">
+            <em>All questions are automatically formatted for better readability during import!</em>
+          </p>
+        </div>
       </div>
 
       {file && !preview && !result && (
