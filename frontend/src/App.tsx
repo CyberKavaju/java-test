@@ -165,6 +165,7 @@ function Home() {
 
 function TestPage() {
   const { state, dispatch } = useApp();
+  const navigate = useNavigate();
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
@@ -186,6 +187,9 @@ function TestPage() {
           );
           
           dispatch({ type: 'SET_TEST_RESULTS', payload: { results: result.results } });
+          
+          // Redirect to report page after successful submission
+          navigate('/report');
         } catch (error) {
           console.error('Failed to submit test:', error);
           alert('Failed to submit test. Please try again.');
@@ -196,7 +200,7 @@ function TestPage() {
     };
 
     handleSubmit();
-  }, [state.currentTest.isActive, state.currentTest.answers, state.currentTest.startTime, state.lastTestResults, state.userId, dispatch]);
+  }, [state.currentTest.isActive, state.currentTest.answers, state.currentTest.startTime, state.lastTestResults, state.userId, dispatch, navigate]);
 
   const handleRetakeTest = () => {
     dispatch({ type: 'RESET_TEST' });
