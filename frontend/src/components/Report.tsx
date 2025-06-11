@@ -542,40 +542,6 @@ export default function Report() {
 
       {activeTab === 'topics' && (
         <div className="topics-tab">
-          <h3>Performance by Topic</h3>
-          <div className="topics-analysis">
-            {userHistory.topicStats.map((topic) => (
-              <div key={topic.topic} className="topic-item">
-                <div className="topic-header">
-                  <h4>{topic.topic}</h4>
-                  <div className={`topic-rate ${topic.success_rate >= 80 ? 'green' : topic.success_rate >= 50 ? 'yellow' : 'red'}`}>
-                    {topic.success_rate}%
-                  </div>
-                </div>
-                <div className="topic-stats">
-                  <div className="topic-stat">
-                    <span>Attempts: {topic.total_attempts}</span>
-                  </div>
-                  <div className="topic-stat">
-                    <span>Correct: {topic.correct_answers}</span>
-                  </div>
-                </div>
-                <div className="progress-bar">
-                  <div 
-                    className="progress-fill"
-                    style={{ 
-                      width: `${topic.success_rate}%`,
-                      backgroundColor: getPerformanceColor(
-                        topic.success_rate >= 80 ? 'green' : 
-                        topic.success_rate >= 50 ? 'yellow' : 'red'
-                      )
-                    }}
-                  ></div>
-                </div>
-              </div>
-            ))}
-          </div>
-
           <div className="recommendations">
             <h3>Study Recommendations</h3>
             <div className="recommendations-list">
@@ -621,6 +587,40 @@ export default function Report() {
                 })
               }
             </div>
+          </div>
+          
+          <h3>Performance by Topic</h3>
+          <div className="topics-analysis">
+            {userHistory.topicStats.map((topic) => (
+              <div key={topic.topic} className="topic-item">
+                <div className="topic-header">
+                  <h4>{topic.topic}</h4>
+                  <div className={`topic-rate ${topic.success_rate >= 80 ? 'green' : topic.success_rate >= 50 ? 'yellow' : 'red'}`}>
+                    {topic.success_rate}%
+                  </div>
+                </div>
+                <div className="topic-stats">
+                  <div className="topic-stat">
+                    <span>Attempts: {topic.total_attempts}</span>
+                  </div>
+                  <div className="topic-stat">
+                    <span>Correct: {topic.correct_answers}</span>
+                  </div>
+                </div>
+                <div className="progress-bar">
+                  <div 
+                    className="progress-fill"
+                    style={{ 
+                      width: `${topic.success_rate}%`,
+                      backgroundColor: getPerformanceColor(
+                        topic.success_rate >= 80 ? 'green' : 
+                        topic.success_rate >= 50 ? 'yellow' : 'red'
+                      )
+                    }}
+                  ></div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       )}
