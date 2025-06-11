@@ -96,3 +96,16 @@ export interface DetailedQuestionPerformance {
   success_rate: number;
   user_attempts: UserAttempt[];
 }
+
+export interface Tutorial {
+  id: number;
+  filename: string;
+  title: string;
+  slug: string;
+}
+
+export interface TutorialContent {
+  slug: string;
+  title: string;
+  content: string;
+}

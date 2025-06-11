@@ -420,6 +420,87 @@ app.get('/api/health', (req, res) => {
     res.json({ success: true, message: 'Server is running' });
 });
 
+// Tutorial endpoints
+app.get('/api/tutorials', async (req, res) => {
+    try {
+        const tutorialDir = path.join(__dirname, '../../docs/tutorial');
+        const files = await fs.promises.readdir(tutorialDir);
+        
+        // Filter and sort markdown files
+        const tutorialFiles = files
+            .filter(file => file.endsWith('.md') && file !== 'README.md')
+            .sort((a, b) => {
+                const numA = parseInt(a.split('-')[0]);
+                const numB = parseInt(b.split('-')[0]);
+                return numA - numB;
+            });
+        
+        const tutorials = tutorialFiles.map(file => {
+            const number = parseInt(file.split('-')[0]);
+            const title = file
+                .replace(/^\d+-/, '')
+                .replace(/\.md$/, '')
+                .replace(/-/g, ' ')
+                .replace(/\b\w/g, l => l.toUpperCase());
+            
+            return {
+                id: number,
+                filename: file,
+                title: title,
+                slug: file.replace(/\.md$/, '')
+            };
+        });
+        
+        res.json({
+            success: true,
+            tutorials: tutorials,
+            total: tutorials.length
+        });
+    } catch (error) {
+        console.error('Error fetching tutorials:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to fetch tutorials'
+        });
+    }
+});
+
+app.get('/api/tutorials/:slug', async (req, res) => {
+    try {
+        const { slug } = req.params;
+        const tutorialPath = path.join(__dirname, '../../docs/tutorial', `${slug}.md`);
+        
+        // Check if file exists
+        if (!fs.existsSync(tutorialPath)) {
+            return res.status(404).json({
+                success: false,
+                error: 'Tutorial not found'
+            });
+        }
+        
+        const content = await fs.promises.readFile(tutorialPath, 'utf8');
+        const title = slug
+            .replace(/^\d+-/, '')
+            .replace(/-/g, ' ')
+            .replace(/\b\w/g, l => l.toUpperCase());
+        
+        res.json({
+            success: true,
+            tutorial: {
+                slug: slug,
+                title: title,
+                content: content
+            }
+        });
+    } catch (error) {
+        console.error('Error fetching tutorial content:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to fetch tutorial content'
+        });
+    }
+});
+
 // Configure multer for file uploads
 const upload = multer({ 
     dest: 'uploads/',

@@ -6,6 +6,7 @@ import Quiz from './components/Quiz';
 import TestResults from './components/TestResults';
 import Report from './components/Report';
 import Import from './components/Import';
+import Tutorial from './components/Tutorial';
 import { QuestionManagement } from './components/QuestionManagement';
 import './App.css';
 
@@ -149,6 +150,10 @@ function Home() {
           {loading ? 'Loading Questions...' : 'Start New Test'}
         </button>
         
+        <a href="/tutorial" className="btn btn-secondary">
+          📚 Study Tutorial
+        </a>
+        
         <a href="/report" className="btn btn-secondary">
           View Performance Report
         </a>
@@ -261,6 +266,7 @@ function AppRoutes() {
           </button>
           <div className={`nav-links ${mobileMenuOpen ? 'mobile-open' : ''}`}>
             <a href="/" onClick={() => setMobileMenuOpen(false)}>Home</a>
+            <a href="/tutorial" onClick={() => setMobileMenuOpen(false)}>Tutorial</a>
             <a href="/report" onClick={() => setMobileMenuOpen(false)}>Report</a>
             <a href="/import" onClick={() => setMobileMenuOpen(false)}>Import</a>
             <a href="/questions" onClick={() => setMobileMenuOpen(false)}>Questions</a>
@@ -271,6 +277,7 @@ function AppRoutes() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/test" element={<TestPage />} />
+            <Route path="/tutorial" element={<Tutorial />} />
             <Route path="/report" element={<Report />} />
             <Route path="/import" element={<Import />} />
             <Route path="/questions" element={<QuestionManagement />} />

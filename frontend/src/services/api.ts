@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { Question, Answer, TestResult, UserStats, TestSession, TopicStats, QuestionPerformance, PerformanceTrend, DetailedQuestionPerformance } from '../types/index.js';
+import type { Question, Answer, TestResult, UserStats, TestSession, TopicStats, QuestionPerformance, PerformanceTrend, DetailedQuestionPerformance, Tutorial, TutorialContent } from '../types/index.js';
 
 const API_BASE_URL = 'http://localhost:3001/api';
 
@@ -220,6 +220,23 @@ export const apiService = {
     const response = await api.get(`/questions/export/csv?${queryParams.toString()}`, {
       responseType: 'blob'
     });
+    return response.data;
+  },
+
+  // Get all tutorials
+  async getTutorials(): Promise<{
+    tutorials: Tutorial[];
+    total: number;
+  }> {
+    const response = await api.get('/tutorials');
+    return response.data;
+  },
+
+  // Get specific tutorial content
+  async getTutorial(slug: string): Promise<{
+    tutorial: TutorialContent;
+  }> {
+    const response = await api.get(`/tutorials/${slug}`);
     return response.data;
   }
 };
