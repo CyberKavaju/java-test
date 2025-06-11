@@ -1,2 +1,0 @@
-domain,topic,question_text,option_a,option_b,option_c,option_d,option_e,correct_answer,explanation
-Test Formatting,Java Code,What will be the output? ```java public class Test { public static void main(String[] args) { System.out.println("Hello World"); } }```,Hello World,Compilation Error,Runtime Error,Nothing,,A,The program prints Hello World to the console. This is a basic Java program that demonstrates the standard output using System.out.println method.

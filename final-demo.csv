@@ -1,2 +1,0 @@
-domain,topic,question_text,option_a,option_b,option_c,option_d,option_e,correct_answer,explanation
-"Java Basics","Exception Handling","What will be the output? ```java public class Test { public static void main(String[] args) { System.out.println(\"Hello\"); } }```","Hello","Error","Nothing","Null",,"A","The program prints Hello to console. This demonstrates basic Java output using System.out.println method."
