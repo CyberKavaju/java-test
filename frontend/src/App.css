@@ -1187,6 +1187,9 @@ body {
   margin-top: 0.75rem;
   padding-top: 0.75rem;
   border-top: 1px solid rgba(245, 158, 11, 0.2);
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
 }
 
 .java-doc-link {
@@ -1209,6 +1212,28 @@ body {
   color: #f0f9ff;
   transform: translateY(-1px);
   box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+}
+
+.tutorial-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: #059669;
+  color: #d1fae5;
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border: 1px solid #10b981;
+}
+
+.tutorial-link:hover {
+  background: #047857;
+  color: #ecfdf5;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
 }
 
 /* Detailed Questions Tab Styles */
@@ -2038,6 +2063,21 @@ body {
   .java-doc-link {
     font-size: 0.75rem;
     padding: 0.4rem 0.6rem;
+  }
+  
+  .tutorial-link {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.6rem;
+  }
+  
+  .recommendation-link {
+    gap: 0.5rem;
+    flex-direction: column;
+  }
+  
+  .recommendation-link a {
+    width: 100%;
+    justify-content: center;
   }
   
   .detailed-question-card .question-header {

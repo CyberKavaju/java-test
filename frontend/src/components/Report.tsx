@@ -239,6 +239,123 @@ export default function Report() {
     return 'https://docs.oracle.com/javase/tutorial/';
   };
 
+  // Function to map study recommendation topics to tutorial slugs
+  const getTutorialSlug = (topic: string) => {
+    const topicToSlugMap: { [key: string]: string } = {
+      // Direct mappings
+      'Autoboxing': '57-autoboxing-unboxing',
+      'Autoboxing/Unboxing': '57-autoboxing-unboxing',
+      'Arrays': '21-arrays',
+      'Array of Objects': '21-arrays',
+      'Array of Primitives Default Values': '21-arrays',
+      'ArrayList': '22-list-object',
+      'ArrayList basic': '22-list-object',
+      'ArrayList Capacity': '22-list-object',
+      'ArrayList contains': '22-list-object',
+      'ArrayList remove': '22-list-object',
+      'Variables': '04-variable',
+      'Variable': '04-variable',
+      'Casting Primitives': '05-variable-casting-and-conversions',
+      'Operators': '07-operators',
+      'Comparison Operators': '08-comparison-operators',
+      'Logical Operators': '09-logical-operators',
+      'Bitwise Operators': '10-bitwise-operators',
+      'Bitwise vs Logical Operators': '10-bitwise-operators',
+      'If-Else': '12-if-else-statement',
+      'Switch': '13-switch-statement',
+      'Switch Statement': '13-switch-statement',
+      'When to use if-else or switch': '14-when-to-use-if-else-or-switch',
+      'Enum': '15-the-enum-field',
+      'String': '18-string-class',
+      'String Class': '18-string-class',
+      'String equals': '18-string-class',
+      'String immutability': '18-string-class',
+      'StringBuilder': '54-stringbuilder',
+      'StringBuilder append': '54-stringbuilder',
+      'StringBuilder Capacity': '54-stringbuilder',
+      'StringBuilder reverse': '54-stringbuilder',
+      'Loops': '20-looping-constructs',
+      'Loop Constructs': '20-looping-constructs',
+      'Loop Control': '20-looping-constructs',
+      'For Loop': '20-looping-constructs',
+      'While Loop': '20-looping-constructs',
+      'Break Statement': '20-looping-constructs',
+      'Infinite Loop': '20-looping-constructs',
+      'Exception Handling': '26-exception-handling',
+      'Exceptions': '26-exception-handling',
+      'Checked vs Unchecked': '26-exception-handling',
+      'Catch Order': '26-exception-handling',
+      'Catching Multiple Exceptions': '26-exception-handling',
+      'Catching RuntimeException': '26-exception-handling',
+      'Try-Catch': '26-exception-handling',
+      'Classes': '28-classes-and-objects',
+      'Objects': '28-classes-and-objects',
+      'Classes and Objects': '28-classes-and-objects',
+      'Class Components': '28-classes-and-objects',
+      'Constructors': '31-constructors',
+      'Constructor': '31-constructors',
+      'Private Constructor': '31-constructors',
+      'Methods': '32-methods',
+      'Method': '32-methods',
+      'Method Arguments': '32-methods',
+      'Method Overloading': '36-method-overloading',
+      'Method Overriding': '38-method-overriding',
+      'Static': '37-static-vs-instance-methods',
+      'Static Fields and Methods': '37-static-vs-instance-methods',
+      'Static Method Call': '37-static-vs-instance-methods',
+      'Inheritance': '45-inheritance',
+      'Abstract Classes': '41-abstract-classes',
+      'Abstract Class': '41-abstract-classes',
+      'Abstract Methods': '42-abstract-methods',
+      'Interfaces': '43-interfaces',
+      'Lambda': '44-lambda-expressions',
+      'Lambda Expressions': '44-lambda-expressions',
+      'Lambda Syntax': '44-lambda-expressions',
+      'Lambda Predicate': '44-lambda-expressions',
+      'Polymorphism': '46-polymorphism',
+      'Encapsulation': '48-encapsulation',
+      'Packages': '49-packages',
+      'Package Declaration': '49-packages',
+      'File I/O': '50-file-io',
+      'Generics': '51-generics',
+      'Threads': '52-threads',
+      'Streams': '53-streams-api',
+      'Varargs': '55-varargs',
+      'Final': '56-final-keyword',
+      'Final Class': '56-final-keyword',
+      'Access Modifiers': '58-access-modifiers',
+      'Access Control': '58-access-modifiers'
+    };
+
+    // Try exact match first
+    if (topicToSlugMap[topic]) {
+      return topicToSlugMap[topic];
+    }
+
+    // Try partial matches for common patterns
+    const lowerTopic = topic.toLowerCase();
+    if (lowerTopic.includes('array')) return '21-arrays';
+    if (lowerTopic.includes('loop') || lowerTopic.includes('for') || lowerTopic.includes('while')) return '20-looping-constructs';
+    if (lowerTopic.includes('if') || lowerTopic.includes('condition')) return '12-if-else-statement';
+    if (lowerTopic.includes('method') || lowerTopic.includes('function')) return '32-methods';
+    if (lowerTopic.includes('class')) return '28-classes-and-objects';
+    if (lowerTopic.includes('object')) return '28-classes-and-objects';
+    if (lowerTopic.includes('inherit')) return '45-inheritance';
+    if (lowerTopic.includes('exception') || lowerTopic.includes('error')) return '26-exception-handling';
+    if (lowerTopic.includes('string')) return '18-string-class';
+    if (lowerTopic.includes('variable')) return '04-variable';
+    if (lowerTopic.includes('operator')) return '07-operators';
+    if (lowerTopic.includes('constructor')) return '31-constructors';
+    if (lowerTopic.includes('static')) return '37-static-vs-instance-methods';
+    if (lowerTopic.includes('abstract')) return '41-abstract-classes';
+    if (lowerTopic.includes('interface')) return '43-interfaces';
+    if (lowerTopic.includes('lambda')) return '44-lambda-expressions';
+    if (lowerTopic.includes('autobox')) return '57-autoboxing-unboxing';
+
+    // Return null if no match found
+    return null;
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -579,6 +696,14 @@ export default function Report() {
                             >
                               📚 Study {topic.topic} in Java Documentation
                             </a>
+                            {getTutorialSlug(topic.topic) && (
+                              <a 
+                                href={`/tutorial?tutorial=${getTutorialSlug(topic.topic)}`}
+                                className="tutorial-link"
+                              >
+                                📖 Study {topic.topic} Tutorial
+                              </a>
+                            )}
                           </div>
                         </div>
                       )}
