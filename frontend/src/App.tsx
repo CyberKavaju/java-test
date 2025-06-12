@@ -268,7 +268,6 @@ function AppRoutes() {
             <a href="/" onClick={() => setMobileMenuOpen(false)}>Home</a>
             <a href="/tutorial" onClick={() => setMobileMenuOpen(false)}>Tutorial</a>
             <a href="/report" onClick={() => setMobileMenuOpen(false)}>Report</a>
-            <a href="/import" onClick={() => setMobileMenuOpen(false)}>Import</a>
             <a href="/questions" onClick={() => setMobileMenuOpen(false)}>Questions</a>
           </div>
         </nav>

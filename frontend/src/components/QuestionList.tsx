@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { apiService } from '../services/api';
 import './QuestionList.css';
 
@@ -24,6 +25,7 @@ interface QuestionListProps {
 }
 
 export const QuestionList: React.FC<QuestionListProps> = ({ onEditQuestion, onCreateNew }) => {
+  const navigate = useNavigate();
   const [questions, setQuestions] = useState<Question[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -128,6 +130,10 @@ export const QuestionList: React.FC<QuestionListProps> = ({ onEditQuestion, onCr
     }
   };
 
+  const handleImportCSV = () => {
+    navigate('/import');
+  };
+
   if (loading && questions.length === 0) {
     return <div className="loading">Loading questions...</div>;
   }
@@ -137,6 +143,9 @@ export const QuestionList: React.FC<QuestionListProps> = ({ onEditQuestion, onCr
       <div className="question-list-header">
         <h2>Question Management</h2>
         <div className="header-buttons">
+          <button onClick={handleImportCSV} className="btn btn-secondary">
+            Import CSV
+          </button>
           <button onClick={handleExportCSV} className="btn btn-secondary">
             Export CSV
           </button>
