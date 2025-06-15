@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { apiService } from '../services/api';
 import type { Tutorial as TutorialType, TutorialContent } from '../types';
 import './Tutorial.css';
@@ -73,40 +75,6 @@ const Tutorial: React.FC<TutorialProps> = () => {
     return currentIndex > 0 ? tutorials[currentIndex - 1] : null;
   };
 
-  const formatMarkdownToHtml = (markdown: string): string => {
-    // Basic markdown to HTML conversion
-    let html = markdown
-      // Headers
-      .replace(/^### (.*$)/gm, '<h3>$1</h3>')
-      .replace(/^## (.*$)/gm, '<h2>$1</h2>')
-      .replace(/^# (.*$)/gm, '<h1>$1</h1>')
-      // Bold and italic
-      .replace(/\*\*\*(.*?)\*\*\*/g, '<strong><em>$1</em></strong>')
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      .replace(/\*(.*?)\*/g, '<em>$1</em>')
-      // Code blocks
-      .replace(/```(\w+)?\n([\s\S]*?)```/g, '<pre class="code-block"><code class="language-$1">$2</code></pre>')
-      // Inline code
-      .replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>')
-      // Links
-      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
-      // Line breaks
-      .replace(/\n\n/g, '</p><p>')
-      .replace(/\n/g, '<br>')
-      // Horizontal rules
-      .replace(/^---$/gm, '<hr>')
-      // Lists (simple implementation)
-      .replace(/^- (.*$)/gm, '<li>$1</li>')
-      .replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>');
-
-    // Wrap in paragraphs if not already wrapped
-    if (!html.startsWith('<h1>') && !html.startsWith('<h2>') && !html.startsWith('<h3>')) {
-      html = '<p>' + html + '</p>';
-    }
-
-    return html;
-  };
-
   if (loading && tutorials.length === 0) {
     return (
       <div className="tutorial-container">
@@ -143,12 +111,37 @@ const Tutorial: React.FC<TutorialProps> = () => {
         </div>
 
         <div className="tutorial-content">
-          <div 
-            className="markdown-content"
-            dangerouslySetInnerHTML={{ 
-              __html: formatMarkdownToHtml(selectedTutorial.content) 
-            }}
-          />
+          <div className="markdown-content">
+            <ReactMarkdown 
+              remarkPlugins={[remarkGfm]}
+              components={{
+                // Custom styling for code blocks
+                code: ({className, children, ...props}) => {
+                  const match = /language-(\w+)/.exec(className || '');
+                  const isInline = !match;
+                  return isInline ? (
+                    <code className="inline-code" {...props}>
+                      {children}
+                    </code>
+                  ) : (
+                    <code className={className} {...props}>
+                      {children}
+                    </code>
+                  );
+                },
+                // Custom styling for pre blocks (code blocks)
+                pre: ({children}) => (
+                  <pre className="code-block">{children}</pre>
+                ),
+                // Custom styling for tables
+                table: ({children}) => (
+                  <table className="markdown-table">{children}</table>
+                ),
+              }}
+            >
+              {selectedTutorial.content}
+            </ReactMarkdown>
+          </div>
         </div>
 
         <div className="tutorial-navigation">

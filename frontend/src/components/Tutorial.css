@@ -198,15 +198,66 @@
   border: 1px solid #4b5563;
 }
 
-.markdown-content a {
-  color: #3b82f6;
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
-  transition: border-color 0.3s;
+/* Table styling */
+.markdown-content table,
+.markdown-content .markdown-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  background: #1a1a1a;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-.markdown-content a:hover {
-  border-bottom-color: #3b82f6;
+.markdown-content table thead {
+  background: #374151;
+}
+
+.markdown-content table th {
+  padding: 12px 15px;
+  text-align: left;
+  font-weight: 600;
+  color: #ffffff;
+  border-bottom: 2px solid #4b5563;
+  font-size: 0.95rem;
+}
+
+.markdown-content table td {
+  padding: 10px 15px;
+  border-bottom: 1px solid #374151;
+  color: #e5e7eb;
+  vertical-align: top;
+}
+
+.markdown-content table tr:hover {
+  background: #2d3748;
+}
+
+.markdown-content table tr:last-child td {
+  border-bottom: none;
+}
+
+.markdown-content table th:first-child,
+.markdown-content table td:first-child {
+  border-left: none;
+}
+
+.markdown-content table th:last-child,
+.markdown-content table td:last-child {
+  border-right: none;
+}
+
+/* Responsive table */
+@media (max-width: 768px) {
+  .markdown-content table {
+    font-size: 0.85rem;
+  }
+  
+  .markdown-content table th,
+  .markdown-content table td {
+    padding: 8px 10px;
+  }
 }
 
 .tutorial-navigation {
