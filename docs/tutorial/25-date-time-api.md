@@ -223,3 +223,7 @@ System.out.println(date);
 
 > Use `java.time` classes for all new code:
 > They're **immutable**, **thread-safe**, and much **easier to reason about** than the old APIs.
+
+## 🎥 Learn More
+
+[Bro Code - Learn DATES & TIMES with Java in 8 minutes!](https://www.youtube.com/watch?v=F2bZ1fkAQx0&pp=ygUSamF2YS50aW1lIHR1dG9yaWFs)

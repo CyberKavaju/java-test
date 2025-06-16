@@ -324,7 +324,16 @@ export default function Report() {
       'Final': '56-final-keyword',
       'Final Class': '56-final-keyword',
       'Access Modifiers': '58-access-modifiers',
-      'Access Control': '58-access-modifiers'
+      'Access Control': '58-access-modifiers',
+      'Date and Time API': '25-date-time-api',
+      'Working with Java API - Time and Date': '25-date-time-api',
+      'Date/Time API': '25-date-time-api',
+      'LocalDate': '25-date-time-api',
+      'LocalTime': '25-date-time-api',
+      'LocalDateTime': '25-date-time-api',
+      'DateTimeFormatter': '25-date-time-api',
+      'Period and Duration': '25-date-time-api',
+      'ZonedDateTime': '25-date-time-api'
     };
 
     // Try exact match first
@@ -351,6 +360,7 @@ export default function Report() {
     if (lowerTopic.includes('interface')) return '43-interfaces';
     if (lowerTopic.includes('lambda')) return '44-lambda-expressions';
     if (lowerTopic.includes('autobox')) return '57-autoboxing-unboxing';
+    if (lowerTopic.includes('date') || lowerTopic.includes('time') || lowerTopic.includes('local') || lowerTopic.includes('duration') || lowerTopic.includes('period')) return '25-date-time-api';
 
     // Return null if no match found
     return null;

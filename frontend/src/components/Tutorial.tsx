@@ -14,6 +14,7 @@ const Tutorial: React.FC<TutorialProps> = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
   const selectedSlug = searchParams.get('tutorial');
 
@@ -61,6 +62,25 @@ const Tutorial: React.FC<TutorialProps> = () => {
 
   const goBack = () => {
     setSearchParams({});
+  };
+
+  const getFilteredTutorials = () => {
+    if (!searchQuery.trim()) {
+      return tutorials;
+    }
+    
+    return tutorials.filter(tutorial =>
+      tutorial.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      tutorial.id.toString().includes(searchQuery)
+    );
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const clearSearch = () => {
+    setSearchQuery('');
   };
 
   const getNextTutorial = () => {
@@ -173,11 +193,28 @@ const Tutorial: React.FC<TutorialProps> = () => {
       <div className="tutorial-header">
         <h1>Java Tutorial</h1>
         <p>Learn Java programming step by step with our comprehensive tutorial series.</p>
+        
+        <div className="search-container">
+          <div className="search-bar">
+            <input
+              type="text"
+              placeholder="Search tutorials by title or number..."
+              value={searchQuery}
+              onChange={handleSearchChange}
+              className="search-input"
+            />
+            {searchQuery && (
+              <button onClick={clearSearch} className="clear-search-btn">
+                ×
+              </button>
+            )}
+          </div>
+        </div>
       </div>
 
       <div className="tutorial-list">
         <div className="tutorial-grid">
-          {tutorials.map((tutorial) => (
+          {getFilteredTutorials().map((tutorial) => (
             <div 
               key={tutorial.id} 
               className="tutorial-card"
@@ -192,6 +229,15 @@ const Tutorial: React.FC<TutorialProps> = () => {
             </div>
           ))}
         </div>
+        
+        {getFilteredTutorials().length === 0 && searchQuery && (
+          <div className="no-results">
+            <p>No tutorials found matching "{searchQuery}"</p>
+            <button onClick={clearSearch} className="btn btn-secondary">
+              Clear Search
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="tutorial-footer">

@@ -235,3 +235,5 @@ B
 
 > Constructors **build your object**, **set its state**, and **don't return values**.
 > Use **overloading** to support flexible initialization, and remember `this()` and `super()` for reuse and inheritance.
+
+[Coding with John -  Java Constructors](https://www.youtube.com/watch?v=pgBk8HC7jbU0) - A great video resource for understanding constructors in Java.
