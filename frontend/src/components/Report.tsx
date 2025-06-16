@@ -257,6 +257,7 @@ export default function Report() {
       'Variable': '04-variable',
       'Casting Primitives': '05-variable-casting-and-conversions',
       'Operators': '07-operators',
+      'Increment/Decrement': '07-operators',
       'Comparison Operators': '08-comparison-operators',
       'Logical Operators': '09-logical-operators',
       'Bitwise Operators': '10-bitwise-operators',
