@@ -435,3 +435,15 @@ You can't assign a new value to `e` inside the block.
 | Multiple catch blocks  | ✅ Yes, no limit                                              |
 | Multi-catch allowed?   | ✅ Yes, use `\|` between exception types                      |
 | Can you catch `Error`? | 🚫 Technically yes, but should not (e.g., `OutOfMemoryError`) |
+
+## 🎥 Videos to Learn More
+
+[Coding with John - Exception Handling in Java Tutorial](https://www.youtube.com/watch?v=1XAfapkBQjk)
+
+[Java Custom Exceptions Tutorial - It's Way Easier Than You Think - Coding with John](https://www.youtube.com/watch?v=OIozDnGYqIU)
+
+[Checked vs. Unchecked Exceptions in Java Tutorial - What's The Difference? - Coding with John](https://www.youtube.com/watch?v=bCPClyGsVhc)
+
+[Null Pointer Exceptions In Java - What EXACTLY They Are and How to Fix Them - Coding with John](https://www.youtube.com/watch?v=lm72_HCd17s)
+
+[Java Brains - Exception Handling in Java](https://www.youtube.com/watch?v=1XAfapkBQjk)

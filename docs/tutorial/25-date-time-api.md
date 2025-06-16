@@ -227,3 +227,7 @@ System.out.println(date);
 ## 🎥 Learn More
 
 [Bro Code - Learn DATES & TIMES with Java in 8 minutes!](https://www.youtube.com/watch?v=F2bZ1fkAQx0&pp=ygUSamF2YS50aW1lIHR1dG9yaWFs)
+
+[Java Code Geeks - Java Date and Calendar Tutorial](https://www.youtube.com/watch?v=il7eVsDPFoA)
+
+[Maaike Bright Boost - Java basics of the LocalDate, LocalTime, LocalDateTime, ZonedDateTime and the DateTimeFormatter](https://www.youtube.com/watch?v=0XgdX5hDL4U)
