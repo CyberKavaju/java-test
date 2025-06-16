@@ -306,3 +306,7 @@ public class Test {
 - [42. Abstract Classes](42-abstract-classes.md) - Class abstractions
 - [46. Polymorphism](46-polymorphism.md) - Interface polymorphism
 - [47. Inheritance](47-inheritance.md) - Interface inheritance
+
+## video learn more
+
+[Java Interface Tutorial - Keep On Coding](https://www.youtube.com/watch?v=Yat8l37XGFA)

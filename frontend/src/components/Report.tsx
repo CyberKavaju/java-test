@@ -257,6 +257,9 @@ export default function Report() {
       'Variable': '04-variable',
       'Casting Primitives': '05-variable-casting-and-conversions',
       'Operators': '07-operators',
+      'Overflow': '05-variable-casting-and-conversions',
+      'Integer Overflow': '05-variable-casting-and-conversions',
+      'Arithmetic Overflow': '05-variable-casting-and-conversions',
       'Increment/Decrement': '07-operators',
       'Comparison Operators': '08-comparison-operators',
       'Logical Operators': '09-logical-operators',
@@ -354,7 +357,7 @@ export default function Report() {
     if (lowerTopic.includes('exception') || lowerTopic.includes('error')) return '26-exception-handling';
     if (lowerTopic.includes('string')) return '18-string-class';
     if (lowerTopic.includes('variable')) return '04-variable';
-    if (lowerTopic.includes('operator')) return '07-operators';
+    if (lowerTopic.includes('operator') || lowerTopic.includes('overflow')) return '07-operators';
     if (lowerTopic.includes('constructor')) return '31-constructors';
     if (lowerTopic.includes('static')) return '37-static-vs-instance-methods';
     if (lowerTopic.includes('abstract')) return '41-abstract-classes';
