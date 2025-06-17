@@ -82,6 +82,9 @@ This directory contains comprehensive Java study materials organized into indivi
 - **[46-inheritance.md](./46-inheritance.md)** - Class relationships and code reuse
 - **[47-polymorphism.md](./47-polymorphism.md)** - Runtime method selection and dynamic binding
 
+### Advanced Java Topics (49+)
+- **[58-working-with-java-data-types.md](./58-working-with-java-data-types.md)** - 🎯 **Comprehensive guide to Java data types, primitives, wrappers, autoboxing, and object lifecycle**
+
 ---
 
 ## 🎯 Recommended Study Paths
@@ -149,6 +152,7 @@ Each file follows consistent formatting and includes practical examples that can
 |-------|-----------|---------|
 | **Getting Started** | 01, 02, 04 | Java basics and setup |
 | **Language Fundamentals** | 07-11, 12-16 | Core syntax and control flow |
+| **Data Types & Variables** | 04, 05, 17, 58 | Primitives, wrappers, casting, autoboxing |
 | **Object-Oriented Programming** | 27-48 | Complete OOP concepts |
 | **Advanced OOP** | 40-48 | Parameter passing, abstract concepts, inheritance |
 | **Data Handling** | 18, 21-25 | Strings, arrays, collections |

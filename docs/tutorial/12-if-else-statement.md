@@ -110,11 +110,130 @@ else
 
 ---
 
-## Ternary Alternative (shorthand if-else)
+## Ternary Operator (Conditional Operator)
+
+The **ternary operator** `? :` is Java's only **three-operand operator**. It provides a concise way to write simple `if-else` statements in a single expression.
+
+### Basic Syntax
+
+```java
+result = (condition) ? valueIfTrue : valueIfFalse;
+```
+
+### Simple Examples
 
 ```java
 int age = 18;
 String status = (age >= 18) ? "Adult" : "Minor";
+
+int x = 5, y = 10;
+int max = (x > y) ? x : y;  // Gets the maximum value
+
+boolean isEven = (number % 2 == 0) ? true : false;
+// Better: boolean isEven = (number % 2 == 0);
+```
+
+### Type Compatibility
+
+The **second and third operands** must be **compatible types** or convertible to a common type:
+
+```java
+// ✔️ Both are int
+int result = (x > 0) ? 10 : 20;
+
+// ✔️ Both can be converted to double
+double result = (x > 0) ? 10.5 : 20;  // 20 becomes 20.0
+
+// ✔️ Both are String
+String message = (passed) ? "Success" : "Failed";
+
+// ❌ Incompatible types
+String result = (x > 0) ? "text" : 42;  // Compile error!
+```
+
+### Nested Ternary Operators
+
+You can nest ternary operators, but **readability suffers**:
+
+```java
+int score = 85;
+String grade = (score >= 90) ? "A" : 
+               (score >= 80) ? "B" : 
+               (score >= 70) ? "C" : 
+               (score >= 60) ? "D" : "F";
+```
+
+⚠️ **Better approach** for complex conditions: use `if-else if` chains for readability.
+
+### When to Use Ternary vs. if-else
+
+#### ✔️ Good use cases for ternary:
+```java
+// Simple value assignment
+int abs = (num < 0) ? -num : num;
+
+// Method parameters
+System.out.println((count == 1) ? "item" : "items");
+
+// Return statements
+return (x > y) ? x : y;
+```
+
+#### ❌ Avoid ternary for:
+```java
+// Complex logic (hard to read)
+String result = (user.isActive() && user.hasPermission() && 
+                !user.isBlocked()) ? processUser(user) : 
+                handleInactiveUser(user);
+
+// Multiple statements (impossible with ternary)
+if (condition) {
+    doSomething();
+    doSomethingElse();
+} else {
+    doAnotherThing();
+}
+```
+
+### Common OCA Exam Gotchas
+
+#### 1. **Parentheses around condition** (recommended)
+```java
+int result = (x > 0) ? 1 : -1;  // ✔️ Clear
+int result = x > 0 ? 1 : -1;    // ✔️ Valid but less clear
+```
+
+#### 2. **Assignment vs. standalone expression**
+```java
+// ✔️ Assignment
+String message = (flag) ? "Yes" : "No";
+
+// ❌ Standalone ternary (not useful)
+(flag) ? "Yes" : "No";  // Result is discarded
+```
+
+#### 3. **Operator precedence**
+```java
+// Be careful with operator precedence
+int result = x > 0 ? x * 2 : x / 2;  // Works as expected
+int result = x + (flag ? 10 : 20);   // Addition happens after ternary
+```
+
+### Equivalent if-else Conversion
+
+Every ternary can be rewritten as `if-else`:
+
+```java
+// Ternary version
+String status = (age >= 18) ? "Adult" : "Minor";
+
+// Equivalent if-else version
+String status;
+if (age >= 18) {
+    status = "Adult";
+} else {
+    status = "Minor";
+}
 ```
 
 ---

@@ -265,6 +265,10 @@ export default function Report() {
       'Logical Operators': '09-logical-operators',
       'Bitwise Operators': '10-bitwise-operators',
       'Bitwise vs Logical Operators': '10-bitwise-operators',
+      'Ternary Operator': '12-if-else-statement',
+      'Ternary': '12-if-else-statement',
+      'Ternary Operator Nesting': '12-if-else-statement',
+      'Ternary Operator Type': '12-if-else-statement',
       'If-Else': '12-if-else-statement',
       'Switch': '13-switch-statement',
       'Switch Statement': '13-switch-statement',
@@ -337,7 +341,8 @@ export default function Report() {
       'LocalDateTime': '25-date-time-api',
       'DateTimeFormatter': '25-date-time-api',
       'Period and Duration': '25-date-time-api',
-      'ZonedDateTime': '25-date-time-api'
+      'ZonedDateTime': '25-date-time-api',
+      'Working With Java Data Types': '58-working-with-java-data-types'
     };
 
     // Try exact match first
@@ -350,6 +355,7 @@ export default function Report() {
     if (lowerTopic.includes('array')) return '21-arrays';
     if (lowerTopic.includes('loop') || lowerTopic.includes('for') || lowerTopic.includes('while')) return '20-looping-constructs';
     if (lowerTopic.includes('if') || lowerTopic.includes('condition')) return '12-if-else-statement';
+    if (lowerTopic.includes('ternary')) return '12-if-else-statement';
     if (lowerTopic.includes('method') || lowerTopic.includes('function')) return '32-methods';
     if (lowerTopic.includes('class')) return '28-classes-and-objects';
     if (lowerTopic.includes('object')) return '28-classes-and-objects';
@@ -365,6 +371,7 @@ export default function Report() {
     if (lowerTopic.includes('lambda')) return '44-lambda-expressions';
     if (lowerTopic.includes('autobox')) return '57-autoboxing-unboxing';
     if (lowerTopic.includes('date') || lowerTopic.includes('time') || lowerTopic.includes('local') || lowerTopic.includes('duration') || lowerTopic.includes('period')) return '25-date-time-api';
+    if (lowerTopic.includes('data type') || lowerTopic.includes('working with java data types')) return '58-working-with-java-data-types';
 
     // Return null if no match found
     return null;
