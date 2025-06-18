@@ -282,3 +282,11 @@ else
 | `else` optional        | ✔️                   |
 | `else if` chaining     | ✔️                   |
 | Non-boolean condition    | ❌                     |
+
+## Video tutorials
+
+[If Else Statement In Java Tutorial #17 - Alex Lee](https://www.youtube.com/watch?v=yvWnj_HfG6s)
+
+[Java if statements 🚧【6 minutes】 - Bro Code](https://www.youtube.com/watch?v=MY03bt_0JQI)
+
+[if-else Statement in Java - Neso Academy](https://www.youtube.com/watch?v=-VeUElwL27I)
