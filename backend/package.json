@@ -12,7 +12,8 @@
     "test:api": "jest tests/api.test.js",
     "test:database": "jest tests/database.test.js",
     "test:integration": "jest tests/integration.test.js",
-    "test:utils": "jest tests/utils.test.js"
+    "test:utils": "jest tests/utils.test.js",
+    "migrate": "node database/migrate.js"
   },
   "keywords": [],
   "author": "",
