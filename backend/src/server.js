@@ -36,6 +36,7 @@ const initializeDatabase = async () => {
         db = new Database();
         await db.init();
         
+        // Auto-seeding disabled - questions should be imported manually
         // Check if questions exist, if not seed them
         const existingQuestions = await new Promise((resolve, reject) => {
             db.db.get("SELECT COUNT(*) as count FROM questions", (err, row) => {
@@ -44,11 +45,14 @@ const initializeDatabase = async () => {
             });
         });
         
-        if (existingQuestions === 0) {
-            console.log('Seeding initial questions...');
-            await db.seedQuestions(initialQuestions);
-            console.log('Questions seeded successfully');
-        }
+        console.log(`Database initialized with ${existingQuestions} questions`);
+        
+        // Commented out auto-seeding to prevent automatic question creation
+        // if (existingQuestions === 0) {
+        //     console.log('Seeding initial questions...');
+        //     await db.seedQuestions(initialQuestions);
+        //     console.log('Questions seeded successfully');
+        // }
         
     } catch (error) {
         console.error('Failed to initialize database:', error);
