@@ -10,6 +10,7 @@
 .tutorial-header {
   text-align: center;
   margin-bottom: 40px;
+  position: relative;
 }
 
 .tutorial-header h1 {
@@ -23,6 +24,62 @@
   font-size: 1.1rem;
   max-width: 600px;
   margin: 0 auto;
+}
+
+/* Tutorial header when viewing specific tutorial */
+.tutorial-header-single {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0;
+  border-bottom: 2px solid #374151;
+}
+
+.header-left,
+.header-right {
+  flex: 1;
+  display: flex;
+}
+
+.header-left {
+  justify-content: flex-start;
+}
+
+.header-right {
+  justify-content: flex-end;
+}
+
+.header-center {
+  flex: 2;
+  text-align: center;
+}
+
+.header-center h1 {
+  margin: 0;
+  font-size: 2rem;
+  color: #ffffff;
+}
+
+.review-btn {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.review-btn:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
 }
 
 .search-container {
@@ -93,10 +150,19 @@
 }
 
 .back-btn {
-  position: absolute;
-  left: 0;
-  top: 0;
-  margin-bottom: 20px;
+  background-color: #374151;
+  color: #e5e7eb;
+  border: 1px solid #4b5563;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.back-btn:hover {
+  background-color: #4b5563;
+  border-color: #6b7280;
 }
 
 .tutorial-list {
@@ -349,11 +415,29 @@
 
 .tutorial-navigation {
   display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin: 30px 0;
+  background: #1a1a1a;
+  border-radius: 12px;
+  padding: 30px;
+  border: 1px solid #374151;
+}
+
+.nav-buttons {
+  display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 20px;
-  margin: 30px 0;
   flex-wrap: wrap;
+}
+
+.review-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 20px;
+  border-top: 1px solid #374151;
 }
 
 .nav-btn {
@@ -540,6 +624,10 @@
   }
   
   .tutorial-navigation {
+    gap: 20px;
+  }
+  
+  .nav-buttons {
     flex-direction: column;
   }
   
@@ -549,8 +637,29 @@
   }
   
   .back-btn {
-    position: relative;
-    margin-bottom: 20px;
+    font-size: 0.85rem;
+    padding: 6px 12px;
+  }
+  
+  .tutorial-header-single {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+  }
+  
+  .header-left,
+  .header-center,
+  .header-right {
+    flex: none;
+    width: 100%;
+  }
+  
+  .header-center {
+    text-align: left;
+  }
+  
+  .header-center h1 {
+    font-size: 1.5rem;
   }
   
   .tutorial-header {
@@ -561,5 +670,73 @@
   .code-block {
     padding: 15px;
     font-size: 0.85rem;
+  }
+}
+
+/* Specific styles for single tutorial view */
+.tutorial-header-single {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+  padding: 20px 0;
+  border-bottom: 2px solid #374151;
+  margin-bottom: 40px;
+}
+
+.tutorial-title-section {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex: 1;
+  justify-content: space-between;
+}
+
+.tutorial-title-section h1 {
+  margin: 0;
+  font-size: 2rem;
+  color: #ffffff;
+}
+
+.review-btn {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.review-btn:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+/* Responsive design for review button */
+@media (max-width: 768px) {
+  .tutorial-header-single {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  
+  .tutorial-title-section {
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  
+  .review-btn {
+    align-self: stretch;
+    justify-content: center;
   }
 }

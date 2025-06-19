@@ -1,0 +1,412 @@
+import { useState, useEffect } from 'react';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import { apiService } from '../services/api';
+import type { 
+  ReviewSession, 
+  ReviewRoundResult, 
+  ReviewRoundSummary,
+  ReviewSessionSummary,
+  Answer,
+  Question 
+} from '../types';
+import './Review.css';
+
+interface ReviewProps {}
+
+const Review: React.FC<ReviewProps> = () => {
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const topicId = searchParams.get('topic');
+  const userId = 'default_user'; // TODO: Get from auth context
+
+  const [session, setSession] = useState<ReviewSession | null>(null);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [answers, setAnswers] = useState<Answer[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [showResults, setShowResults] = useState(false);
+  const [roundResults, setRoundResults] = useState<ReviewRoundResult[]>([]);
+  const [roundSummary, setRoundSummary] = useState<ReviewRoundSummary | null>(null);
+  const [sessionSummary, setSessionSummary] = useState<ReviewSessionSummary | null>(null);
+  const [isCompleted, setIsCompleted] = useState(false);
+
+  useEffect(() => {
+    if (topicId) {
+      startReviewSession();
+    } else {
+      setError('No topic specified for review');
+    }
+  }, [topicId]);
+
+  const startReviewSession = async () => {
+    if (!topicId) return;
+    
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const response = await apiService.startReviewSession(userId, topicId);
+      
+      if (response.success) {
+        setSession({
+          sessionId: response.sessionId,
+          topic: topicId,
+          currentRound: response.roundInfo.currentRound,
+          totalQuestions: response.roundInfo.totalQuestions,
+          questions: response.questions
+        });
+        setAnswers([]);
+        setCurrentQuestionIndex(0);
+        setShowResults(false);
+      } else {
+        console.log('Review session failed:', response);
+        setError('Failed to start review session');
+      }
+    } catch (err) {
+      console.error('API Error details:', err);
+      if (err.response) {
+        console.error('Error response data:', err.response.data);
+        console.error('Error response status:', err.response.status);
+        setError(`API Error: ${err.response.data?.error || err.response.status}`);
+      } else if (err.request) {
+        console.error('Network error:', err.request);
+        setError('Network error - cannot reach server');
+      } else {
+        console.error('Request setup error:', err.message);
+        setError(`Request error: ${err.message}`);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAnswerSelect = (questionId: number, selectedAnswer: string) => {
+    setAnswers(prev => {
+      const existing = prev.find(a => a.questionId === questionId);
+      if (existing) {
+        return prev.map(a => 
+          a.questionId === questionId 
+            ? { ...a, selectedAnswer }
+            : a
+        );
+      } else {
+        return [...prev, { questionId, selectedAnswer }];
+      }
+    });
+  };
+
+  const submitRound = async () => {
+    if (!session || answers.length !== session.questions.length) {
+      setError('Please answer all questions before submitting');
+      return;
+    }
+
+    try {
+      setLoading(true);
+      
+      const response = await apiService.submitReviewRound(session.sessionId, answers);
+      
+      if (response.success) {
+        setRoundResults(response.results);
+        setRoundSummary(response.roundSummary);
+        setShowResults(true);
+        
+        if (response.roundSummary.isComplete) {
+          // Session is complete, get final summary
+          const completeResponse = await apiService.completeReviewSession(session.sessionId);
+          if (completeResponse.success) {
+            setSessionSummary(completeResponse.sessionSummary);
+            setIsCompleted(true);
+          }
+        }
+      } else {
+        setError('Failed to submit round');
+      }
+    } catch (err) {
+      setError('Error submitting round');
+      console.error('Submit round error:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const startNextRound = async () => {
+    if (!session) return;
+
+    try {
+      setLoading(true);
+      
+      const response = await apiService.getNextRound(session.sessionId);
+      
+      if (response.success) {
+        setSession({
+          ...session,
+          questions: response.questions,
+          currentRound: response.roundInfo.currentRound,
+          totalQuestions: response.roundInfo.totalQuestions
+        });
+        setAnswers([]);
+        setCurrentQuestionIndex(0);
+        setShowResults(false);
+        setRoundResults([]);
+        setRoundSummary(null);
+      } else {
+        setError('Failed to get next round');
+      }
+    } catch (err) {
+      setError('Error getting next round');
+      console.error('Next round error:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const goBackToTutorial = () => {
+    navigate(`/tutorial?tutorial=${topicId}`);
+  };
+
+  const goToTutorials = () => {
+    navigate('/tutorial');
+  };
+
+  if (loading && !session) {
+    return (
+      <div className="review-container">
+        <div className="loading">Starting review session...</div>
+      </div>
+    );
+  }
+
+  if (error && !session) {
+    return (
+      <div className="review-container">
+        <div className="error">
+          <h2>Error</h2>
+          <p>{error}</p>
+          <button onClick={goToTutorials} className="btn btn-secondary">
+            Back to Tutorials
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (isCompleted && sessionSummary) {
+    return (
+      <div className="review-container">
+        <div className="review-completion">
+          <h1>Review Session Complete!</h1>
+          <div className="session-summary">
+            <h2>Topic: {sessionSummary.topic}</h2>
+            <div className="summary-stats">
+              <div className="stat">
+                <span className="stat-label">Total Rounds:</span>
+                <span className="stat-value">{sessionSummary.totalRounds}</span>
+              </div>
+              <div className="stat">
+                <span className="stat-label">Final Score:</span>
+                <span className="stat-value">{sessionSummary.finalScore}%</span>
+              </div>
+              <div className="stat">
+                <span className="stat-label">Time Spent:</span>
+                <span className="stat-value">{Math.round(sessionSummary.timeSpent / 60)} minutes</span>
+              </div>
+              <div className="stat">
+                <span className="stat-label">Mastery:</span>
+                <span className={`stat-value ${sessionSummary.masteryAchieved ? 'mastery-achieved' : 'mastery-progress'}`}>
+                  {sessionSummary.masteryAchieved ? 'Achieved!' : 'In Progress'}
+                </span>
+              </div>
+            </div>
+          </div>
+          <div className="completion-actions">
+            <button onClick={goBackToTutorial} className="btn btn-primary">
+              Back to Tutorial
+            </button>
+            <button onClick={goToTutorials} className="btn btn-secondary">
+              All Tutorials
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (showResults && roundSummary) {
+    return (
+      <div className="review-container">
+        <div className="round-results">
+          <h1>Round {session?.currentRound} Results</h1>
+          
+          <div className="round-summary">
+            <div className="summary-score">
+              <span className="score-text">
+                {roundSummary.correctCount} / {roundSummary.totalCount} correct
+              </span>
+              <span className="score-percentage">({roundSummary.percentage}%)</span>
+            </div>
+          </div>
+
+          <div className="results-list">
+            {roundResults.map((result, index) => (
+              <div key={result.questionId} className={`result-item ${result.isCorrect ? 'correct' : 'incorrect'}`}>
+                <div className="result-header">
+                  <span className="question-number">Question {index + 1}</span>
+                  <span className={`result-status ${result.isCorrect ? 'correct' : 'incorrect'}`}>
+                    {result.isCorrect ? '✓ Correct' : '✗ Incorrect'}
+                  </span>
+                </div>
+                <div className="result-answers">
+                  <div>Your answer: <strong>{result.selectedAnswer}</strong></div>
+                  <div>Correct answer: <strong>{result.correctAnswer}</strong></div>
+                </div>
+                {result.explanation && (
+                  <div className="result-explanation">
+                    <strong>Explanation:</strong> {result.explanation}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <div className="round-actions">
+            {roundSummary.isComplete ? (
+              <div className="completion-message">
+                <p>🎉 Congratulations! You've completed the review session.</p>
+                <p>Finalizing your results...</p>
+              </div>
+            ) : (
+              <>
+                <p>Keep practicing! You'll review the questions you got wrong in the next round.</p>
+                <button onClick={startNextRound} className="btn btn-primary" disabled={loading}>
+                  {loading ? 'Starting Next Round...' : 'Continue to Next Round'}
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!session) {
+    return (
+      <div className="review-container">
+        <div className="loading">Loading review session...</div>
+      </div>
+    );
+  }
+
+  const currentQuestion = session.questions[currentQuestionIndex];
+  const currentAnswer = answers.find(a => a.questionId === currentQuestion?.id)?.selectedAnswer;
+
+  return (
+    <div className="review-container">
+      <div className="review-header">
+        <button onClick={goBackToTutorial} className="btn btn-secondary back-btn">
+          ← Back to Tutorial
+        </button>
+        <div className="review-progress">
+          <h1>Review: {session.topic}</h1>
+          <p>Round {session.currentRound} - Question {currentQuestionIndex + 1} of {session.questions.length}</p>
+        </div>
+      </div>
+
+      <div className="question-container">
+        <div className="question-text">
+          <ReactMarkdown 
+            remarkPlugins={[remarkGfm]}
+            components={{
+              // Custom styling for code blocks
+              code: ({className, children, ...props}) => {
+                const match = /language-(\w+)/.exec(className || '');
+                const isInline = !match;
+                return isInline ? (
+                  <code className="inline-code" {...props}>
+                    {children}
+                  </code>
+                ) : (
+                  <code className={className} {...props}>
+                    {children}
+                  </code>
+                );
+              },
+              // Custom styling for pre blocks (code blocks)
+              pre: ({children}) => (
+                <pre className="code-block">{children}</pre>
+              ),
+            }}
+          >
+            {currentQuestion?.question_text}
+          </ReactMarkdown>
+        </div>
+
+        <div className="answer-options">
+          {['A', 'B', 'C', 'D', 'E'].map(option => {
+            const optionKey = `option_${option.toLowerCase()}` as keyof Question;
+            const optionText = currentQuestion?.[optionKey] as string;
+            
+            if (!optionText) return null;
+
+            return (
+              <label key={option} className={`answer-option ${currentAnswer === option ? 'selected' : ''}`}>
+                <input
+                  type="radio"
+                  name={`question-${currentQuestion.id}`}
+                  value={option}
+                  checked={currentAnswer === option}
+                  onChange={() => handleAnswerSelect(currentQuestion.id, option)}
+                />
+                <span className="option-letter">{option}</span>
+                <span className="option-text">{optionText}</span>
+              </label>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="question-navigation">
+        <div className="nav-buttons">
+          <button 
+            onClick={() => setCurrentQuestionIndex(Math.max(0, currentQuestionIndex - 1))}
+            disabled={currentQuestionIndex === 0}
+            className="btn btn-secondary"
+          >
+            Previous
+          </button>
+          
+          <button 
+            onClick={() => setCurrentQuestionIndex(Math.min(session.questions.length - 1, currentQuestionIndex + 1))}
+            disabled={currentQuestionIndex === session.questions.length - 1}
+            className="btn btn-secondary"
+          >
+            Next
+          </button>
+        </div>
+
+        <div className="submit-section">
+          <div className="answered-count">
+            {answers.length} of {session.questions.length} questions answered
+          </div>
+          <button 
+            onClick={submitRound}
+            disabled={answers.length !== session.questions.length || loading}
+            className="btn btn-primary"
+          >
+            {loading ? 'Submitting...' : 'Submit Round'}
+          </button>
+        </div>
+      </div>
+
+      {error && (
+        <div className="error-message">
+          {error}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Review;

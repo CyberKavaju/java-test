@@ -109,3 +109,71 @@ export interface TutorialContent {
   title: string;
   content: string;
 }
+
+// Review feature types
+export interface Topic {
+  id: string;
+  title: string;
+  description: string;
+  questionCount: number;
+}
+
+export interface ReviewSession {
+  sessionId: number;
+  topic: string;
+  currentRound: number;
+  totalQuestions: number;
+  questions: Question[];
+}
+
+export interface ReviewRoundResult {
+  questionId: number;
+  selectedAnswer: string;
+  correctAnswer: string;
+  isCorrect: boolean;
+  explanation: string;
+}
+
+export interface ReviewRoundSummary {
+  correctCount: number;
+  totalCount: number;
+  percentage: number;
+  isComplete: boolean;
+  nextRoundQuestions?: number[];
+}
+
+export interface ReviewSessionSummary {
+  topic: string;
+  totalRounds: number;
+  finalScore: number;
+  timeSpent: number;
+  masteryAchieved: boolean;
+}
+
+export interface TopicMastery {
+  topic: string;
+  title: string;
+  masteryLevel: string;
+  totalSessions: number;
+  averageRounds: number;
+  lastPracticed: string;
+}
+
+export interface MasteryOverview {
+  mastery: TopicMastery[];
+  overallStats: {
+    topicsMastered: number;
+    topicsInProgress: number;
+    topicsNotStarted: number;
+    totalTimeSpent: number;
+  };
+}
+
+export interface ReviewHistoryItem {
+  sessionId: number;
+  startedAt: string;
+  completedAt: string;
+  rounds: number;
+  finalScore: number;
+  timeSpent: number;
+}

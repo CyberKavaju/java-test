@@ -32,7 +32,7 @@ export const QuestionManagement: React.FC = () => {
     setShowForm(true);
   };
 
-  const handleSave = (question: Question) => {
+  const handleSave = (_question: Question) => {
     setShowForm(false);
     setSelectedQuestion(null);
     // The QuestionList will refresh automatically when the form closes

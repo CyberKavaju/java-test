@@ -238,5 +238,128 @@ export const apiService = {
   }> {
     const response = await api.get(`/tutorials/${slug}`);
     return response.data;
+  },
+
+  // Review API endpoints
+  // Get all available topics for review
+  async getTopics(): Promise<{
+    success: boolean;
+    topics: Array<{
+      id: string;
+      title: string;
+      description: string;
+      questionCount: number;
+    }>;
+  }> {
+    const response = await api.get('/topics');
+    return response.data;
+  },
+
+  // Start a new review session for a topic
+  async startReviewSession(userId: string, topicId: string): Promise<{
+    success: boolean;
+    sessionId: number;
+    questions: Question[];
+    roundInfo: {
+      currentRound: number;
+      totalQuestions: number;
+    };
+  }> {
+    const response = await api.post('/review/start', {
+      userId,
+      topic: topicId
+    });
+    return response.data;
+  },
+
+  // Submit answers for current round
+  async submitReviewRound(sessionId: number, answers: Answer[]): Promise<{
+    success: boolean;
+    results: Array<{
+      questionId: number;
+      selectedAnswer: string;
+      correctAnswer: string;
+      isCorrect: boolean;
+      explanation: string;
+    }>;
+    roundSummary: {
+      correctCount: number;
+      totalCount: number;
+      percentage: number;
+      isComplete: boolean;
+      nextRoundQuestions?: number[];
+    };
+  }> {
+    const response = await api.post('/review/submit-round', {
+      sessionId,
+      answers
+    });
+    return response.data;
+  },
+
+  // Get next round questions
+  async getNextRound(sessionId: number): Promise<{
+    success: boolean;
+    questions: Question[];
+    roundInfo: {
+      currentRound: number;
+      totalQuestions: number;
+    };
+  }> {
+    const response = await api.get(`/review/next-round/${sessionId}`);
+    return response.data;
+  },
+
+  // Complete review session
+  async completeReviewSession(sessionId: number): Promise<{
+    success: boolean;
+    sessionSummary: {
+      topic: string;
+      totalRounds: number;
+      finalScore: number;
+      timeSpent: number;
+      masteryAchieved: boolean;
+    };
+  }> {
+    const response = await api.post(`/review/complete/${sessionId}`);
+    return response.data;
+  },
+
+  // Get user's mastery overview
+  async getMasteryOverview(userId: string): Promise<{
+    success: boolean;
+    mastery: Array<{
+      topic: string;
+      title: string;
+      masteryLevel: string;
+      totalSessions: number;
+      averageRounds: number;
+      lastPracticed: string;
+    }>;
+    overallStats: {
+      topicsMastered: number;
+      topicsInProgress: number;
+      topicsNotStarted: number;
+      totalTimeSpent: number;
+    };
+  }> {
+    const response = await api.get(`/review/mastery/${userId}`);
+    return response.data;
+  },
+
+  // Get session history for a topic
+  async getReviewHistory(userId: string, topicId: string): Promise<{
+    success: boolean;
+    history: Array<{
+      sessionId: number;
+      startedAt: string;
+      completedAt: string;
+      rounds: number;
+      finalScore: number;
+      timeSpent: number;
+    }>;
+  }> {
+    const response = await api.get(`/review/history/${userId}/${topicId}`);
+    return response.data;
   }
 };

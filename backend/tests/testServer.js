@@ -4,6 +4,7 @@ const multer = require('multer');
 const csv = require('csv-parser');
 const fs = require('fs');
 const path = require('path');
+const createReviewRoutes = require('../src/review/reviewRoutes');
 
 // Test server factory function
 function createTestServer(testDatabase) {
@@ -1179,6 +1180,10 @@ function createTestServer(testDatabase) {
             });
         }
     });
+
+    // Mount review routes
+    const reviewRoutes = createReviewRoutes(db);
+    app.use('/api', reviewRoutes);
 
     return app;
 }

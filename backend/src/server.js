@@ -6,6 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const Database = require('./database/Database');
 const initialQuestions = require('./data/questions');
+const createReviewRoutes = require('./review/reviewRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -47,6 +48,9 @@ const initializeDatabase = async () => {
         
         console.log(`Database initialized with ${existingQuestions} questions`);
         
+        // Mount review routes after database is initialized
+        mountReviewRoutes();
+        
         // Commented out auto-seeding to prevent automatic question creation
         // if (existingQuestions === 0) {
         //     console.log('Seeding initial questions...');
@@ -57,6 +61,15 @@ const initializeDatabase = async () => {
     } catch (error) {
         console.error('Failed to initialize database:', error);
         process.exit(1);
+    }
+};
+
+// Mount review routes
+const mountReviewRoutes = () => {
+    if (db) {
+        const reviewRoutes = createReviewRoutes(db);
+        app.use('/api', reviewRoutes);
+        console.log('Review routes mounted successfully');
     }
 };
 
@@ -1320,6 +1333,7 @@ app.get('/api/recommendations', async (req, res) => {
 // Start server
 const startServer = async () => {
     await initializeDatabase();
+    mountReviewRoutes();
     
     app.listen(PORT, () => {
         console.log(`Server is running on port ${PORT}`);

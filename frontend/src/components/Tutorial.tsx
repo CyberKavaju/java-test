@@ -64,6 +64,13 @@ const Tutorial: React.FC<TutorialProps> = () => {
     setSearchParams({});
   };
 
+  const startReview = () => {
+    if (selectedSlug) {
+      // Navigate to review page with the current tutorial topic
+      window.open(`/review?topic=${selectedSlug}`, '_blank');
+    }
+  };
+
   const getFilteredTutorials = () => {
     if (!searchQuery.trim()) {
       return tutorials;
@@ -123,11 +130,18 @@ const Tutorial: React.FC<TutorialProps> = () => {
 
     return (
       <div className="tutorial-container">
-        <div className="tutorial-header">
-          <button onClick={goBack} className="btn btn-secondary back-btn">
-            ← Back to Tutorials
-          </button>
-          <h1>{selectedTutorial.title}</h1>
+        <div className="tutorial-header tutorial-header-single">
+          <div className="header-left">
+            <button onClick={goBack} className="btn btn-secondary back-btn">
+              ← Back to Tutorials
+            </button>
+          </div>
+          <div className="header-center">
+            <h1>{selectedTutorial.title}</h1>
+          </div>
+          <div className="header-right">
+            {/* Empty div for flex balance */}
+          </div>
         </div>
 
         <div className="tutorial-content">
@@ -165,22 +179,30 @@ const Tutorial: React.FC<TutorialProps> = () => {
         </div>
 
         <div className="tutorial-navigation">
-          {prevTutorial && (
-            <button 
-              onClick={() => selectTutorial(prevTutorial.slug)}
-              className="btn btn-secondary nav-btn"
-            >
-              ← Previous: {prevTutorial.title}
+          <div className="nav-buttons">
+            {prevTutorial && (
+              <button 
+                onClick={() => selectTutorial(prevTutorial.slug)}
+                className="btn btn-secondary nav-btn"
+              >
+                ← Previous: {prevTutorial.title}
+              </button>
+            )}
+            {nextTutorial && (
+              <button 
+                onClick={() => selectTutorial(nextTutorial.slug)}
+                className="btn btn-primary nav-btn"
+              >
+                Next: {nextTutorial.title} →
+              </button>
+            )}
+          </div>
+          
+          <div className="review-section">
+            <button onClick={startReview} className="btn btn-primary review-btn">
+              🎯 Review This Topic
             </button>
-          )}
-          {nextTutorial && (
-            <button 
-              onClick={() => selectTutorial(nextTutorial.slug)}
-              className="btn btn-primary nav-btn"
-            >
-              Next: {nextTutorial.title} →
-            </button>
-          )}
+          </div>
         </div>
 
         {loading && <div className="loading-overlay">Loading...</div>}

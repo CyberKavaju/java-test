@@ -7,6 +7,7 @@ import TestResults from './components/TestResults';
 import Report from './components/Report';
 import Import from './components/Import';
 import Tutorial from './components/Tutorial';
+import Review from './components/Review';
 import { QuestionManagement } from './components/QuestionManagement';
 import './App.css';
 
@@ -32,8 +33,7 @@ function Home() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [serverStatus, setServerStatus] = useState<boolean | null>(null);
-  const [pullToRefresh, setPullToRefresh] = useState(false);
-  const [touchStartY, setTouchStartY] = useState(0);
+  const [pullToRefresh] = useState(false);
   const [questionCount, setQuestionCount] = useState<number>(0);
 
   useEffect(() => {
@@ -58,29 +58,29 @@ function Home() {
   }, []);
 
   // Pull to refresh functionality
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStartY(e.touches[0].clientY);
-  };
+  // const handleTouchStart = (e: React.TouchEvent) => {
+  //   setTouchStartY(e.touches[0].clientY);
+  // };
 
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isMobile()) return;
+  // const handleTouchMove = (e: React.TouchEvent) => {
+  //   if (!isMobile()) return;
     
-    const touchY = e.touches[0].clientY;
-    const pullDistance = touchY - touchStartY;
+  //   const touchY = e.touches[0].clientY;
+  //   const pullDistance = touchY - touchStartY;
     
-    if (pullDistance > 100 && window.scrollY === 0) {
-      setPullToRefresh(true);
-    }
-  };
+  //   if (pullDistance > 100 && window.scrollY === 0) {
+  //     setPullToRefresh(true);
+  //   }
+  // };
 
-  const handleTouchEnd = async () => {
-    if (pullToRefresh) {
-      setPullToRefresh(false);
-      // Refresh server status
-      const isHealthy = await apiService.healthCheck();
-      setServerStatus(isHealthy);
-    }
-  };
+  // const handleTouchEnd = async () => {
+  //   if (pullToRefresh) {
+  //     setPullToRefresh(false);
+  //     // Refresh server status
+  //     const isHealthy = await apiService.healthCheck();
+  //     setServerStatus(isHealthy);
+  //   }
+  // };
 
   const startNewTest = async () => {
     try {
@@ -277,6 +277,7 @@ function AppRoutes() {
             <Route path="/" element={<Home />} />
             <Route path="/test" element={<TestPage />} />
             <Route path="/tutorial" element={<Tutorial />} />
+            <Route path="/review" element={<Review />} />
             <Route path="/report" element={<Report />} />
             <Route path="/import" element={<Import />} />
             <Route path="/questions" element={<QuestionManagement />} />
