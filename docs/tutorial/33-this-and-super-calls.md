@@ -1,5 +1,9 @@
 # `this()` and `super()` Calls
 
+**Related Topics:** [Constructors](31-constructors.md)
+
+---
+
 ## 🎯 Purpose at a Glance
 
 | Keyword     | Calls...                                   | Used for...                      |
@@ -247,3 +251,9 @@ B()
 
 > Use `this()` to **reuse constructors within the same class**,
 > Use `super()` to **ensure the parent class is properly initialized**.
+
+## 📺 Video Tutorials
+
+[This Keyword in Java Full Tutorial - How to Use "this" - Coding with John](https://www.youtube.com/watch?v=ETLHbHenW44)
+
+[Super Keyword in Java Full Tutorial - How to Use "super" - Coding with John](https://www.youtube.com/watch?v=Qb_NUn0TSAU)

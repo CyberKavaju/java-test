@@ -1,5 +1,9 @@
 # Constructors
 
+**Related Topics:** [This and Super Calls](33-this-and-super-calls.md) 
+
+---
+
 ## 🧠 What is a Constructor?
 
 > A **constructor** is a special method that is **called automatically** when an object is **created**.
@@ -134,6 +138,10 @@ class Dog extends Animal {
 ```
 
 ---
+## Useful knowledge
+
+When you create a constructor in a subclass, the superclass constructor automatically creates a no-arg constructor, unless you explicitly call a different one using `super()`.
+So make sure your superclass has a no-arg constructor if you want to avoid compilation errors. if doesn't, you must call a specific constructor of the superclass using `super(...)`.
 
 ## 🧠 Real-World Analogy
 
@@ -235,5 +243,7 @@ B
 
 > Constructors **build your object**, **set its state**, and **don't return values**.
 > Use **overloading** to support flexible initialization, and remember `this()` and `super()` for reuse and inheritance.
+
+## Video Tutorials
 
 [Coding with John -  Java Constructors](https://www.youtube.com/watch?v=pgBk8HC7jbU0) - A great video resource for understanding constructors in Java.

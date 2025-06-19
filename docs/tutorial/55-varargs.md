@@ -598,3 +598,11 @@ Varargs must be the last parameter, only one varargs per method is allowed, and 
 ---
 
 *This tutorial covers Varargs in Java, providing flexible method signatures that can accept a variable number of arguments of the same type.*
+
+## Video Tutorials
+
+[Learn VARARGS in 6 minutes! 💬 - Bro Code](https://www.youtube.com/watch?v=2knxgAFqwKk)
+
+[Learn Java Programming - Varargs Array Part 1 Tutorial - Daniel Ross](https://www.youtube.com/watch?v=O2pG6lVvYhQ)
+
+[Learn Java Programming - Varargs Array Part 2 Tutorial - Daniel Ross](https://www.youtube.com/watch?v=ztKY9_ThIaY)
