@@ -5,6 +5,30 @@
 > A **Map** is an object that maps **keys to values**.
 > It **cannot contain duplicate keys**, but **values can be duplicated**.
 
+Here's a concise explanation you can add to your tutorial:
+
+---
+
+### 💡 `Map` is an interface
+
+In Java, `Map<K, V>` is an **interface** — it defines a **contract** for key-value data structures. It specifies **what operations** a map must support (like `put()`, `get()`, `remove()`, etc.), but **not how** they are implemented.
+
+Classes like `HashMap`, `TreeMap`, `LinkedHashMap`, and `ConcurrentHashMap` are **concrete implementations** of the `Map` interface. They provide their **own behavior** for how data is stored, ordered, and accessed.
+
+Think of it like this:
+
+> `Map` is the **blueprint**, and `HashMap` (or others) are the **buildings** made from that blueprint — each with different features.
+
+---
+
+#### ✅ Example:
+
+```java
+Map<String, Integer> scores = new HashMap<>();
+```
+
+Here, you're using the `Map` interface type (good OOP practice), but assigning it to an instance of `HashMap`, which provides the actual functionality.
+
 ---
 
 ## 📦 Key Characteristics
@@ -31,6 +55,90 @@
 
 ---
 
+## 🧭 When and Why to Use Different `Map` Implementations in Java
+
+Java provides multiple `Map` implementations, each with specific use cases. Understanding their strengths helps you choose the best one for performance, memory, ordering, or concurrency needs.
+
+---
+
+### 🌳 **Core Map Implementations**
+
+| Map Type               | When to Use                                        | Why Choose It                                                                      |
+| ---------------------- | -------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| 🔹 `HashMap`           | General-purpose, unordered map                     | ✅ Fastest `get/put` (O(1)) <br> ❌ No ordering guarantee <br> ✅ Allows one null key |
+| 🔹 `LinkedHashMap`     | Need to preserve **insertion** or **access** order | 🧭 Predictable iteration order <br> ✅ Used in caching (e.g., LRU)                  |
+| 🔹 `TreeMap`           | Need **sorted** keys                               | 🔡 Keeps keys sorted (natural or custom comparator) <br> ⚠️ Slower (O(log n))      |
+| 🔹 `ConcurrentHashMap` | **Thread-safe** access in concurrent environments  | 🧵 Highly scalable concurrency <br> ❌ No null keys/values                          |
+| 🔹 `Hashtable`         | Maintaining **legacy** code only                   | 🧓 Synchronized but outdated <br> ❌ No nulls <br> ❌ Avoid in modern code           |
+
+---
+
+### 🧪 **Specialized & Utility Map Implementations**
+
+| Map Type                              | When to Use                                       | Why Choose It                                                                     |
+| ------------------------------------- | ------------------------------------------------- | --------------------------------------------------------------------------------- |
+| 🧩 `EnumMap<K extends Enum<K>, V>`    | Keys are enum constants                           | 🏎️ Very fast, compact memory usage <br> ❌ Keys must be same enum type            |
+| 🌬 `WeakHashMap<K, V>`                | Cache-like behavior, auto-remove keys when GC’ed  | 🧠 Keys are held weakly (GC can remove them) <br> ✅ Used in memory-sensitive apps |
+| 🪞 `IdentityHashMap<K, V>`            | Identity comparison (`==` instead of `.equals()`) | 🔍 Unusual use cases like graph traversal or frameworks                           |
+| ⚙️ `Properties`                       | Application config settings                       | 🧾 Map of `String` → `String` <br> ✅ Supports `.properties` file reading          |
+| 🔒 `Collections.synchronizedMap(Map)` | Basic thread-safe wrapper for any map             | 🚫 Slower than `ConcurrentHashMap` <br> ✅ Easy to wrap legacy code                |
+| 🛡 `Collections.unmodifiableMap(Map)` | Read-only access to an existing map               | ✅ Prevents accidental modification <br> 🚫 Runtime error on mutation attempt      |
+
+---
+
+### 🧠 Summary: Which Map for What?
+
+| Use Case                      | Best Map                                      |
+| ----------------------------- | --------------------------------------------- |
+| Max speed, no order           | `HashMap`                                     |
+| Maintain insertion order      | `LinkedHashMap`                               |
+| Sorted keys                   | `TreeMap`                                     |
+| Thread-safe (modern)          | `ConcurrentHashMap`                           |
+| Legacy synchronization        | `Hashtable` / `Collections.synchronizedMap()` |
+| Enum keys                     | `EnumMap`                                     |
+| Garbage-collected keys        | `WeakHashMap`                                 |
+| Identity-based key comparison | `IdentityHashMap`                             |
+| Read-only map                 | `Collections.unmodifiableMap()`               |
+| Config files                  | `Properties`                                  |
+
+---
+
+## 🧠 Best Practices
+
+* 🔒 **Never use `Hashtable` in new code** — it's obsolete.
+* 🧼 **Always prefer `Map<K,V> map = new HashMap<>()`** (coding to interface).
+* 🚀 Use `ConcurrentHashMap` for **high-performance multithreading** — it's miles ahead of synchronized maps.
+
+---
+
+## 📦 Java Map Implementations — Import Table
+
+| Map Type                        | Import Statement                                                 |
+| ------------------------------- | ---------------------------------------------------------------- |
+| `Map` (interface)               | `import java.util.Map;`                                          |
+| `HashMap`                       | `import java.util.HashMap;`                                      |
+| `LinkedHashMap`                 | `import java.util.LinkedHashMap;`                                |
+| `TreeMap`                       | `import java.util.TreeMap;`                                      |
+| `Hashtable`                     | `import java.util.Hashtable;`                                    |
+| `ConcurrentHashMap`             | `import java.util.concurrent.ConcurrentHashMap;`                 |
+| `EnumMap`                       | `import java.util.EnumMap;`                                      |
+| `WeakHashMap`                   | `import java.util.WeakHashMap;`                                  |
+| `IdentityHashMap`               | `import java.util.IdentityHashMap;`                              |
+| `Properties`                    | `import java.util.Properties;`                                   |
+| `Collections.synchronizedMap()` | `import java.util.Collections;`                                  |
+| `Collections.unmodifiableMap()` | `import java.util.Collections;`                                  |
+| `SortedMap` / `NavigableMap`    | `import java.util.SortedMap;` / `import java.util.NavigableMap;` |
+
+---
+
+### 🧠 Tips:
+
+* `Map`, `HashMap`, `TreeMap`, etc. all live in `java.util`.
+* `ConcurrentHashMap` is in `java.util.concurrent`.
+* `Collections` class provides static utility methods like `synchronizedMap()` and `unmodifiableMap()`.
+
+---
+
 ## 🛠️ Creating a `Map`
 
 ```java
@@ -43,24 +151,50 @@ ages.put("Alice", 35); // ✅ Replaces existing value for "Alice"
 
 System.out.println(ages); // {Alice=35, Bob=25}
 ```
+---
+
+### 📦 Java Map API — Method Table
+
+| 🧾 Name                       | 📘 Description                    | 🔁 Return Value           |
+| ----------------------------- | --------------------------------- | ------------------------- |
+| `put(K key, V value)`         | Adds or replaces a key-value pair | `V` (old value or `null`) |
+| `get(Object key)`             | Retrieves value by key            | `V` (or `null`)           |
+| `remove(Object key)`          | Removes key and its value         | `V` (or `null`)           |
+| `containsKey(Object key)`     | Checks if the map contains a key  | `boolean`                 |
+| `containsValue(Object value)` | Checks if a value exists          | `boolean`                 |
+| `size()`                      | Returns number of entries         | `int`                     |
+| `clear()`                     | Removes all entries               | `void`                    |
+| `isEmpty()`                   | Checks if map is empty            | `boolean`                 |
+| `keySet()`                    | Gets set of keys                  | `Set<K>`                  |
+| `values()`                    | Gets all values                   | `Collection<V>`           |
+| `entrySet()`                  | Gets key-value entry set          | `Set<Map.Entry<K,V>>`     |
 
 ---
 
-## 🧰 Useful Methods
+### ⚡ Java 8+ Functional & Enhanced Methods
 
-| Method                      | Description                         |
-| --------------------------- | ----------------------------------- |
-| `put(K key, V value)`     | Adds/replaces a key-value pair      |
-| `get(Object key)`         | Retrieves the value for a given key |
-| `remove(Object key)`      | Removes a key and its value         |
-| `containsKey(Object key)` | Checks if a key exists              |
-| `containsValue(Object v)` | Checks if a value exists            |
-| `keySet()`                | Returns a `Set` of keys           |
-| `values()`                | Returns a `Collection` of values  |
-| `entrySet()`              | Returns a `Set<Map.Entry<K, V>>`  |
-| `size()`                  | Returns number of key-value pairs   |
-| `clear()`                 | Removes all entries                 |
-| `isEmpty()`               | Checks if the map is empty          |
+| 🧾 Name                                                      | 📘 Description                               | 🔁 Return Value                |
+| ------------------------------------------------------------ | -------------------------------------------- | ------------------------------ |
+| `getOrDefault(Object key, V defaultValue)`                   | Returns value or default if key not found    | `V`                            |
+| `putIfAbsent(K key, V value)`                                | Puts value only if key isn't already present | `V` (existing or `null`)       |
+| `compute(K key, BiFunction<K,V,V> remappingFunction)`        | Computes and updates value for key           | `V` (updated or removed value) |
+| `computeIfAbsent(K key, Function<K,V> mappingFunction)`      | Computes value if key is missing             | `V`                            |
+| `computeIfPresent(K key, BiFunction<K,V,V>)`                 | Updates value if key exists                  | `V`                            |
+| `merge(K key, V value, BiFunction<V,V,V> remappingFunction)` | Merges existing and new value                | `V`                            |
+| `forEach(BiConsumer<K,V> action)`                            | Performs action for each entry               | `void`                         |
+| `replace(K key, V newValue)`                                 | Replaces value only if key exists            | `V` (old value or `null`)      |
+| `replace(K key, V oldValue, V newValue)`                     | Replaces value only if current value matches | `boolean`                      |
+| `replaceAll(BiFunction<K,V,V> function)`                     | Applies function to all entries              | `void`                         |
+
+---
+
+### 🧱 Map.Entry Methods
+
+| 🧾 Name             | 📘 Description                    | 🔁 Return Value |
+| ------------------- | --------------------------------- | --------------- |
+| `getKey()`          | Returns entry's key               | `K`             |
+| `getValue()`        | Returns entry's value             | `V`             |
+| `setValue(V value)` | Replaces entry's value in the map | `V` (old value) |
 
 ---
 
@@ -188,4 +322,5 @@ System.out.println(map.get("A"));
 ## Video Tutorials
 
 - [Map and HashMap in Java - Full Tutorial - Coding with John](https://www.youtube.com/watch?v=H62Jfv1DJlU)
-
+- [Learn Java HASHMAPS in 10 minutes! 🗺️ - Bro Code](https://www.youtube.com/watch?v=NMHk1CGb28o)
+- []()

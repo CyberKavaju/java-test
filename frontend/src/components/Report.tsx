@@ -776,38 +776,50 @@ export default function Report() {
             </div>
           </div>
           
-          <h3>Performance by Topic</h3>
-          <div className="topics-analysis">
-            {userHistory.topicStats.map((topic) => (
-              <div key={topic.topic} className="topic-item">
-                <div className="topic-header">
-                  <h4>{topic.topic}</h4>
-                  <div className={`topic-rate ${topic.success_rate >= 80 ? 'green' : topic.success_rate >= 50 ? 'yellow' : 'red'}`}>
-                    {topic.success_rate}%
+          <div className="topics-section">
+            <h3>Performance by Topic</h3>
+            <p className="section-description">Track your progress across different Java concepts and identify areas for improvement.</p>
+            <div className="topics-analysis">
+              {userHistory.topicStats.map((topic) => {
+                const performanceLevel = topic.success_rate >= 80 ? 'green' : topic.success_rate >= 50 ? 'yellow' : 'red';
+                const performanceLabel = topic.success_rate >= 80 ? 'Excellent' : topic.success_rate >= 50 ? 'Good' : 'Needs Work';
+                const performanceEmoji = getPerformanceEmoji(performanceLevel);
+                
+                return (
+                  <div key={topic.topic} className="topic-item">
+                    <div className="topic-header">
+                      <h4>{topic.topic}</h4>
+                      <div className="performance-label">
+                        <span className={`status-badge ${performanceLevel}`}>{performanceLabel}</span>
+                      </div>
+                    </div>
+                    <div className="topic-stats">
+                      <div className="topic-stat">
+                        <span className="stat-label">Attempts:</span>
+                        <span className="stat-value">{topic.total_attempts}</span>
+                      </div>
+                      <div className="topic-stat">
+                        <span className="stat-label">Correct:</span>
+                        <span className="stat-value">{topic.correct_answers}</span>
+                      </div>
+                    </div>
+                    <div className={`topic-rate ${performanceLevel}`}>
+                      <span className="performance-emoji">{performanceEmoji}</span>
+                      {topic.success_rate}%
+                    </div>
+                    <div className="progress-bar">
+                      <div 
+                        className="progress-fill"
+                        style={{ 
+                          width: `${topic.success_rate}%`,
+                          backgroundColor: getPerformanceColor(performanceLevel)
+                        }}
+                      ></div>
+                    </div>
                   </div>
-                </div>
-                <div className="topic-stats">
-                  <div className="topic-stat">
-                    <span>Attempts: {topic.total_attempts}</span>
-                  </div>
-                  <div className="topic-stat">
-                    <span>Correct: {topic.correct_answers}</span>
-                  </div>
-                </div>
-                <div className="progress-bar">
-                  <div 
-                    className="progress-fill"
-                    style={{ 
-                      width: `${topic.success_rate}%`,
-                      backgroundColor: getPerformanceColor(
-                        topic.success_rate >= 80 ? 'green' : 
-                        topic.success_rate >= 50 ? 'yellow' : 'red'
-                      )
-                    }}
-                  ></div>
-                </div>
-              </div>
-            ))}
+                );
+              })}
+            </div>
           </div>
         </div>
       )}
