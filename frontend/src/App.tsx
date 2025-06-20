@@ -7,6 +7,7 @@ import TestResults from './components/TestResults';
 import Report from './components/Report';
 import Import from './components/Import';
 import Tutorial from './components/Tutorial';
+import Review from './components/Review';
 import { QuestionManagement } from './components/QuestionManagement';
 import './styles/index.css';
 
@@ -277,6 +278,7 @@ function AppRoutes() {
             <Route path="/test" element={<TestPage />} />
             <Route path="/tutorial" element={<Tutorial />} />
             <Route path="/report" element={<Report />} />
+            <Route path="/review" element={<Review />} />
             <Route path="/import" element={<Import />} />
             <Route path="/questions" element={<QuestionManagement />} />
           </Routes>

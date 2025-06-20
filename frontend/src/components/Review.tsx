@@ -360,7 +360,25 @@ const Review: React.FC<ReviewProps> = () => {
                   onChange={() => handleAnswerSelect(currentQuestion.id, option)}
                 />
                 <span className="option-letter">{option}</span>
-                <span className="option-text">{optionText}</span>
+                <span className="option-text">
+                  <ReactMarkdown 
+                    remarkPlugins={[remarkGfm]}
+                    components={{
+                      code: ({className, children, ...props}) => {
+                        const match = /language-(\w+)/.exec(className || '');
+                        const isInline = !match;
+                        return isInline ? (
+                          <code className="inline-code" {...props}>{children}</code>
+                        ) : (
+                          <code className={className} {...props}>{children}</code>
+                        );
+                      },
+                      pre: ({children}) => <pre className="code-block">{children}</pre>,
+                    }}
+                  >
+                    {optionText}
+                  </ReactMarkdown>
+                </span>
               </label>
             );
           })}

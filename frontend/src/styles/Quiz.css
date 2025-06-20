@@ -154,6 +154,59 @@
   padding: 0 2rem 200px 2rem; /* Increased bottom padding for footer */
 }
 
+/* Code block styling for question text in quiz */
+.question-text .code-block {
+  background: transparent !important;
+  border: 1px solid #374151;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 16px 0;
+  overflow-x: auto;
+  box-shadow: none;
+}
+
+.question-text .code-block code {
+  background: transparent;
+  color: #e5e7eb;
+  font-family: 'JetBrains Mono', 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  padding: 0;
+  border: none;
+  display: block;
+  white-space: pre;
+}
+
+.question-text .inline-code {
+  background: transparent;
+  color: #e5e7eb;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
+  font-size: 13px;
+  border: 1px solid #374151;
+}
+
+/* Option text formatting */
+.option-text .code-block {
+  background: transparent !important;
+  border: 1px solid #374151;
+  border-radius: 4px;
+  padding: 8px;
+  margin: 4px 0;
+  overflow-x: auto;
+  font-size: 12px;
+}
+
+.option-text .inline-code {
+  background: rgba(59, 130, 246, 0.1);
+  color: #93c5fd;
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-family: 'JetBrains Mono', 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
+  font-size: 12px;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .navigation-footer {

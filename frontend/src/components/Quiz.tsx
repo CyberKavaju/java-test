@@ -1,4 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { useApp } from '../context/AppContext';
 import type { Question } from '../types';
 
@@ -29,7 +31,32 @@ function QuizQuestion({ question, questionNumber, selectedAnswer, onAnswerSelect
       </div>
       
       <div className="question-text">
-        <pre>{question.question_text}</pre>
+        <ReactMarkdown 
+          remarkPlugins={[remarkGfm]}
+          components={{
+            // Custom styling for code blocks
+            code: ({className, children, ...props}) => {
+              const match = /language-(\w+)/.exec(className || '');
+              const isInline = !match;
+              
+              return isInline ? (
+                <code className="inline-code" {...props}>
+                  {children}
+                </code>
+              ) : (
+                <code className={className} {...props}>
+                  {children}
+                </code>
+              );
+            },
+            // Custom styling for pre blocks (code blocks)
+            pre: ({children}) => (
+              <pre className="code-block">{children}</pre>
+            ),
+          }}
+        >
+          {question.question_text}
+        </ReactMarkdown>
       </div>
       
       <div className="options">
@@ -43,7 +70,25 @@ function QuizQuestion({ question, questionNumber, selectedAnswer, onAnswerSelect
               onChange={() => onAnswerSelect(option.key)}
             />
             <span className="option-key">{option.key}.</span>
-            <span className="option-text">{option.value}</span>
+            <span className="option-text">
+              <ReactMarkdown 
+                remarkPlugins={[remarkGfm]}
+                components={{
+                  code: ({className, children, ...props}) => {
+                    const match = /language-(\w+)/.exec(className || '');
+                    const isInline = !match;
+                    return isInline ? (
+                      <code className="inline-code" {...props}>{children}</code>
+                    ) : (
+                      <code className={className} {...props}>{children}</code>
+                    );
+                  },
+                  pre: ({children}) => <pre className="code-block">{children}</pre>,
+                }}
+              >
+                {option.value}
+              </ReactMarkdown>
+            </span>
           </label>
         ))}
       </div>

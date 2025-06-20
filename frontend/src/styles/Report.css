@@ -1511,7 +1511,7 @@
   }
 }
 
-/* Enhanced syntax highlighting for Java code */
+/* Enhanced syntax highlighting */
 .question-text pre code .keyword,
 .explanation pre code .keyword {
   color: #ff7b72;

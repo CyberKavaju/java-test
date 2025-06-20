@@ -1,3 +1,5 @@
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import type { TestResult } from '../types';
 
 interface TestResultsProps {
@@ -69,7 +71,32 @@ export default function TestResults({ results, score, total, percentage, onRetak
             
             <div className="result-content">
               <div className="question-text">
-                <pre>{result.question_text}</pre>
+                <ReactMarkdown 
+                  remarkPlugins={[remarkGfm]}
+                  components={{
+                    // Custom styling for code blocks
+                    code: ({className, children, ...props}) => {
+                      const match = /language-(\w+)/.exec(className || '');
+                      const isInline = !match;
+                      
+                      return isInline ? (
+                        <code className="inline-code" {...props}>
+                          {children}
+                        </code>
+                      ) : (
+                        <code className={className} {...props}>
+                          {children}
+                        </code>
+                      );
+                    },
+                    // Custom styling for pre blocks (code blocks)
+                    pre: ({children}) => (
+                      <pre className="code-block">{children}</pre>
+                    ),
+                  }}
+                >
+                  {result.question_text}
+                </ReactMarkdown>
               </div>
               
               <div className="answers">
@@ -91,7 +118,32 @@ export default function TestResults({ results, score, total, percentage, onRetak
               {result.explanation && (
                 <div className="explanation">
                   <h4>Explanation:</h4>
-                  <p>{result.explanation}</p>
+                  <ReactMarkdown 
+                    remarkPlugins={[remarkGfm]}
+                    components={{
+                      // Custom styling for code blocks
+                      code: ({className, children, ...props}) => {
+                        const match = /language-(\w+)/.exec(className || '');
+                        const isInline = !match;
+                        
+                        return isInline ? (
+                          <code className="inline-code" {...props}>
+                            {children}
+                          </code>
+                        ) : (
+                          <code className={className} {...props}>
+                            {children}
+                          </code>
+                        );
+                      },
+                      // Custom styling for pre blocks (code blocks)
+                      pre: ({children}) => (
+                        <pre className="code-block">{children}</pre>
+                      ),
+                    }}
+                  >
+                    {result.explanation}
+                  </ReactMarkdown>
                 </div>
               )}
             </div>

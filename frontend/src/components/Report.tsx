@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { apiService } from '../services/api';
 import ImprovementGraph from './ImprovementGraph';
+import '../styles/Report.css';
 import type { QuestionPerformance, PerformanceTrend, UserStats, TestSession, TopicStats, DetailedQuestionPerformance, ReviewReport } from '../types';
 
 export default function Report() {
@@ -630,7 +633,32 @@ export default function Report() {
                     <div className="question-content">
                       <div className="question-text">
                         <h4>Question:</h4>
-                        <p>{question.question_text}</p>
+                        <ReactMarkdown 
+                          remarkPlugins={[remarkGfm]}
+                          components={{
+                            // Custom styling for code blocks
+                            code: ({className, children, ...props}) => {
+                              const match = /language-(\w+)/.exec(className || '');
+                              const isInline = !match;
+                              
+                              return isInline ? (
+                                <code className="inline-code" {...props}>
+                                  {children}
+                                </code>
+                              ) : (
+                                <code className={className} {...props}>
+                                  {children}
+                                </code>
+                              );
+                            },
+                            // Custom styling for pre blocks (code blocks)
+                            pre: ({children}) => (
+                              <pre className="code-block">{children}</pre>
+                            ),
+                          }}
+                        >
+                          {question.question_text}
+                        </ReactMarkdown>
                       </div>
 
                       <div className="answer-options">
@@ -638,30 +666,120 @@ export default function Report() {
                         <div className="options-grid">
                           <div className={`option ${question.correct_answer === 'A' ? 'correct' : ''}`}>
                             <span className="option-label">A)</span>
-                            <span className="option-text">{question.option_a}</span>
+                            <span className="option-text">
+                              <ReactMarkdown 
+                                remarkPlugins={[remarkGfm]}
+                                components={{
+                                  code: ({className, children, ...props}) => {
+                                    const match = /language-(\w+)/.exec(className || '');
+                                    const isInline = !match;
+                                    return isInline ? (
+                                      <code className="inline-code" {...props}>{children}</code>
+                                    ) : (
+                                      <code className={className} {...props}>{children}</code>
+                                    );
+                                  },
+                                  pre: ({children}) => <pre className="code-block">{children}</pre>,
+                                }}
+                              >
+                                {question.option_a}
+                              </ReactMarkdown>
+                            </span>
                             {question.correct_answer === 'A' && <span className="correct-indicator">✓ Correct</span>}
                           </div>
                           <div className={`option ${question.correct_answer === 'B' ? 'correct' : ''}`}>
                             <span className="option-label">B)</span>
-                            <span className="option-text">{question.option_b}</span>
+                            <span className="option-text">
+                              <ReactMarkdown 
+                                remarkPlugins={[remarkGfm]}
+                                components={{
+                                  code: ({className, children, ...props}) => {
+                                    const match = /language-(\w+)/.exec(className || '');
+                                    const isInline = !match;
+                                    return isInline ? (
+                                      <code className="inline-code" {...props}>{children}</code>
+                                    ) : (
+                                      <code className={className} {...props}>{children}</code>
+                                    );
+                                  },
+                                  pre: ({children}) => <pre className="code-block">{children}</pre>,
+                                }}
+                              >
+                                {question.option_b}
+                              </ReactMarkdown>
+                            </span>
                             {question.correct_answer === 'B' && <span className="correct-indicator">✓ Correct</span>}
                           </div>
                           <div className={`option ${question.correct_answer === 'C' ? 'correct' : ''}`}>
                             <span className="option-label">C)</span>
-                            <span className="option-text">{question.option_c}</span>
+                            <span className="option-text">
+                              <ReactMarkdown 
+                                remarkPlugins={[remarkGfm]}
+                                components={{
+                                  code: ({className, children, ...props}) => {
+                                    const match = /language-(\w+)/.exec(className || '');
+                                    const isInline = !match;
+                                    return isInline ? (
+                                      <code className="inline-code" {...props}>{children}</code>
+                                    ) : (
+                                      <code className={className} {...props}>{children}</code>
+                                    );
+                                  },
+                                  pre: ({children}) => <pre className="code-block">{children}</pre>,
+                                }}
+                              >
+                                {question.option_c}
+                              </ReactMarkdown>
+                            </span>
                             {question.correct_answer === 'C' && <span className="correct-indicator">✓ Correct</span>}
                           </div>
                           {question.option_d && (
                             <div className={`option ${question.correct_answer === 'D' ? 'correct' : ''}`}>
                               <span className="option-label">D)</span>
-                              <span className="option-text">{question.option_d}</span>
+                              <span className="option-text">
+                                <ReactMarkdown 
+                                  remarkPlugins={[remarkGfm]}
+                                  components={{
+                                    code: ({className, children, ...props}) => {
+                                      const match = /language-(\w+)/.exec(className || '');
+                                      const isInline = !match;
+                                      return isInline ? (
+                                        <code className="inline-code" {...props}>{children}</code>
+                                      ) : (
+                                        <code className={className} {...props}>{children}</code>
+                                      );
+                                    },
+                                    pre: ({children}) => <pre className="code-block">{children}</pre>,
+                                  }}
+                                >
+                                  {question.option_d}
+                                </ReactMarkdown>
+                              </span>
                               {question.correct_answer === 'D' && <span className="correct-indicator">✓ Correct</span>}
                             </div>
                           )}
                           {question.option_e && (
                             <div className={`option ${question.correct_answer === 'E' ? 'correct' : ''}`}>
                               <span className="option-label">E)</span>
-                              <span className="option-text">{question.option_e}</span>
+                              <span className="option-text">
+                                <ReactMarkdown 
+                                  remarkPlugins={[remarkGfm]}
+                                  components={{
+                                    code: ({className, children, ...props}) => {
+                                      const match = /language-(\w+)/.exec(className || '');
+                                      const isInline = !match;
+                                      return isInline ? (
+                                        <code className="inline-code" {...props}>{children}</code>
+                                      ) : (
+                                        <code className={className} {...props}>{children}</code>
+                                      );
+                                    },
+                                    pre: ({children}) => <pre className="code-block">{children}</pre>,
+                                  }}
+                                >
+                                  {question.option_e}
+                                </ReactMarkdown>
+                              </span>
                               {question.correct_answer === 'E' && <span className="correct-indicator">✓ Correct</span>}
                             </div>
                           )}
@@ -671,7 +789,32 @@ export default function Report() {
                       {question.explanation && (
                         <div className="explanation">
                           <h4>Explanation:</h4>
-                          <p>{question.explanation}</p>
+                          <ReactMarkdown 
+                            remarkPlugins={[remarkGfm]}
+                            components={{
+                              // Custom styling for code blocks
+                              code: ({className, children, ...props}) => {
+                                const match = /language-(\w+)/.exec(className || '');
+                                const isInline = !match;
+                                
+                                return isInline ? (
+                                  <code className="inline-code" {...props}>
+                                    {children}
+                                  </code>
+                                ) : (
+                                  <code className={className} {...props}>
+                                    {children}
+                                  </code>
+                                );
+                              },
+                              // Custom styling for pre blocks (code blocks)
+                              pre: ({children}) => (
+                                <pre className="code-block">{children}</pre>
+                              ),
+                            }}
+                          >
+                            {question.explanation}
+                          </ReactMarkdown>
                         </div>
                       )}
 
