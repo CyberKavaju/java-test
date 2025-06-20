@@ -717,14 +717,24 @@ export default function Report() {
                 .sort((a, b) => a.success_rate - b.success_rate)
                 .map((topic) => {
                   const isExpanded = expandedRecommendations.has(topic.topic);
+                  const getSuccessRateClass = (rate: number) => {
+                    if (rate < 30) return 'critical';
+                    if (rate < 50) return 'warning';
+                    return 'improvement';
+                  };
+                  const successRateClass = getSuccessRateClass(topic.success_rate);
+                  
                   return (
-                    <div key={topic.topic} className={`recommendation-item ${isExpanded ? 'expanded' : 'collapsed'}`}>
+                    <div key={topic.topic} className={`recommendation-item ${isExpanded ? 'expanded' : 'collapsed'} ${successRateClass}`}>
                       <div 
                         className="recommendation-header"
                         onClick={() => toggleRecommendationExpand(topic.topic)}
                       >
                         <span className="priority">🎯</span>
                         <span className="recommendation-title">Focus on: {topic.topic}</span>
+                        <span className={`success-rate-badge ${successRateClass}`}>
+                          {topic.success_rate}%
+                        </span>
                         <span className={`expand-icon ${isExpanded ? 'expanded' : ''}`}>
                           {isExpanded ? '▼' : '▶'}
                         </span>

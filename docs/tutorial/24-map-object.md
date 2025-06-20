@@ -184,3 +184,8 @@ System.out.println(map.get("A"));
 
 > Use a `Map` when you need to **associate keys with values**, like a dictionary or lookup table.
 > Choose the right implementation depending on whether you care about **ordering**, **null handling**, or **performance**.
+
+## Video Tutorials
+
+- [Map and HashMap in Java - Full Tutorial - Coding with John](https://www.youtube.com/watch?v=H62Jfv1DJlU)
+
