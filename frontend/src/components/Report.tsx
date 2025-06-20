@@ -257,6 +257,8 @@ export default function Report() {
       'ArrayList Capacity': '22-list-object',
       'ArrayList contains': '22-list-object',
       'ArrayList remove': '22-list-object',
+      'HashMap': '24-map-object',
+      'HashMap put': '24-map-object',
       'Variables': '04-variable',
       'Variable': '04-variable',
       'Casting Primitives': '05-variable-casting-and-conversions',
@@ -357,6 +359,9 @@ export default function Report() {
     // Try partial matches for common patterns
     const lowerTopic = topic.toLowerCase();
     if (lowerTopic.includes('array')) return '21-arrays';
+    if (lowerTopic.includes('map') || lowerTopic.includes('hashmap')) return '24-map-object';
+    if (lowerTopic.includes('set')) return '23-set-object';
+    if (lowerTopic.includes('list')) return '22-list-object';
     if (lowerTopic.includes('loop') || lowerTopic.includes('for') || lowerTopic.includes('while')) return '20-looping-constructs';
     if (lowerTopic.includes('if') || lowerTopic.includes('condition')) return '12-if-else-statement';
     if (lowerTopic.includes('ternary')) return '12-if-else-statement';

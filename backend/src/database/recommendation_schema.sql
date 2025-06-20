@@ -84,6 +84,7 @@ INSERT OR IGNORE INTO recommendations (topic, documentation_url) VALUES
 ('Finally Always Executes', 'https://docs.oracle.com/javase/tutorial/essential/exceptions/finally.html'),
 ('Float precision', 'https://docs.oracle.com/javase/tutorial/java/nutsandbolts/datatypes.html'),
 ('For Loop', 'https://docs.oracle.com/javase/tutorial/java/nutsandbolts/for.html'),
+('HashMap', 'https://docs.oracle.com/javase/8/docs/api/java/util/HashMap.html'),
 ('HashMap put', 'https://docs.oracle.com/javase/8/docs/api/java/util/HashMap.html'),
 ('Identifiers', 'https://docs.oracle.com/javase/tutorial/java/nutsandbolts/variables.html'),
 ('Import Statements', 'https://docs.oracle.com/javase/tutorial/java/package/usepkgs.html'),

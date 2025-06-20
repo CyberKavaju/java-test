@@ -78,3 +78,4 @@
 - [ ] Implement user profiles with history tracking.
 - [ ] Add a feedback system for questions.
 - [x] Implement dark mode.
+- [ ] Make a better UX to make the learning experience more engaging keeping a flow. 
