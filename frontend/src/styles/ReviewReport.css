@@ -1,0 +1,44 @@
+/* Review Report Tab Styles */
+@import './ReviewReportFilter.css';
+@import './ReviewReportTopics.css';
+@import './ReviewReportRecommendations.css';
+
+.review-tab {
+  margin-top: 2rem;
+}
+
+.error-message {
+  background: #1f2937;
+  padding: 3rem;
+  border-radius: 8px;
+  border: 1px solid #374151;
+  text-align: center;
+}
+
+.error-message h3 {
+  color: #f9fafb;
+  margin-bottom: 0.5rem;
+}
+
+.error-message p {
+  color: #9ca3af;
+}
+
+.review-content .section {
+  margin-bottom: 2rem;
+}
+
+.review-content .section h3 {
+  color: #f9fafb;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}

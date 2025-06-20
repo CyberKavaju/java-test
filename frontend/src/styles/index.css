@@ -1,0 +1,24 @@
+/* Main CSS imports file */
+
+/* Base styles */
+@import './base.css';
+
+/* Component styles */
+@import './NavBar.css';
+@import './Home.css';
+@import './Quiz.css';
+@import './Question.css';
+@import './TestResults.css';
+@import './Report.css';
+@import './ReviewReport.css';
+@import './ReviewReportFilter.css';
+@import './ReviewReportTopics.css';
+@import './ReviewReportRecommendations.css';
+@import './ImprovementGraph.css';
+
+/* Import component-specific styles that already exist */
+@import '../components/QuestionForm.css';
+@import '../components/QuestionList.css';
+@import '../components/Review.css';
+@import '../components/Tutorial.css';
+@import '../components/Import.css';

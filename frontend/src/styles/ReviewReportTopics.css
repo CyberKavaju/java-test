@@ -1,0 +1,232 @@
+/* Review Report Topics Styles */
+.topics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.topics-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.topic-row {
+  background: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 6px;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.topic-row:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.topic-row.mastered {
+  border-left: 4px solid #10b981;
+}
+
+.topic-row.good {
+  border-left: 4px solid #3b82f6;
+}
+
+.topic-row.needsWork {
+  border-left: 4px solid #f59e0b;
+}
+
+.topic-row.struggling {
+  border-left: 4px solid #ef4444;
+}
+
+.topic-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.topic-name {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.topic-name h4 {
+  color: #f9fafb;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  margin: 0;
+}
+
+.topic-metrics {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.metric {
+  font-size: 0.8rem;
+  color: #9ca3af;
+}
+
+.metric strong {
+  color: #f9fafb;
+  font-weight: 600;
+}
+
+.difficulty-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.difficulty-label.mastered {
+  background: rgba(16, 185, 129, 0.2);
+  color: #10b981;
+}
+
+.difficulty-label.good {
+  background: rgba(59, 130, 246, 0.2);
+  color: #3b82f6;
+}
+
+.difficulty-label.needsWork {
+  background: rgba(245, 158, 11, 0.2);
+  color: #f59e0b;
+}
+
+.difficulty-label.struggling {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+.topic-progress {
+  width: 120px;
+  margin-left: 1rem;
+}
+
+.no-topics {
+  text-align: center;
+  padding: 2rem;
+  color: #9ca3af;
+  background: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 6px;
+}
+
+.topic-card {
+  background: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 6px;
+  padding: 1rem;
+  transition: transform 0.2s ease;
+}
+
+.topic-card:hover {
+  transform: translateY(-2px);
+}
+
+.topic-card.mastered {
+  border-left: 4px solid #10b981;
+}
+
+.topic-card.good {
+  border-left: 4px solid #3b82f6;
+}
+
+.topic-card.needsWork {
+  border-left: 4px solid #f59e0b;
+}
+
+.topic-card.struggling {
+  border-left: 4px solid #ef4444;
+}
+
+.topic-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.topic-header h4 {
+  color: #f9fafb;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.difficulty-badge {
+  font-size: 1.25rem;
+}
+
+.topic-stats {
+  margin-bottom: 0.75rem;
+}
+
+.topic-stats .stat {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+  font-size: 0.85rem;
+}
+
+.topic-stats .stat span {
+  color: #9ca3af;
+}
+
+.topic-stats .stat strong {
+  color: #f9fafb;
+}
+
+/* Media queries for topics */
+@media (max-width: 768px) {
+  .topic-row {
+    padding: 0.75rem;
+  }
+  
+  .topic-info {
+    gap: 0.3rem;
+  }
+  
+  .topic-name h4 {
+    font-size: 0.85rem;
+  }
+  
+  .topic-metrics {
+    gap: 0.75rem;
+  }
+  
+  .metric {
+    font-size: 0.75rem;
+  }
+  
+  .difficulty-label {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.4rem;
+  }
+  
+  .topic-progress {
+    width: 100px;
+  }
+  
+  .topics-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 400px) {
+  .topic-row {
+    padding: 0.5rem;
+  }
+}

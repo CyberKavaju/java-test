@@ -8,7 +8,7 @@ import Report from './components/Report';
 import Import from './components/Import';
 import Tutorial from './components/Tutorial';
 import { QuestionManagement } from './components/QuestionManagement';
-import './App.css';
+import './styles/index.css';
 
 // Mobile performance optimizations
 const isMobile = () => {

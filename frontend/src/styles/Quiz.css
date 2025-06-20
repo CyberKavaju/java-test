@@ -1,0 +1,262 @@
+/* Quiz Styles */
+.quiz-container {
+  width: 100%;
+  padding: 0 2rem;
+}
+
+.quiz-header {
+  background: #1f2937;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #374151;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.timer {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.timer-warning {
+  color: #dc2626;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.progress {
+  font-size: 1.1rem;
+  color: #9ca3af;
+}
+
+.quiz-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: stretch;
+  flex: 1;
+}
+
+/* Navigation Footer */
+.navigation-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #1f2937;
+  border-top: 2px solid #374151;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  z-index: 50;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.3);
+}
+
+.nav-btn-footer {
+  padding: 0.75rem 1.5rem;
+  border: 2px solid #374151;
+  background: #1f2937;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+  color: #e5e7eb;
+  min-width: 100px;
+}
+
+.nav-btn-footer:hover:not(:disabled) {
+  border-color: #3b82f6;
+  background: #374151;
+}
+
+.nav-btn-footer:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.nav-btn-footer.submit-btn {
+  background: #dc2626 !important;
+  border-color: #dc2626 !important;
+  color: white;
+}
+
+.nav-btn-footer.submit-btn:hover:not(:disabled) {
+  background: #b91c1c !important;
+  border-color: #b91c1c !important;
+}
+
+.progress-bar-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 1rem;
+}
+
+.question-progress-grid {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  max-width: 600px;
+}
+
+.progress-dot {
+  width: 36px;
+  height: 36px;
+  border: 2px solid #374151;
+  background: #1f2937;
+  border-radius: 50%;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.8rem;
+  transition: all 0.2s;
+  color: #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-dot.current {
+  border-color: #3b82f6;
+  background: #3b82f6;
+  color: white;
+  transform: scale(1.1);
+}
+
+.progress-dot.answered:not(.current) {
+  border-color: #10b981;
+  background: #10b981;
+  color: white;
+}
+
+.progress-dot:hover:not(.current) {
+  border-color: #6b7280;
+  background: #374151;
+  transform: scale(1.05);
+}
+
+/* Add bottom margin to quiz container to prevent overlap with footer */
+.quiz-container {
+  width: 100%;
+  padding: 0 2rem 200px 2rem; /* Increased bottom padding for footer */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .navigation-footer {
+    padding: 0.75rem 1rem;
+  }
+
+  .nav-btn-footer {
+    min-width: 80px;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .question-progress-grid {
+    gap: 0.35rem;
+  }
+
+  .progress-dot {
+    width: 30px;
+    height: 30px;
+    font-size: 0.7rem;
+  }
+  
+  .quiz-container {
+    padding: 0 1rem 150px 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .navigation-footer {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .nav-btn-footer {
+    min-width: 70px;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  .question-progress-grid {
+    gap: 0.25rem;
+  }
+
+  .progress-dot {
+    width: 26px;
+    height: 26px;
+    font-size: 0.65rem;
+    border-width: 1px;
+  }
+  
+  .quiz-container {
+    padding: 0 0.75rem 140px 0.75rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .navigation-footer {
+    padding: 0.4rem 0.5rem;
+  }
+
+  .nav-btn-footer {
+    min-width: 60px;
+    padding: 0.35rem 0.7rem;
+    font-size: 0.75rem;
+  }
+
+  .progress-bar-container {
+    padding: 0 0.5rem;
+  }
+
+  .question-progress-grid {
+    gap: 0.2rem;
+  }
+
+  .progress-dot {
+    width: 22px;
+    height: 22px;
+    font-size: 0.6rem;
+  }
+  
+  .quiz-container {
+    padding: 0 0.5rem 130px 0.5rem;
+  }
+}
+
+/* Landscape orientation optimizations */
+@media (max-width: 768px) and (orientation: landscape) {
+  .quiz-content {
+    flex-direction: column;
+  }
+  
+  .navigation-footer {
+    padding: 0.75rem 1rem;
+  }
+}
+
+/* Touch-friendly improvements */
+@media (pointer: coarse) {
+  .nav-btn-footer {
+    min-height: 44px;
+  }
+  
+  .progress-dot {
+    min-height: 36px;
+    min-width: 36px;
+  }
+}

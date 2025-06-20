@@ -1,0 +1,173 @@
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    sans-serif;
+  line-height: 1.6;
+  color: #e5e7eb;
+  background-color: #0f0f0f;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+.app {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  width: 100%;
+}
+
+/* Buttons */
+.btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.btn-primary {
+  background: #1d4ed8;
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #1e40af;
+}
+
+.btn-secondary {
+  background: #4b5563;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background: #374151;
+}
+
+.btn-large {
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Utility Classes */
+.loading {
+  text-align: center;
+  padding: 3rem;
+  font-size: 1.2rem;
+  color: #9ca3af;
+}
+
+.error-container {
+  text-align: center;
+  padding: 3rem;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.error-container h2 {
+  color: #ef4444;
+  margin-bottom: 1rem;
+}
+
+.error-container p {
+  color: #9ca3af;
+  margin-bottom: 2rem;
+}
+
+/* Footer Spacer */
+.footer-spacer {
+  height: 100px; /* Default height, will be adjusted in media queries */
+}
+
+/* Responsive Footer Spacer Heights */
+@media (max-width: 768px) {
+  /* Adjust footer spacer */
+}
+
+@media (max-width: 576px) {
+  /* Adjust footer spacer */
+}
+
+@media (max-width: 400px) {
+  /* Adjust footer spacer */
+}
+
+/* Print styles */
+@media print {
+  .navbar,
+  .navigation-footer,
+  .action-buttons,
+  .tab-navigation {
+    display: none !important;
+  }
+  
+  .main-content {
+    padding: 0;
+    max-width: none;
+  }
+  
+  .question-result,
+  .topic-item,
+  .stat-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  
+  .question-result,
+  .info-card,
+  .stat-card,
+  .topic-item {
+    background: white !important;
+    border: 1px solid #ccc !important;
+    box-shadow: none !important;
+  }
+}

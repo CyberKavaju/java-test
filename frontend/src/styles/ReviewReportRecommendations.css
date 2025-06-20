@@ -1,0 +1,162 @@
+/* Review Report Recommendations Styles */
+.recommendations {
+  display: grid;
+  gap: 1rem;
+}
+
+.recommendation {
+  background: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 6px;
+  padding: 1rem;
+}
+
+.recommendation.focus_on_struggling {
+  border-left: 4px solid #ef4444;
+}
+
+.recommendation.review_needs_work {
+  border-left: 4px solid #f59e0b;
+}
+
+.recommendation.maintain_mastery {
+  border-left: 4px solid #10b981;
+}
+
+.recommendation-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.recommendation-icon {
+  font-size: 1.25rem;
+}
+
+.recommendation-header strong {
+  color: #f9fafb;
+  font-size: 0.9rem;
+}
+
+.recommendation-topics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.topic-tag {
+  background: #111827;
+  border: 1px solid #374151;
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  color: #e5e7eb;
+}
+
+.recommendation-link {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.java-doc-link {
+  background: #1e3a8a;
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color 0.2s;
+}
+
+.java-doc-link:hover {
+  background: #1d4ed8;
+}
+
+.tutorial-link {
+  background: #166534;
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color 0.2s;
+}
+
+.tutorial-link:hover {
+  background: #047857;
+}
+
+.recommendation-details {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.recommendation-details span {
+  background: #111827;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  color: #9ca3af;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Media queries for recommendations */
+@media (max-width: 768px) {
+  .recommendation-icon {
+    font-size: 1.1rem;
+  }
+  
+  .recommendation-header strong {
+    font-size: 0.85rem;
+  }
+  
+  .topic-tag {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.4rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .recommendation-details {
+    flex-wrap: wrap;
+  }
+  
+  .recommendation-details span {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.4rem;
+  }
+  
+  .java-doc-link {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.6rem;
+  }
+  
+  .tutorial-link {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.6rem;
+  }
+  
+  .recommendation-link {
+    gap: 0.5rem;
+    flex-direction: column;
+  }
+  
+  .recommendation-link a {
+    width: 100%;
+    justify-content: center;
+  }
+}
