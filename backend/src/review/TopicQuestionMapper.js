@@ -30,7 +30,7 @@ class TopicQuestionMapper {
             '23-set-object': ['Collections', 'Set'],
             '24-map-object': ['Collections', 'Map'],
             '25-date-time-api': ['API Classes', 'Date/Time'],
-            '26-exception-handling': ['Exception Handling', 'Error Handling'],
+            '26-exception-handling': ['Handling Exceptions', 'Exception Handling', 'Error Handling'],
             '27-oop-overview': ['Object-Oriented Programming', 'OOP Concepts'],
             '28-classes-and-objects': ['Object-Oriented Programming', 'Classes', 'Objects'],
             '29-fields-vs-attributes': ['Object-Oriented Programming', 'Class Members'],

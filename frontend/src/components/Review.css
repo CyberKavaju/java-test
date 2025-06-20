@@ -84,13 +84,24 @@
 
 /* Code block styling for questions */
 .question-text .code-block {
-  background: #0f0f0f;
+  background: transparent !important;
   border: 1px solid #374151;
   border-radius: 8px;
   padding: 20px;
   margin: 16px 0;
   overflow-x: auto;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  box-shadow: none;
+}
+
+/* Override general code-block styles specifically for review questions */
+.review-container .code-block {
+  background: transparent !important;
+  border: 1px solid #374151;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 16px 0;
+  overflow-x: auto;
+  box-shadow: none;
 }
 
 .question-text .code-block code {
@@ -106,7 +117,7 @@
 }
 
 .question-text .inline-code {
-  background: #111827;
+  background: transparent;
   color: #e5e7eb;
   padding: 2px 6px;
   border-radius: 4px;
@@ -117,7 +128,7 @@
 
 /* Legacy support for non-markdown code blocks */
 .question-text pre {
-  background: #0f0f0f;
+  background: transparent;
   color: #e5e7eb;
   padding: 20px;
   border-radius: 8px;
@@ -131,7 +142,7 @@
 }
 
 .question-text code:not(.inline-code) {
-  background: #111827;
+  background: transparent;
   color: #e5e7eb;
   padding: 2px 6px;
   border-radius: 4px;
