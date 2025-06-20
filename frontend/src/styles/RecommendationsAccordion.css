@@ -111,7 +111,7 @@
 .recommendation-header {
   display: flex;
   align-items: center;
-  padding: 1rem;
+  padding: 0.5rem;
   cursor: pointer;
   background-color: #2a2a2a;
   transition: background-color 0.2s ease;
@@ -155,7 +155,6 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .expand-icon.expanded {
