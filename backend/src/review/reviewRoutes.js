@@ -2,11 +2,13 @@ const express = require('express');
 const TopicQuestionMapper = require('./TopicQuestionMapper');
 const ReviewSessionController = require('./ReviewSessionController');
 const MasteryCalculator = require('./MasteryCalculator');
+const ReviewReportService = require('./ReviewReportService');
 
 function createReviewRoutes(database) {
     const router = express.Router();
     const topicQuestionMapper = new TopicQuestionMapper();
     const reviewController = new ReviewSessionController(database, topicQuestionMapper);
+    const reportService = new ReviewReportService(database);
 
     // GET /api/topics - Get all available topics from tutorial
     router.get('/topics', async (req, res) => {
@@ -214,6 +216,33 @@ function createReviewRoutes(database) {
             res.status(500).json({
                 success: false,
                 error: 'Failed to fetch session history'
+            });
+        }
+    });
+
+    // GET /api/review/report/:userId - Get performance report for user
+    router.get('/review/report/:userId', async (req, res) => {
+        try {
+            const { userId } = req.params;
+            const report = await reportService.generateUserReport(userId);
+            
+            res.json({
+                success: true,
+                report
+            });
+        } catch (error) {
+            console.error('Error generating review report:', error);
+            
+            if (error.message === 'No review sessions found for this user') {
+                return res.status(404).json({
+                    success: false,
+                    error: error.message
+                });
+            }
+            
+            res.status(500).json({
+                success: false,
+                error: 'Failed to generate review report'
             });
         }
     });

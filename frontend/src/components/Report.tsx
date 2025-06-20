@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { apiService } from '../services/api';
 import ImprovementGraph from './ImprovementGraph';
-import type { QuestionPerformance, PerformanceTrend, UserStats, TestSession, TopicStats, DetailedQuestionPerformance } from '../types';
+import type { QuestionPerformance, PerformanceTrend, UserStats, TestSession, TopicStats, DetailedQuestionPerformance, ReviewReport } from '../types';
 
 export default function Report() {
   const [reportData, setReportData] = useState<{
@@ -18,12 +18,16 @@ export default function Report() {
   const [detailedQuestions, setDetailedQuestions] = useState<{
     questionDetails: DetailedQuestionPerformance[];
   } | null>(null);
+
+  const [reviewReportData, setReviewReportData] = useState<ReviewReport | null>(null);
+  const [reviewReportError, setReviewReportError] = useState<string | null>(null);
   
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'overview' | 'performance' | 'topics'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'performance' | 'topics' | 'review'>('overview');
   const [expandedQuestions, setExpandedQuestions] = useState<Set<number>>(new Set());
   const [expandedRecommendations, setExpandedRecommendations] = useState<Set<string>>(new Set());
   const [performanceFilter, setPerformanceFilter] = useState<'all' | 'green' | 'yellow' | 'red'>('all');
+  const [topicFilter, setTopicFilter] = useState<'all' | 'mastered' | 'good' | 'needsWork' | 'struggling'>('all');
   const [documentationLinks, setDocumentationLinks] = useState<{ [key: string]: string }>({});
 
   const toggleRecommendationExpand = (topic: string) => {
@@ -391,6 +395,20 @@ export default function Report() {
         setUserHistory(history);
         setDetailedQuestions(detailed);
         setDocumentationLinks(recommendations);
+
+        // Fetch review report data
+        try {
+          const reviewResponse = await apiService.getReviewReport('default_user');
+          setReviewReportData(reviewResponse.report);
+          setReviewReportError(null);
+        } catch (reviewErr: any) {
+          console.error('Error fetching review report:', reviewErr);
+          if (reviewErr.response?.status === 404) {
+            setReviewReportError('No review sessions found. Complete some review sessions to see your report.');
+          } else {
+            setReviewReportError('Failed to load review report. Please try again.');
+          }
+        }
       } catch (error) {
         console.error('Failed to fetch report data:', error);
       } finally {
@@ -475,6 +493,12 @@ export default function Report() {
             onClick={() => setActiveTab('topics')}
           >
             Topics Analysis
+          </button>
+          <button
+            className={activeTab === 'review' ? 'tab active' : 'tab'}
+            onClick={() => setActiveTab('review')}
+          >
+            Review Sessions
           </button>
         </div>
       </div>
@@ -770,6 +794,176 @@ export default function Report() {
               </div>
             ))}
           </div>
+        </div>
+      )}
+
+      {activeTab === 'review' && (
+        <div className="review-tab">
+          {reviewReportError ? (
+            <div className="error-message">
+              <div className="text-center">
+                <div className="text-6xl mb-4">📊</div>
+                <h3 className="text-lg font-semibold mb-2">Review Report Not Available</h3>
+                <p className="text-gray-600">{reviewReportError}</p>
+              </div>
+            </div>
+          ) : reviewReportData ? (
+            <div className="review-content">
+              {/* Summary Cards */}
+              <div className="stats-grid">
+                <div className="stat-card">
+                  <h3>Total Sessions</h3>
+                  <div className="stat-value">{reviewReportData.totalSessions}</div>
+                </div>
+                <div className="stat-card">
+                  <h3>Topics Reviewed</h3>
+                  <div className="stat-value">{reviewReportData.topics.length}</div>
+                </div>
+                <div className="stat-card">
+                  <h3>Average Study Time</h3>
+                  <div className="stat-value">{reviewReportData.timeAnalysis.averageSessionDuration} min</div>
+                </div>
+                <div className="stat-card">
+                  <h3>Sessions This Week</h3>
+                  <div className="stat-value green">{reviewReportData.timeAnalysis.sessionsLast7Days}</div>
+                </div>
+              </div>
+
+
+
+              {/* Topics Performance */}
+              <div className="section">
+                <div className="section-header">
+                  <h3>Topics Performance</h3>
+                  <div className="topic-filter-buttons">
+                    <button
+                      className={`filter-btn ${topicFilter === 'all' ? 'active' : ''}`}
+                      onClick={() => setTopicFilter('all')}
+                    >
+                      All ({reviewReportData.topics.length})
+                    </button>
+                    <button
+                      className={`filter-btn mastered ${topicFilter === 'mastered' ? 'active' : ''}`}
+                      onClick={() => setTopicFilter('mastered')}
+                    >
+                      🏆 Mastered ({reviewReportData.difficultyBreakdown.mastered})
+                    </button>
+                    <button
+                      className={`filter-btn good ${topicFilter === 'good' ? 'active' : ''}`}
+                      onClick={() => setTopicFilter('good')}
+                    >
+                      👍 Good ({reviewReportData.difficultyBreakdown.good})
+                    </button>
+                    <button
+                      className={`filter-btn needs-work ${topicFilter === 'needsWork' ? 'active' : ''}`}
+                      onClick={() => setTopicFilter('needsWork')}
+                    >
+                      📖 Needs Work ({reviewReportData.difficultyBreakdown.needsWork})
+                    </button>
+                    <button
+                      className={`filter-btn struggling ${topicFilter === 'struggling' ? 'active' : ''}`}
+                      onClick={() => setTopicFilter('struggling')}
+                    >
+                      🔥 Struggling ({reviewReportData.difficultyBreakdown.struggling})
+                    </button>
+                  </div>
+                </div>
+                <div className="topics-list">
+                  {reviewReportData.topics
+                    .filter(topic => topicFilter === 'all' || topic.difficulty === topicFilter)
+                    .sort((a, b) => {
+                      // Define the order: 1. Struggling, 2. Needs Work, 3. Good, 4. Mastered
+                      const difficultyOrder = {
+                        'struggling': 1,
+                        'needsWork': 2,
+                        'good': 3,
+                        'mastered': 4
+                      };
+                      return difficultyOrder[a.difficulty] - difficultyOrder[b.difficulty];
+                    })
+                    .map((topic, index) => (
+                    <div key={index} className={`topic-row ${topic.difficulty}`}>
+                      <div className="topic-info">
+                        <div className="topic-name">
+                          <span className="difficulty-badge">
+                            {topic.difficulty === 'mastered' && '🏆'}
+                            {topic.difficulty === 'good' && '👍'}
+                            {topic.difficulty === 'needsWork' && '📖'}
+                            {topic.difficulty === 'struggling' && '🔥'}
+                          </span>
+                          <h4>{topic.topic.replace(/-/g, ' ').replace(/^\d+-/, '').toUpperCase()}</h4>
+                        </div>
+                        <div className="topic-metrics">
+                          <span className="metric">
+                            <strong>{topic.roundsToComplete}</strong> rounds
+                          </span>
+                          <span className="metric">
+                            <strong>{topic.finalAccuracy}%</strong> accuracy
+                          </span>
+                          <span className={`difficulty-label ${topic.difficulty}`}>
+                            {topic.difficulty === 'mastered' && 'Mastered'}
+                            {topic.difficulty === 'good' && 'Good'}
+                            {topic.difficulty === 'needsWork' && 'Needs Work'}
+                            {topic.difficulty === 'struggling' && 'Struggling'}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="topic-progress">
+                        <div className="progress-bar">
+                          <div 
+                            className="progress-fill"
+                            style={{ 
+                              width: `${topic.finalAccuracy}%`,
+                              backgroundColor: topic.difficulty === 'mastered' ? '#10b981' :
+                                             topic.difficulty === 'good' ? '#3b82f6' :
+                                             topic.difficulty === 'needsWork' ? '#f59e0b' : '#ef4444'
+                            }}
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  {reviewReportData.topics.filter(topic => topicFilter === 'all' || topic.difficulty === topicFilter).length === 0 && (
+                    <div className="no-topics">
+                      <p>No topics found for the selected filter.</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Recommendations */}
+              {reviewReportData.recommendations.length > 0 && (
+                <div className="section">
+                  <h3>Recommendations</h3>
+                  <div className="recommendations">
+                    {reviewReportData.recommendations.map((rec, index) => (
+                      <div key={index} className={`recommendation ${rec.type}`}>
+                        <div className="recommendation-header">
+                          <span className="recommendation-icon">
+                            {rec.type === 'focus_on_struggling' && '🎯'}
+                            {rec.type === 'review_needs_work' && '📚'}
+                            {rec.type === 'maintain_mastery' && '✨'}
+                          </span>
+                          <strong>{rec.message}</strong>
+                        </div>
+                        {rec.topics && rec.topics.length > 0 && (
+                          <div className="recommendation-topics">
+                            {rec.topics.map((topic, topicIndex) => (
+                              <span key={topicIndex} className="topic-tag">
+                                {topic.replace(/-/g, ' ').replace(/^\d+-/, '')}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="loading">Loading review report...</div>
+          )}
         </div>
       )}
     </div>

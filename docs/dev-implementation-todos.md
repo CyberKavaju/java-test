@@ -62,14 +62,19 @@
 
 ## Future Enhancements
 
-- [ ] Tutorial review
+- [x] Java Tutorial 
+- [x] Tutorial review
 - [ ] Add user authentication.
 - [ ] Implement difficulty levels.
 - [ ] Create admin panel to manage questions.
 - [ ] Add daily practice mode.
 - [ ] Implement leaderboard functionality.
-- [ ] Add CSV import/export for questions.
+- [x] Add CSV import/export for questions.
 - [ ] Deploy to cloud platform.
 - [ ] Add more comprehensive test coverage.
-- [ ] Implement question search and filtering.
-- [ ] Add performance analytics charts.
+- [x] Implement question search and filtering.
+- [x] Add performance analytics charts.
+- [ ] Add a practice for each topic with a simple code editor that works like leedcode. where it will show the question and the user can write code to solve it.
+- [ ] Implement user profiles with history tracking.
+- [ ] Add a feedback system for questions.
+- [x] Implement dark mode.

@@ -177,3 +177,54 @@ export interface ReviewHistoryItem {
   finalScore: number;
   timeSpent: number;
 }
+
+// Review session report types
+export interface ReviewTopicPerformance {
+  topic: string;
+  roundsToComplete: number;
+  finalAccuracy: number;
+  difficulty: 'mastered' | 'good' | 'needsWork' | 'struggling';
+  completedAt: string;
+}
+
+export interface ReviewRecommendation {
+  type: 'focus_on_struggling' | 'review_needs_work' | 'maintain_mastery';
+  message: string;
+  topics: string[];
+}
+
+export interface ReviewTimeAnalysis {
+  averageSessionDuration: number;
+  totalStudyTime: number;
+  sessionsLast7Days: number;
+  sessionsLast30Days: number;
+}
+
+export interface ReviewDifficultyBreakdown {
+  mastered: number;
+  good: number;
+  needsWork: number;
+  struggling: number;
+}
+
+export interface ReviewReport {
+  userId: string;
+  totalSessions: number;
+  topics: ReviewTopicPerformance[];
+  recommendations: ReviewRecommendation[];
+  timeAnalysis: ReviewTimeAnalysis;
+  difficultyBreakdown: ReviewDifficultyBreakdown;
+}
+
+export interface Tutorial {
+  id: number;
+  filename: string;
+  title: string;
+  slug: string;
+}
+
+export interface TutorialContent {
+  slug: string;
+  title: string;
+  content: string;
+}

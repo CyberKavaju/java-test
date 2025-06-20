@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { Question, Answer, TestResult, UserStats, TestSession, TopicStats, QuestionPerformance, PerformanceTrend, DetailedQuestionPerformance, Tutorial, TutorialContent } from '../types/index.js';
+import type { Question, Answer, TestResult, UserStats, TestSession, TopicStats, QuestionPerformance, PerformanceTrend, DetailedQuestionPerformance, Tutorial, TutorialContent, ReviewReport } from '../types/index.js';
 
 const API_BASE_URL = 'http://localhost:3001/api';
 
@@ -361,5 +361,14 @@ export const apiService = {
   }> {
     const response = await api.get(`/review/history/${userId}/${topicId}`);
     return response.data;
-  }
+  },
+
+  // Get review session report
+  async getReviewReport(userId: string = 'default_user'): Promise<{
+    success: boolean;
+    report: ReviewReport;
+  }> {
+    const response = await api.get(`/review/report/${userId}`);
+    return response.data;
+  },
 };

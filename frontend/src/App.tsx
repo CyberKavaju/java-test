@@ -7,7 +7,6 @@ import TestResults from './components/TestResults';
 import Report from './components/Report';
 import Import from './components/Import';
 import Tutorial from './components/Tutorial';
-import Review from './components/Review';
 import { QuestionManagement } from './components/QuestionManagement';
 import './App.css';
 
@@ -267,7 +266,7 @@ function AppRoutes() {
           <div className={`nav-links ${mobileMenuOpen ? 'mobile-open' : ''}`}>
             <a href="/" onClick={() => setMobileMenuOpen(false)}>Home</a>
             <a href="/tutorial" onClick={() => setMobileMenuOpen(false)} target="_blank" rel="noopener noreferrer">Tutorial</a>
-            <a href="/report" onClick={() => setMobileMenuOpen(false)}>Report</a>
+            <a href="/report" onClick={() => setMobileMenuOpen(false)}>Reports</a>
             <a href="/questions" onClick={() => setMobileMenuOpen(false)}>Questions</a>
           </div>
         </nav>
@@ -277,7 +276,6 @@ function AppRoutes() {
             <Route path="/" element={<Home />} />
             <Route path="/test" element={<TestPage />} />
             <Route path="/tutorial" element={<Tutorial />} />
-            <Route path="/review" element={<Review />} />
             <Route path="/report" element={<Report />} />
             <Route path="/import" element={<Import />} />
             <Route path="/questions" element={<QuestionManagement />} />

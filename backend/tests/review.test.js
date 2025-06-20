@@ -511,4 +511,198 @@ describe('Topic Review API', () => {
             expect(response.body.history).toEqual([]);
         });
     });
+
+    describe('GET /api/review/report/:userId', () => {
+        let testUserId;
+        let completedSessionId;
+        
+        beforeEach(async () => {
+            testUserId = 'test-user-report';
+            
+            // Create test data for report - simulate multiple review sessions with different performance
+            const sessionData = [
+                {
+                    user_id: testUserId,
+                    topic: '01-main-characteristics-of-java',
+                    session_status: 'completed',
+                    current_round: 3,
+                    total_rounds: 3,
+                    questions_correct_current_round: 2,
+                    questions_total_current_round: 2,
+                    started_at: new Date(Date.now() - 1000 * 60 * 60 * 24 * 7).toISOString(), // 7 days ago
+                    completed_at: new Date(Date.now() - 1000 * 60 * 60 * 24 * 7 + 1000 * 60 * 30).toISOString() // 30min later
+                },
+                {
+                    user_id: testUserId,
+                    topic: '04-variable',
+                    session_status: 'completed',
+                    current_round: 1,
+                    total_rounds: 1,
+                    questions_correct_current_round: 3,
+                    questions_total_current_round: 3,
+                    started_at: new Date(Date.now() - 1000 * 60 * 60 * 24 * 5).toISOString(), // 5 days ago
+                    completed_at: new Date(Date.now() - 1000 * 60 * 60 * 24 * 5 + 1000 * 60 * 15).toISOString() // 15min later
+                },
+                {
+                    user_id: testUserId,
+                    topic: '12-if-else-statement',
+                    session_status: 'completed',
+                    current_round: 5,
+                    total_rounds: 5,
+                    questions_correct_current_round: 4,
+                    questions_total_current_round: 4,
+                    started_at: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3).toISOString(), // 3 days ago
+                    completed_at: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3 + 1000 * 60 * 45).toISOString() // 45min later
+                }
+            ];
+
+            // Insert test sessions directly into database
+            for (const session of sessionData) {
+                await new Promise((resolve, reject) => {
+                    testDb.db.run(`
+                        INSERT INTO topic_review_sessions (
+                            user_id, topic, session_status, current_round, total_rounds,
+                            questions_correct_current_round, questions_total_current_round,
+                            started_at, completed_at
+                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    `, [
+                        session.user_id, session.topic, session.session_status,
+                        session.current_round, session.total_rounds,
+                        session.questions_correct_current_round, session.questions_total_current_round,
+                        session.started_at, session.completed_at
+                    ], function(err) {
+                        if (err) reject(err);
+                        else resolve(this.lastID);
+                    });
+                });
+            }
+        });
+
+        afterEach(async () => {
+            // Clean up test data
+            await new Promise((resolve) => {
+                testDb.db.run('DELETE FROM topic_review_sessions WHERE user_id = ?', [testUserId], () => resolve());
+            });
+            await new Promise((resolve) => {
+                testDb.db.run('DELETE FROM topic_review_attempts WHERE session_id IN (SELECT id FROM topic_review_sessions WHERE user_id = ?)', [testUserId], () => resolve());
+            });
+        });
+
+        it('should return review report with topic performance analysis', async () => {
+            const response = await request(app)
+                .get(`/api/review/report/${testUserId}`)
+                .expect(200);
+
+            expect(response.body.success).toBe(true);
+            expect(response.body.report).toBeDefined();
+            expect(response.body.report.userId).toBe(testUserId);
+            expect(response.body.report.totalSessions).toBe(3);
+            expect(response.body.report.topics).toBeInstanceOf(Array);
+            expect(response.body.report.topics.length).toBe(3);
+        });
+
+        it('should identify struggling topics based on round count', async () => {
+            const response = await request(app)
+                .get(`/api/review/report/${testUserId}`)
+                .expect(200);
+
+            const strugglingTopics = response.body.report.topics.filter(topic => topic.difficulty === 'struggling');
+            const masteredTopics = response.body.report.topics.filter(topic => topic.difficulty === 'mastered');
+
+            // Topic with 5 rounds should be marked as struggling
+            expect(strugglingTopics.length).toBeGreaterThan(0);
+            expect(strugglingTopics.some(topic => topic.topic === '12-if-else-statement')).toBe(true);
+            
+            // Topic with 1 round should be marked as mastered
+            expect(masteredTopics.length).toBeGreaterThan(0);
+            expect(masteredTopics.some(topic => topic.topic === '04-variable')).toBe(true);
+        });
+
+        it('should calculate correct performance metrics for each topic', async () => {
+            const response = await request(app)
+                .get(`/api/review/report/${testUserId}`)
+                .expect(200);
+
+            const topics = response.body.report.topics;
+            
+            // Find the struggling topic (if-else with 5 rounds)
+            const strugglingTopic = topics.find(t => t.topic === '12-if-else-statement');
+            expect(strugglingTopic).toBeDefined();
+            expect(strugglingTopic.roundsToComplete).toBe(5);
+            expect(strugglingTopic.finalAccuracy).toBe(100); // 4/4 questions correct in final round
+            expect(strugglingTopic.difficulty).toBe('struggling');
+
+            // Find the mastered topic (variable with 1 round)
+            const masteredTopic = topics.find(t => t.topic === '04-variable');
+            expect(masteredTopic).toBeDefined();
+            expect(masteredTopic.roundsToComplete).toBe(1);
+            expect(masteredTopic.finalAccuracy).toBe(100); // 3/3 questions correct
+            expect(masteredTopic.difficulty).toBe('mastered');
+        });
+
+        it('should provide recommendations based on performance', async () => {
+            const response = await request(app)
+                .get(`/api/review/report/${testUserId}`)
+                .expect(200);
+
+            expect(response.body.report.recommendations).toBeInstanceOf(Array);
+            expect(response.body.report.recommendations.length).toBeGreaterThan(0);
+            
+            // Should recommend focusing on struggling topics
+            const strugglingRecommendation = response.body.report.recommendations.find(
+                rec => rec.type === 'focus_on_struggling'
+            );
+            expect(strugglingRecommendation).toBeDefined();
+            expect(strugglingRecommendation.topics).toContain('12-if-else-statement');
+        });
+
+        it('should return 404 for user with no review sessions', async () => {
+            const response = await request(app)
+                .get('/api/review/report/non-existent-user')
+                .expect(404);
+
+            expect(response.body.success).toBe(false);
+            expect(response.body.error).toContain('No review sessions found');
+        });
+
+        it('should handle invalid user ID parameter', async () => {
+            const response = await request(app)
+                .get('/api/review/report/')
+                .expect(404); // Express will return 404 for missing route parameter
+        });
+
+        it('should include time-based analysis in report', async () => {
+            const response = await request(app)
+                .get(`/api/review/report/${testUserId}`)
+                .expect(200);
+
+            expect(response.body.report.timeAnalysis).toBeDefined();
+            expect(response.body.report.timeAnalysis.averageSessionDuration).toBeGreaterThan(0);
+            expect(response.body.report.timeAnalysis.totalStudyTime).toBeGreaterThan(0);
+            expect(response.body.report.timeAnalysis.sessionsLast7Days).toBeDefined();
+            expect(response.body.report.timeAnalysis.sessionsLast30Days).toBeDefined();
+        });
+
+        it('should categorize topics by difficulty level correctly', async () => {
+            const response = await request(app)
+                .get(`/api/review/report/${testUserId}`)
+                .expect(200);
+
+            const topics = response.body.report.topics;
+            const difficultyCategories = response.body.report.difficultyBreakdown;
+
+            expect(difficultyCategories).toBeDefined();
+            expect(difficultyCategories.mastered).toBeDefined();
+            expect(difficultyCategories.good).toBeDefined();
+            expect(difficultyCategories.needsWork).toBeDefined();
+            expect(difficultyCategories.struggling).toBeDefined();
+
+            // Verify counts match actual categorization
+            const masteredCount = topics.filter(t => t.difficulty === 'mastered').length;
+            const strugglingCount = topics.filter(t => t.difficulty === 'struggling').length;
+            
+            expect(difficultyCategories.mastered).toBe(masteredCount);
+            expect(difficultyCategories.struggling).toBe(strugglingCount);
+        });
+    });
 });
