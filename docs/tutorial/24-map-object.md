@@ -188,6 +188,89 @@ System.out.println(ages); // {Alice=35, Bob=25}
 
 ---
 
+### 🧠 What does "`WeakHashMap` allows keys to be GC'd" mean?
+
+#### ✅ First, what is **GC'd**?
+
+**GC'd** stands for **"Garbage Collected"** — meaning **Java's memory manager (Garbage Collector)** automatically **removes an object from memory** when it's no longer **strongly reachable** (i.e., no variable is pointing to it).
+
+---
+
+### 🧩 How does this relate to `WeakHashMap`?
+
+Normally, when you put a key-value pair into a `Map`, both the **key and value are strongly referenced** — meaning they stay in memory as long as the map does.
+
+```java
+Map<Object, String> map = new HashMap<>();
+Object key = new Object();
+map.put(key, "value");
+key = null; // You lose your reference, but the map still holds it!
+```
+
+☝️ In a regular map (like `HashMap`), even if you `key = null`, the map is still holding a **strong reference**, so the key **won’t be garbage collected**.
+
+---
+
+### 🌬 In `WeakHashMap`, keys are held with **weak references**
+
+* If a **key is no longer strongly referenced elsewhere** (i.e., nothing outside the map is pointing to it), it becomes **eligible for garbage collection**
+* Once the GC collects that key, its associated **entry is automatically removed from the map**
+
+---
+
+### 🔧 Example:
+
+```java
+import java.util.Map;
+import java.util.WeakHashMap;
+
+public class WeakMapExample {
+    public static void main(String[] args) {
+        Map<Object, String> map = new WeakHashMap<>();
+        Object key = new Object();
+        map.put(key, "value");
+
+        System.out.println("Before GC: " + map);
+
+        key = null; // Key is no longer strongly referenced
+
+        System.gc(); // Suggest GC to run
+
+        try { Thread.sleep(1000); } catch (InterruptedException ignored) {}
+
+        System.out.println("After GC: " + map);
+    }
+}
+```
+
+### 🧪 Output (typically):
+
+```java
+Before GC: {java.lang.Object@...=value}
+After GC: {}
+```
+
+💥 **Entry disappears** after GC because the key was only weakly referenced!
+
+---
+
+### ✅ When to Use `WeakHashMap`
+
+| Use Case                      | Reason                                            |
+| ----------------------------- | ------------------------------------------------- |
+| Memory-sensitive caches       | Auto-remove entries when keys aren't used anymore |
+| Listener or observer patterns | Prevent memory leaks by letting listeners be GC’d |
+| Avoiding explicit `remove()`  | Let GC handle cleanup of unused keys              |
+
+---
+
+### 🔒 Warning
+
+* Only **keys** are weak — **values** are still strongly referenced.
+* You must be okay with **entries vanishing** after GC — don’t rely on them being there forever.
+
+---
+
 ### 🧱 Map.Entry Methods
 
 | 🧾 Name             | 📘 Description                    | 🔁 Return Value |
@@ -323,4 +406,4 @@ System.out.println(map.get("A"));
 
 - [Map and HashMap in Java - Full Tutorial - Coding with John](https://www.youtube.com/watch?v=H62Jfv1DJlU)
 - [Learn Java HASHMAPS in 10 minutes! 🗺️ - Bro Code](https://www.youtube.com/watch?v=NMHk1CGb28o)
-- []()
+- [Java Tutorial for Beginners #13 - Maps & HashMaps - Tech With Tim](https://www.youtube.com/watch?v=YFPVyj_aP64)

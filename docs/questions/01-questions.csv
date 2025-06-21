@@ -1,3 +1,4 @@
+````dynamic csv
 domain,topic,question_text,option_a,option_b,option_c,option_d,option_e,correct_answer,explanation
 Java Basics,Import Statements,"What happens when compiling and running the following code?
 
@@ -399,7 +400,7 @@ String s2 = new String(""hello"");
 System.out.println(s1 == s2);
 System.out.println(s1.equals(s2));
 ```","true true","true false","false true","false false","Compile error",C,"The == operator compares object references, not content. Since s1 and s2 are created with new String(), they are different objects in memory, so s1 == s2 is false. The equals() method compares the actual string content, so s1.equals(s2) is true because both strings contain ""hello""."
-Working with Selected classes from the Java API,HashMap put,"What does this code print?
+Working with Selected classes from the Java API,HashMap put,"What does the following code print?
 
 ```java
 Map<String, Integer> map = new HashMap<>();
@@ -407,11 +408,48 @@ map.put(""key"", 1);
 map.put(""key"", 2);
 System.out.println(map.get(""key""));
 ```",1,2,"null","Compile error","Runtime error",B,"HashMap stores key-value pairs where each key is unique. When put() is called with an existing key, it replaces the previous value. The first put(""key"", 1) stores the mapping, then put(""key"", 2) replaces the value 1 with 2. Therefore, map.get(""key"") returns 2."
-Working with Selected classes from the Java API,ArrayList contains,"What is the output?
+Working with Selected classes from the Java API,HashMap get,"What does this code print?
 
 ```java
-List<Integer> list = new ArrayList<>();
-list.add(1);
-list.add(2);
-System.out.println(list.contains(1));
-```","true","false","1","Compile error","Runtime error",A,"ArrayList.contains() returns true if the list contains the specified element, false otherwise. The list contains the Integer 1 (added first), so list.contains(1) returns true. The method uses the equals() method to compare elements, and autoboxing handles the conversion between int and Integer."
+Map<String, String> map = new HashMap<>();
+map.put(""A"", ""Apple"");
+map.put(""B"", ""Banana"");
+System.out.println(map.get(""C""));
+```","Apple","Banana","null","Compile error","Runtime error",C,"HashMap.get() returns the value associated with the specified key, or null if the key is not found. Since the key ""C"" was never added to the map, map.get(""C"") returns null."
+Working with Selected classes from the Java API,HashMap containsKey,"What is the output?
+
+```java
+Map<Integer, String> map = new HashMap<>();
+map.put(1, ""One"");
+map.put(2, ""Two"");
+System.out.println(map.containsKey(1));
+System.out.println(map.containsKey(3));
+```","true false","false true","true true","false false","Compile error",A,"HashMap.containsKey() returns true if the map contains a mapping for the specified key, false otherwise. The map contains key 1 (mapped to ""One""), so containsKey(1) returns true. The map does not contain key 3, so containsKey(3) returns false."
+Working with Selected classes from the Java API,HashMap size,"What does this code print?
+
+```java
+Map<String, Integer> map = new HashMap<>();
+map.put(""x"", 10);
+map.put(""y"", 20);
+map.put(""x"", 30);
+System.out.println(map.size());
+```",1,2,3,"Compile error","Runtime error",B,"HashMap.size() returns the number of key-value mappings in the map. Even though put() is called three times, the key ""x"" is used twice. The second put(""x"", 30) replaces the first mapping put(""x"", 10), so the map contains only two mappings: {""x""=30, ""y""=20}. Therefore, size() returns 2."
+Working with Selected classes from the Java API,HashMap remove,"What is the output?
+
+```java
+Map<String, String> map = new HashMap<>();
+map.put(""key1"", ""value1"");
+map.put(""key2"", ""value2"");
+String removed = map.remove(""key1"");
+System.out.println(removed);
+System.out.println(map.size());
+```","value1 1","value1 2","null 1","null 2","Compile error",A,"HashMap.remove() removes the mapping for the specified key and returns the previous value, or null if there was no mapping. The key ""key1"" was mapped to ""value1"", so remove(""key1"") returns ""value1"" and removes the mapping. After removal, only ""key2""=""value2"" remains, so size() returns 1."
+Working with Selected classes from the Java API,HashMap null key,"What does this code print?
+
+```java
+Map<String, Integer> map = new HashMap<>();
+map.put(null, 100);
+map.put(""test"", 200);
+System.out.println(map.get(null));
+```",100,200,"null","Compile error","Runtime error",A,"HashMap allows one null key and multiple null values. The code puts a mapping with null as the key and 100 as the value. When get(null) is called, it returns the value associated with the null key, which is 100."
+````

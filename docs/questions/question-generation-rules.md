@@ -54,10 +54,15 @@ domain,topic,question_text,option_a,option_b,option_c,option_d,option_e,correct_
    - Try-Catch-Finally, Checked vs Unchecked Exceptions, Exception Hierarchy
 
 9. **Working with Selected classes from the Java API**
-   - String, StringBuilder, Date/Time API, Collections
+   - String, StringBuilder, Date/Time API, Collections Framework (List, Set, Map)
 
 10. **Java 8 Features**
     - Lambda Expressions, Functional Interfaces, Date/Time API
+
+### Important Domain Mapping Notes
+- **Collections questions** (List, Set, Map, etc.) should use domain: `"Working with Selected classes from the Java API"`
+- **Do NOT use** `"Collections Framework"` as a domain - it's a topic category only
+- **ArrayList questions** can use either `"Creating and Using Arrays"` or `"Working with Selected classes from the Java API"` depending on focus
 
 ## 📚 Topic Classification
 
@@ -113,7 +118,7 @@ no question can be "others" it has to be one of the following topics:
 - Multi-dimensional Arrays
 - Array Manipulation
 
-### Collections Framework
+### Collections Framework (Use domain: "Working with Selected classes from the Java API")
 - List Object
 - Set Object
 - Map Object
@@ -180,9 +185,9 @@ no question can be "others" it has to be one of the following topics:
 ### Code Block Formatting
 The system automatically formats code blocks. You can write code in several ways:
 
-**Method 1: Inline with question**
+**Method 1: Inline with question (for short code)**
 ```
-What is the output of the following code? int i = 258; byte b = (byte) i; System.out.println(b);
+What is the output of the following code? ```java int i = 258; byte b = (byte) i; System.out.println(b); ```
 ```
 
 **Method 2: Using code blocks (recommended for longer code)**
@@ -200,8 +205,8 @@ class Test {
 ```
 ```
 
-**Method 3: Numbered lines for reference**
-```
+**Method 3: Numbered lines for reference (when line numbers matter)**
+```java
 What is the problem with this code?
 1. public class Test {
 2.     public static void main(String[] args) {
@@ -212,6 +217,11 @@ What is the problem with this code?
 7.     }
 8. }
 ```
+
+### When to Use Each Method:
+- **Method 1**: Simple expressions, single statements, short snippets (1-2 lines)
+- **Method 2**: Complete classes, multiple statements, complex logic (3+ lines)
+- **Method 3**: When referencing specific line numbers in explanations or when line positioning is important
 
 ### Multi-Part Questions
 - Use clear separators between question parts
@@ -358,6 +368,21 @@ Choose the correct option to complete the following code:
 - Inheritance and polymorphism subtleties
 - Autoboxing/unboxing edge cases
 
+### Java API Accuracy Checklist
+- **Collections**: Verify method names and return types (e.g., `values()` returns `Collection<V>`, not `List<V>`)
+- **Exception Names**: Use exact names (`NullPointerException`, not `NullException`)
+- **Import Statements**: Verify correct package names (`java.util.concurrent.ConcurrentHashMap`)
+- **Method Signatures**: Ensure parameter types and return types are correct
+- **Java 8 Features**: Only include features available in Java SE 8 (no Java 9+ features like `Map.of()`)
+
+### Code Compilation Verification
+Before finalizing questions with code:
+1. Copy code into a Java file
+2. Compile with `javac` 
+3. Run if applicable
+4. Verify the actual output matches your expected answer
+5. Test edge cases mentioned in options
+
 ## 📊 CSV Formatting Rules
 
 ### Field Escaping
@@ -373,6 +398,23 @@ Choose the correct option to complete the following code:
 - Avoid special characters that might break CSV parsing
 - Use standard ASCII characters when possible
 - Test import functionality with your CSV before finalizing
+
+### CSV Formatting Examples
+
+**Correct escaping for commas:**
+```csv
+"Which method returns a Collection<V>?","values()","keySet()","entrySet()","get(), put()","clear()"
+```
+
+**Correct escaping for quotes in explanations:**
+```csv
+"Method put() replaces existing values. When we call put(""A"", 1) then put(""A"", 2), the second call overwrites the first."
+```
+
+**Correct line breaks in code questions:**
+```csv
+"What is the output?\nMap<String, Integer> map = new HashMap<>();\nmap.put(""key"", 42);\nSystem.out.println(map.get(""key""));"
+```
 
 ## 🚀 Auto-Formatting Features
 
@@ -398,12 +440,15 @@ The system automatically applies these formatting improvements:
 
 Before submitting questions, verify:
 
+### Content Validation
 - [ ] All required fields are filled
-- [ ] Domain and topic are from approved lists
+- [ ] Domain and topic are from approved lists and properly matched
 - [ ] Question text is clear and unambiguous
-- [ ] All options are well-formed
+- [ ] All options are well-formed and plausible
 - [ ] Correct answer corresponds to an existing option
-- [ ] Explanation is accurate and helpful
+- [ ] Explanation is accurate, helpful, and educational
+
+### Technical Validation  
 - [ ] Code examples compile (unless testing compilation errors)
 - [ ] CSV formatting is correct
 - [ ] Question tests relevant 1Z0-808 exam objectives
@@ -446,7 +491,19 @@ Working with Inheritance,Polymorphism,"Which statement about method overriding i
 
 ### Template 3: Multiple Selection
 ```csv
-Data Types,Wrapper Classes,"Which of the following will compile without errors? (Select 2 options.)",Integer i = null; int j = i;,Integer i = 100; Integer j = 100; boolean b = (i == j);,int i = 100; Integer j = i;,Boolean b = null; boolean b2 = b;,Double d = 5;,B,C,"Option B compiles (though i == j uses reference comparison). Option C compiles due to autoboxing. Options A and D will compile but throw NullPointerException at runtime. Option E won't compile because 5 is an int, not double."
+Java Basics,Variable Scope,"What happens when compiling the following code?
+
+```java
+public class Test {
+    public static void main(String[] args) {
+        int x = 5;
+        {
+            int x = 10;
+            System.out.println(x);
+        }
+    }
+}
+```",Prints 10,Prints 5,Prints 10 then 5,Runtime exception,Compilation error,E,"You cannot declare a variable with the same name in a nested scope when the outer scope already has a variable with that name. This causes a compilation error because variable 'x' is already defined in the enclosing scope."
 ```
 
 ## 🎓 Best Practices Summary
