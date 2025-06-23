@@ -524,7 +524,57 @@ public class HeapPollution {
     }
 }
 ```
+---
 
+## 📜 **Rule When Defining a Method with Varargs**
+
+> ✅ **A method can have only one varargs parameter, and it must be the last parameter in the method declaration.**
+
+---
+
+### 🔍 Why?
+
+Because Java needs to know where the variable-length arguments end — if varargs weren’t last, it’d get ambiguous/confusing for the compiler.
+
+---
+
+### ✅ Valid Example:
+
+```java
+public void printAll(String title, String... items) {
+    System.out.println(title + ":");
+    for (String item : items) {
+        System.out.println(item);
+    }
+}
+```
+
+This is fine — varargs is the **last** parameter.
+
+---
+
+### ❌ Invalid Example:
+
+```java
+public void invalidMethod(String... items, String title) {
+    // ❗ Compile-time error: varargs must be the last parameter
+}
+```
+
+This won’t compile because `items` (the varargs) isn't last.
+
+---
+
+### Bonus Rule: Overloading with Varargs
+
+Be cautious when **overloading methods** that involve varargs—it can lead to **ambiguity**:
+
+```java
+public void doSomething(int... nums) { }
+public void doSomething(Integer[] nums) { } // 🤔 Might be ambiguous
+```
+
+---
 ## 🧪 Quick Quiz
 
 **Question 1:** What will this code output?

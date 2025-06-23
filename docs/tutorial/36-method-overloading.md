@@ -74,6 +74,68 @@ Java sees them as **the same method** → ❌ compile-time error.
 
 ---
 
+## ✅ **Java's Method Overloading Resolution Order**
+
+1. **Exact match by type**
+   It looks for a method where the parameter types exactly match the argument types.
+
+2. **Widening primitive conversions**
+   If an exact match isn’t found, Java considers **widening conversions**, e.g., `int` → `long`, `float` → `double`.
+
+3. **Autoboxing**
+   If widening fails, Java will try to apply **autoboxing/unboxing**, e.g., `int` → `Integer`, `double` → `Double`.
+
+4. **Varargs (variable-length arguments)**
+   As a last resort, it will choose a method with **varargs** if available.
+
+---
+
+### 🔎 Example
+
+```java
+public class OverloadTest {
+    void print(int i) {
+        System.out.println("int");
+    }
+
+    void print(long l) {
+        System.out.println("long");
+    }
+
+    void print(Integer i) {
+        System.out.println("Integer");
+    }
+
+    void print(int... i) {
+        System.out.println("int varargs");
+    }
+
+    public static void main(String[] args) {
+        OverloadTest ot = new OverloadTest();
+        ot.print(5); // Output?
+    }
+}
+```
+
+### ✅ Output: `int`
+
+Because:
+
+1. The literal `5` is an `int`, so `void print(int i)` is an **exact match**.
+
+---
+
+### 🧠 Summary Priority
+
+| Priority | Match Type          | Example           |
+| -------- | ------------------- | ----------------- |
+| 1️⃣      | Exact Match         | `int` → `int`     |
+| 2️⃣      | Widening Conversion | `int` → `long`    |
+| 3️⃣      | Autoboxing/Unboxing | `int` → `Integer` |
+| 4️⃣      | Varargs             | `int` → `int...`  |
+
+---
+
 ## 🧪 Real-World Analogy
 
 Think of a `print()` method:

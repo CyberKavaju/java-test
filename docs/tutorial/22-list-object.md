@@ -81,6 +81,56 @@ list.add("D"); // ✅ Works
 
 ---
 
+## 🔑 **Key Characteristic of `List` returned by `Arrays.asList()`**
+
+The **List** returned by `Arrays.asList(T... a)` is:
+
+> ✅ **A fixed-size list backed by the original array.**
+
+---
+
+### 🔍 What does this mean?
+
+* The list **reflects** changes to the original array, and **vice versa**.
+* You **cannot add or remove** elements from this list. Attempts will throw an exception:
+
+  ```java
+  UnsupportedOperationException
+  ```
+* You **can update** elements (i.e., set), because the size is fixed—not immutable.
+
+---
+
+### 🔧 Example:
+
+```java
+String[] array = {"Java", "Python", "C++"};
+List<String> list = Arrays.asList(array);
+
+list.set(0, "JavaScript"); // ✅ Allowed
+System.out.println(array[0]); // ➜ JavaScript
+
+list.add("Go"); // ❌ Throws UnsupportedOperationException
+```
+
+---
+
+### 🚨 Common Pitfall
+
+```java
+List<Integer> list = Arrays.asList(1, 2, 3);
+list.add(4); // ❗ BOOM! UnsupportedOperationException
+```
+
+If you want a **modifiable list**, wrap it like this:
+
+```java
+List<Integer> modifiableList = new ArrayList<>(Arrays.asList(1, 2, 3));
+modifiableList.add(4); // ✅ Now works
+```
+
+---
+
 ## 🔁 Looping Through a List
 
 ### Enhanced `for` loop:

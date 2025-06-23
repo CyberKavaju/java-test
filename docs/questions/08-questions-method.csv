@@ -1,0 +1,63 @@
+domain,topic,question_text,option_a,option_b,option_c,option_d,option_e,correct_answer,explanation
+Working with Inheritance,Virtual vs Non-Virtual Methods,"What is the output of the following code?
+
+```java
+class Parent {
+    static void greet() {
+        System.out.println("Hello from Parent");
+    }
+}
+class Child extends Parent {
+    static void greet() {
+        System.out.println("Hello from Child");
+    }
+}
+public class Test {
+    public static void main(String[] args) {
+        Parent p = new Child();
+        p.greet();
+    }
+}
+```",Hello from Parent,Hello from Child,Compilation error,Runtime exception,None of the above,A,"This is method hiding, not overriding, because the methods are static. The method call is resolved at compile time using the reference type (Parent), so 'Hello from Parent' is printed."
+Working with Inheritance,Virtual vs Non-Virtual Methods,"Which statement about static methods and inheritance is correct?",Static methods are inherited and overridden,Static methods can be hidden but not overridden,Static methods behave polymorphically,Static methods are always private,Static methods are accessed through object references,B,"In Java, static methods are hidden (not overridden). They are resolved at compile time using the reference type, not at runtime using the object type."
+Working with Inheritance,Virtual vs Non-Virtual Methods,"What happens when compiling and running the following code?
+
+```java
+class A {
+    static void test() {
+        System.out.println("A");
+    }
+}
+class B extends A {
+    void test() {
+        System.out.println("B");
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+        B.test();
+    }
+}
+```",Prints A,Prints B,Compilation error,Runtime exception,None of the above,C,"You cannot override a static method with a non-static method in Java. This causes a compilation error because 'test()' in class B is not static."
+Working with Inheritance,Virtual vs Non-Virtual Methods,"Given the following classes:
+
+```java
+class Animal {
+    static void speak() {
+        System.out.println("Animal sound");
+    }
+}
+class Dog extends Animal {
+    static void speak() {
+        System.out.println("Bark");
+    }
+}
+```
+
+Which output will result from this code?
+
+```java
+Animal a = new Dog();
+a.speak();
+```",Animal sound,Bark,Compilation error,Runtime exception,None of the above,A,"Static methods are hidden, not overridden. So 'a.speak()' resolves to 'Animal.speak()' because the reference type is Animal."
+Working with Inheritance,Virtual vs Non-Virtual Methods,"Which of the following best describes method hiding in Java?",Occurs when a subclass defines a static method with the same signature as a static method in its superclass,Occurs when a subclass defines an instance method with the same name as a static method in the superclass,Occurs when access modifiers change between overridden methods,Occurs when a method is overridden using final keyword,It is a form of runtime polymorphism,A,"Method hiding occurs when a static method in a subclass has the same signature as a static method in its superclass. It is resolved at compile-time using reference type."
