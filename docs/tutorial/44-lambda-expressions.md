@@ -276,3 +276,10 @@ System.out.println(greeting.get());  // Hello World!
 - [45. Inheritance](45-inheritance.md) - Object relationships
 - [22. List Object](22-list-object.md) - Collection operations
 - [26. Exception Handling](26-exception-handling.md) - Lambda exception handling
+
+## Video Tutorials
+
+- [Lambda Expressions in Java - Full Simple Tutorial - Coding with John](https://www.youtube.com/watch?v=tj5sLSFjVj4)
+- [Java lambda λ - Bro Code](https://www.youtube.com/watch?v=LEJ1kGHSXdA)
+- [Java's Lambda Expressions Explained - Java Programming - Will Tollefson](https://www.youtube.com/watch?v=qsWpxQoM9vA)
+- [Java Lambda Expressions Tutorial - Java Code Geeks](https://www.youtube.com/watch?v=5FkmiqGlcYY)

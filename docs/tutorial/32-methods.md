@@ -174,6 +174,7 @@ new Main().sayHi(); // ✅
 
 ---
 
+---
 ## 📌 Summary Table
 
 | Feature            | Example                          |
@@ -216,3 +217,47 @@ class Test {
 ```
 
 ✔️ **Output:** `Hello`
+
+---
+
+## ✅ Method Hiding
+
+> When a **static method** in a subclass has the **same signature** as a static method in the parent class
+
+```java
+class Parent {
+    static void show() {
+        System.out.println("Parent static method");
+    }
+}
+
+class Child extends Parent {
+    static void show() {  // This HIDES the parent method
+        System.out.println("Child static method");
+    }
+}
+```
+
+### Key Points:
+- **Method hiding** applies to **static methods only**
+- The child class method **hides** (not overrides) the parent method
+- Which method is called depends on the **reference type**, not object type
+
+```java
+Parent p = new Child();
+p.show();        // Output: "Parent static method" (reference type is Parent)
+
+Child c = new Child();
+c.show();        // Output: "Child static method" (reference type is Child)
+```
+
+### ⚠️ Method Hiding vs Method Overriding
+
+| Feature           | Method Hiding (static)      | Method Overriding (instance) |
+| ----------------- | --------------------------- | ---------------------------- |
+| Method type       | `static`                  | non-static (instance)        |
+| Resolved at       | Compile time               | Runtime                      |
+| Depends on        | Reference type             | Object type                  |
+| Keyword           | No special keyword         | Can use `@Override`        |
+
+---

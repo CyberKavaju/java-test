@@ -411,7 +411,7 @@
   font-weight: 600;
   margin-bottom: 0.5rem;
   position: relative;
-  padding-left: 1rem;
+  padding-left: 2rem;
 }
 
 .topics-tab h3::before {
@@ -903,7 +903,7 @@
   font-weight: 600;
   margin-bottom: 0.5rem;
   position: relative;
-  padding-left: 1rem;
+  padding-left: 2rem;
 }
 
 .topics-tab h3::before {

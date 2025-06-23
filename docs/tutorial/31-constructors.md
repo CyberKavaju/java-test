@@ -148,6 +148,100 @@ So make sure your superclass has a no-arg constructor if you want to avoid compi
 Think of a constructor like the **assembly instructions** for creating a new object:
 
 > New phone 📱 → constructor sets model, memory, OS during "birth"
+---
+
+## Order of Initialization in Java
+
+---
+
+### ✅ 1. **Superclass Static Initializers (Only Once per Class Loader)**
+
+If the class extends another class, the **static initializers of the superclass** are executed first.
+
+### ✅ 2. **Static Initializers of the Class (Only Once per Class Loader)**
+
+Static fields and static blocks of the class are initialized in the order they appear in the source file.
+
+> 🧠 Note: Static parts run only once per class, not per object.
+
+---
+
+### 🚀 When `new` is called:
+
+---
+
+### ✅ 3. **Superclass Instance Fields and Initializer Blocks**
+
+The constructor chain begins from the top of the class hierarchy. First, the superclass's instance variables are assigned and its initializer blocks are run **in the order they appear**.
+
+### ✅ 4. **Superclass Constructor**
+
+Then the **constructor of the superclass** is called.
+
+---
+
+### ✅ 5. **Instance Fields and Initializer Blocks of the Current Class**
+
+After the superclass has finished initializing, instance fields and instance initializer blocks of the current class are executed **in the order they are written**.
+
+### ✅ 6. **Constructor of the Current Class**
+
+Finally, the class’s **own constructor** is executed.
+
+---
+
+### 📊 Summary Diagram
+
+```text
+[Static Superclass Init] ────┐
+                            ↓
+[Static Subclass Init] ─────┘ (run once per class)
+                              ↓
+  [new MyObject()]           ↓
+    ↓                        ↓
+[Superclass Fields + Init Blocks]
+    ↓
+[Superclass Constructor]
+    ↓
+[Subclass Fields + Init Blocks]
+    ↓
+[Subclass Constructor]
+```
+
+---
+
+### 🧪 Example
+
+```java
+class A {
+    static { System.out.println("A static"); }
+    { System.out.println("A instance block"); }
+    A() { System.out.println("A constructor"); }
+}
+
+class B extends A {
+    static { System.out.println("B static"); }
+    { System.out.println("B instance block"); }
+    B() { System.out.println("B constructor"); }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        new B();
+    }
+}
+```
+
+### 🖨 Output:
+
+```
+A static
+B static
+A instance block
+A constructor
+B instance block
+B constructor
+```
 
 ---
 

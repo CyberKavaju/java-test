@@ -334,6 +334,103 @@ cube[0][1][2] = 99;
 
 ---
 
+## ✅ Arrays passed by reference
+
+Java is **always pass-by-value**, even for arrays.
+
+BUT… the value that gets passed for an array is a **reference to the object** — not the object itself.
+
+So it **looks like pass-by-reference**, but it’s technically:
+
+> ❗ **Pass-by-value of the reference**
+
+---
+
+## 🧠 Let's visualize:
+
+```java
+int[] a = {1, 2, 3};
+int[] b = a;
+```
+
+* `a` holds a **reference** (like a pointer) to the array `[1, 2, 3]`.
+* When we assign `b = a`, we are **copying the reference**, not the array.
+
+So now:
+
+* Both `a` and `b` point to the **same array** object in memory.
+
+---
+
+## 🔧 How it works in memory:
+
+```text
+a ─┐
+   └─► [10, 2, 3]
+b ─┘
+```
+
+When you do:
+
+```java
+b[0] = 10;
+```
+
+You're changing the shared array. So now:
+
+```java
+System.out.println(a[0]); // → 10
+```
+
+---
+
+## 🧠 Why does this happen?
+
+* Arrays are **objects** in Java.
+* Objects live on the **heap**.
+* Variables like `a` and `b` store **references** (addresses) to those objects.
+* Passing an array means **passing the reference value**, not cloning the object.
+
+---
+
+## 📌 Key Takeaway
+
+> Java is **pass-by-value**, but the "value" can be a **reference** to an object.
+> When you pass or assign arrays, you're copying the **reference**, not the data.
+
+---
+
+### Bonus: What doesn't happen
+
+This does **not** make a copy:
+
+```java
+int[] b = a; // Not a deep copy
+```
+
+To copy an array, you need:
+
+```java
+int[] b = Arrays.copyOf(a, a.length);
+```
+---
+## A bad For loop `<=` expresion
+
+When using a for loop, you might be tempted to use `<=` instead of `<`:
+
+```java
+for (int i = 0; i <= nums.length - 1; i++) {
+    System.out.println(nums[i]);
+}
+```
+This works, but it's not the best practice. The idiomatic way is to use `<`
+```java
+for (int i = 0; i < nums.length; i++) {
+    System.out.println(nums[i]);
+}
+ 
+---
+
 ### ⚠️ OCA Pitfalls
 
 #### ❌ Forgetting to Initialize Inner Arrays
@@ -384,3 +481,12 @@ int[][] arr = {{1, 2}, {3, 4}};
 System.out.println(Arrays.deepToString(arr));
 // Output: [[1, 2], [3, 4]]
 ```
+
+## Video Turotials
+
+- [Arrays In Java Tutorial #10 - Alex Lee](https://www.youtube.com/watch?v=xzjZy-dHHLw)
+- [Arrays (Java Tutorial) - Bill Barnum](https://www.youtube.com/watch?v=B10TjOAyBnw)
+- [Traversing an Array (Java Tutorial) - Bill Barnum](https://www.youtube.com/watch?v=A31qPGH43Gw)
+- [Traversing a 2 Dimensional Array (Java Tutorial) - Bill Barnum](https://www.youtube.com/watch?v=zZWZNSeys_4)
+- [Java arrays 🚗 - Bro Code](https://www.youtube.com/watch?v=ei_4Nt7XWOw)
+- [Java 2D arrays 🚚 - Bro Code](https://www.youtube.com/watch?v=alwukGslBG8)
