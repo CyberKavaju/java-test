@@ -245,6 +245,46 @@ String name = sb.toString().toUpperCase().substring(0, 2) + "HN";
 
 ## String Pool & Interning
 
+The `String.intern()` method in Java is used to **optimize memory usage and performance** when working with many **duplicate string values**.
+
+### ✅ Purpose of `String.intern()`
+
+When you call `.intern()` on a string, Java checks the **string pool** (a special memory region for storing unique string literals). If the pool already contains a string equal to the current string, it returns the **reference to the pooled string**. Otherwise, it adds the string to the pool and returns that reference.
+
+### 💥 Why use it?
+
+To ensure that all identical strings share the **same memory reference**, which helps:
+
+1. **Reduce memory usage** (by avoiding duplicate strings).
+2. **Enable faster equality checks** via `==` instead of `.equals()`.
+
+### 🔧 Example
+
+```java
+public class InternExample {
+    public static void main(String[] args) {
+        String a = new String("hello");
+        String b = "hello";
+
+        System.out.println(a == b);              // false (different references)
+        System.out.println(a.intern() == b);     // true (interned to pool, same reference)
+    }
+}
+```
+
+### ⚠️ When to Use It?
+
+Use `.intern()`:
+
+* When you deal with many string duplicates (e.g. large CSV parsing, XML keys, etc.).
+* When you want to **save memory**.
+* When you need **reference equality** (`==`) checks for strings.
+
+**Avoid overusing it**, though, because:
+
+* It can increase **GC pressure** on the string pool.
+* Since JDK 7+, the pool is on the heap, not PermGen (in JDK 6 and earlier), but it's still a shared resource.
+
 ```java
 String s1 = "Java";
 String s2 = new String("Java");
