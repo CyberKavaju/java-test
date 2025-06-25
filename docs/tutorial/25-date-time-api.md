@@ -62,6 +62,129 @@ DayOfWeek day = today.getDayOfWeek();         // e.g., MONDAY
 
 ---
 
+## 🔍 What is `.plus()` in Java?
+
+In the `java.time` package (Java 8+), the `.plus()` method is used to **add time units** (days, months, years, etc.) to date/time objects like:
+
+* `LocalDate`
+* `LocalTime`
+* `LocalDateTime`
+* `ZonedDateTime`
+* `Instant`
+  and more...
+
+---
+
+## 📘 Method Signature (for `LocalDate`)
+
+### Most commonly used variants:
+
+```java
+LocalDate plus(TemporalAmount amountToAdd);
+LocalDate plus(long amountToAdd, TemporalUnit unit);
+```
+
+---
+
+### 1️⃣ Using `TemporalAmount` (like `Period`):
+
+```java
+LocalDate date = LocalDate.of(2024, 6, 25);
+Period p = Period.ofDays(5);
+LocalDate newDate = date.plus(p);
+System.out.println(newDate);  // Output: 2024-06-30
+```
+
+Here:
+
+* `Period.ofDays(5)` is a `TemporalAmount`
+* Adds **5 days** to the original date
+
+---
+
+### 2️⃣ Using `amount + unit`:
+
+```java
+LocalDate date = LocalDate.of(2024, 6, 25);
+LocalDate newDate = date.plus(2, ChronoUnit.MONTHS);
+System.out.println(newDate);  // Output: 2024-08-25
+```
+
+You can use units like:
+
+* `ChronoUnit.DAYS`
+* `ChronoUnit.MONTHS`
+* `ChronoUnit.YEARS`
+* `ChronoUnit.WEEKS`, etc.
+
+---
+
+## 🛠 Examples for `LocalDate`
+
+### ➕ Add 1 day
+
+```java
+LocalDate.now().plusDays(1);
+```
+
+### ➕ Add 3 weeks
+
+```java
+LocalDate.now().plusWeeks(3);
+```
+
+### ➕ Add 2 months
+
+```java
+LocalDate.now().plusMonths(2);
+```
+
+### ➕ Add 1 year
+
+```java
+LocalDate.now().plusYears(1);
+```
+
+These are all **shortcuts** internally using `.plus(long, ChronoUnit)`.
+
+---
+
+## ⚠️ Edge Cases
+
+### Month Overflow
+
+```java
+LocalDate date = LocalDate.of(2024, 1, 31);
+LocalDate result = date.plusMonths(1);
+System.out.println(result); // 2024-02-29 (leap year!)
+```
+
+➡️ Smart handling of end-of-month overflows
+
+---
+
+## 💡 When Should You Use `Period` vs `ChronoUnit`?
+
+| Use Case                                             | Use `Period` | Use `ChronoUnit`              |
+| ---------------------------------------------------- | ------------ | ----------------------------- |
+| Multiple units at once (e.g., 2 years, 3 months)     | ✅            | ❌                             |
+| One unit at a time (e.g., 5 days)                    | ✅            | ✅                             |
+| More control and readability                         | ✅            | ✅                             |
+| Ultra-precise time units (nanoseconds, milliseconds) | ❌            | ✅ (`ChronoUnit.MILLIS`, etc.) |
+
+---
+
+## 🧠 Summary
+
+`.plus()` is overloaded and very flexible:
+
+* Add time using **`Period`** or other **`TemporalAmount`**
+* Add time using **`ChronoUnit`** + value
+* Handles date logic smartly (leap years, month overflows)
+* Doesn’t mutate original object — returns a **new** immutable date/time
+
+---
+
 ## 🧮 Period vs Duration
 
 | Type         | Use For                 | Example                 |

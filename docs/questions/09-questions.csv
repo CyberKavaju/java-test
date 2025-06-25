@@ -1,0 +1,54 @@
+domain,topic,question_text,option_a,option_b,option_c,option_d,option_e,correct_answer,explanation
+Working with Methods and Encapsulation,Pass by Value vs Reference,"What is the result of running the following code?
+
+```java
+class Product {
+    double price;
+}
+
+public class Test {
+    public void updatePrice(Product product, double price) {
+        price = price * 2;
+        product.price = product.price + price;
+    }
+
+    public static void main(String[] args) {
+        Product prt = new Product();
+        prt.price = 200;
+        double newPrice = 100;
+
+        Test t = new Test();
+        t.updatePrice(prt, newPrice);
+
+        System.out.println(prt.price + " : " + newPrice);
+    }
+}
+```",200.0 : 100.0,400.0 : 200.0,400.0 : 100.0,Compilation error,nothing,C,"The method doubles the value of 'price' parameter (local), but only 'product.price' is updated by adding this doubled value. 'newPrice' remains unchanged because primitives are passed by value."
+Working with Selected classes from the Java API,Date Time API,"What happens when compiling and running the following code?
+
+```java
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+public class Test {
+    public static void main(String[] args) {
+        String date = LocalDate
+            .parse("2014-05-04")
+            .format(DateTimeFormatter.ISO_DATE_TIME);
+        System.out.println(date);
+    }
+}
+```",Prints 2014-05-04T00:00:00.000,Prints May 4, 2014T00:00:00.000,Prints 5/4/14T00:00:00.000,Throws a runtime exception,Compilation error,D,"The method 'format(DateTimeFormatter.ISO_DATE_TIME)' expects both date and time information, but 'LocalDate' contains only a date. As a result, a `java.time.DateTimeException` is thrown at runtime."
+Working With Java Data Types,Variable Casting and Conversions,"What happens when compiling the following code?
+
+```java
+public class Test {
+    public static void main(String[] args) {
+        Short s1 = 200;
+        Integer s2 = 400;
+        Long s3 = (long) s1 + s2;   // line n1
+        String s4 = (String) (s3 * s2); // line n2
+        System.out.println("Sum is " + s4);
+    }
+}
+```",Sum is 600,Compilation error at line n1,Compilation error at line n2,Runtime exception at line n1,Runtime exception at line n2,C,"The expression '(s3 * s2)' results in a primitive 'long' type, which cannot be cast to 'String'. Java does not allow casting primitive numeric types to 'String' directly, leading to a compilation error at line n2."

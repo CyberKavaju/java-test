@@ -1,0 +1,99 @@
+domain,topic,question_text,option_a,option_b,option_c,option_d,option_e,correct_answer,explanation
+Using Loop Constructs,For Loops,"What happens when compiling the following code?
+1. public class Whizlabs {
+2.     public static void main(String[] args) {
+3.         int sum = 0;
+4.         for (int x = 0; x <= 10; x++)
+5.             sum += x;
+6.         System.out.print(""Sum for 0 to "" + x);
+7.         System.out.println("" = "" + sum);
+8.     }
+9. }
+","Sum for 0 to 0 = 55","Sum for 0 to 10 = 55","Compilation fails due to an error in line 6","Compilation fails due to an error in line 7","Runtime Exception",C,"The variable 'x' is declared inside the for loop, so its scope is limited to the loop. It is not accessible on line 6, which causes a compile-time error."
+Handling Exceptions,Try-Catch-Finally,"What happens when compiling the following code?
+1. public class Whizlabs {
+2.     public static void main(String[] args) {
+3.         try {
+4.             Double number = Double.valueOf(""120D"");
+5.         } catch (NumberFormatException ex) {
+6.             System.out.println(ex);
+7.         }
+8.         System.out.println(number);
+9.     }
+10. }
+","120","120D","Run-time exception NumberFormatException is generated","Compilation fails due to an error at line 5","Compilation fails due to an error at line 8",E,"The variable 'number' is declared inside the try block, so its scope is limited to that block. It is not accessible on line 8, which results in a compile-time error."
+Java Basics,Import Statements,"Given the following classes, which import statements can be added at line 1 to make the code compile?
+
+```java
+package zoo;
+public class Zookeeper {}
+
+package zoo.wildlife;
+public class Animal {}
+
+package visitor;
+// Insert import here
+
+public class Guest {
+    public void watch(Animal animal) {}
+}
+```","import zoo.*;","import zoo.*.wildlife;","import zoo.wildlife.Animal.*;","import zoo.wildlife.Animal;","import zoo.wildlife.*;",D,"To make the code compile, the `Animal` class must be imported. Option D, `import zoo.wildlife.Animal;`, correctly imports the class. Option E, `import zoo.wildlife.*;`, would also work, but option D is a more precise import. Option A only imports classes in the `zoo` package, not subpackages. Option B has invalid syntax. Option C is for static imports."
+Working with Inheritance,Method Overriding,"Which modifier can be used in the subclass method declaration below to make it valid?
+
+```java
+public class Exam {
+    void method() {}
+}
+
+public class OCAJP extends Exam {
+    _____ void method() {}
+}
+```","abstract","final","private","default","int",B,"Using 'final' is allowed here and simply prevents further overriding. Using 'private' or more restrictive access is not allowed in overridden methods."
+Working With Java Data Types,Primitive Data Types,"Which of the following data types will allow the following code snippet to compile?
+
+```java
+float i = 4;
+float j = 2;
+_____ z = i + j;
+```","long","double","int","float","byte",D,"The result of adding two float variables is a float. Therefore, the variable 'z' must be of a type that can hold a float value, such as float or double. Since float is an option and is the most precise type, it is the correct answer."
+Working With Java Data Types,Wrapper Classes,"What is the result of executing the following code?
+
+```java
+Integer number = Integer.valueOf(""808.1"");
+```","The value of the variable number will be 808.1","The value of the variable number will be 808","The value of the variable number will be 0","A NumberFormatException will be thrown","Compilation error",D,"The string '808.1' is not a valid format for Integer.valueOf(), so it throws a NumberFormatException at runtime."
+Working with Methods and Encapsulation,Method Declaration and Parameters,"Assume you have a method which is declared to take four arguments. What will happen if a program calls this method with only two arguments?","Code compiles successfully. However, in Runtime throws exception.","Compilation fails.","Both 3rd & 4th Argument is given a value zero.","Both 3rd & 4th Argument is given a value null.","None of the above",B,"Java requires the number of arguments in the method call to exactly match the method declaration. Fewer arguments cause a compile-time error."
+Working with Selected Classes from Java API,Date Time API,"What is the output of the following code?
+
+```java
+import java.time.LocalDate;
+import java.time.Period;
+
+public class Whizlabs {
+    public static void main(String[] args) {
+        LocalDate date = LocalDate.of(2015, 3, 26);
+        Period p = Period.ofDays(1);
+        System.out.println(date.plus(p));
+    }
+}
+```","2015-03-27","2015-04-27","2015-02-27","Compilation fails due to an error at line 6","Compilation fails due to an error at line 8",A,"The code adds a Period of 1 day to March 26, 2015. Month numbering is 1-based, so '3' is March. The result is 2015-03-27."
+Working with Selected Classes from Java API,Lambda Expressions,"Which of the following should be inserted at line 11 to get the output [3, 11]?
+
+```java
+List<Integer> list = new ArrayList<>();
+list.add(2); list.add(3);
+list.add(30); list.add(11);
+list.add(2);
+// Insert here
+System.out.println(list);
+```","list.removeIf(o -> o%2 == 0);","list.removeIf(o -> o%2 != 0);","list.remove(2);","list.remove(o -> o%2 == 0);","None of the above",A,"To get the output [3, 11], we need to remove all even numbers from the list. Option A correctly removes all even numbers using the removeIf method with a lambda expression that checks if the number is even (o % 2 == 0). Option C is incorrect because `list.remove(2)` would remove the element at index 2 (value 30), not all even numbers."
+Working With Java Data Types,Primitive Data Types,"What happens when compiling the following code?
+
+```java
+1. List<int> list = new ArrayList<>();
+2. list.add(21);
+3. list.add(13);
+4. list.add(30);
+5. list.add(11);
+6. list.removeIf(o -> o % 2 == 0);
+7. System.out.println(list);
+```","[21, 13, 11]","[30]","[]","Compilation fails due to an error at line 1","Compilation fails due to an error at line 10",D,"Java generics do not support primitive types. Using 'List<int>' at line 1 causes a compile-time error. It should be 'List<Integer>'.

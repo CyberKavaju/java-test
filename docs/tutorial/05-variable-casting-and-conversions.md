@@ -248,6 +248,59 @@ System.out.println(result);
 
 ---
 
+## why can i use a final int to assign to a byte?
+
+---
+
+### 🧠 Code:
+
+```java
+final int x = 100;
+byte b = x;
+System.out.println(b);
+```
+
+---
+
+### 🔍 Why It *Should* Work:
+
+* `x` is declared `final` (a **constant**), and it has a value of `100`.
+* The value `100` **fits into a `byte`**, which has a range of **-128 to 127**.
+
+---
+
+### 🤔 BUT — Does it Compile?
+
+#### ✅ Yes, it **does compile** and **prints:**
+
+```
+100
+```
+
+### ✅ Why?
+
+Because:
+
+* The compiler sees that `x` is a **`final int`** with a known constant value at **compile time**.
+* Java allows **implicit narrowing** of constant integer expressions into smaller types **if the value is within range**.
+
+This is a **special rule for final constants**.
+
+---
+
+### 🔥 So the output is:
+
+```
+100
+```
+
+Had `x` **not** been `final`, this would result in a **compilation error**:
+
+```java
+int x = 100;   // NOT final
+byte b = x;    // ❌ Compilation Error: possible lossy conversion from int to byte
+```
+---
 ## 3. Overflow and Underflow
 
 > ⚠️ **Overflow** occurs when a value exceeds the maximum limit of its data type
@@ -371,3 +424,59 @@ for (int i = 0; i < 200; i++) {
 5. **Test edge cases** with maximum and minimum values
 
 ---
+
+## How **type casting** works with `byte` and integers.
+
+---
+
+### ✅ **Code**:
+
+```java
+int i = 258;
+byte b = (byte) i;
+System.out.println(b);
+```
+
+---
+
+### 🧠 What’s happening here?
+
+* `int i = 258;` → `i` holds the value `258`
+* `byte b = (byte) i;` → you're **casting** `258` to a `byte`
+
+---
+
+### 💡 `byte` in Java:
+
+* `byte` is an **8-bit signed integer**
+* Its range is **−128 to 127**
+* So if you cast an `int` (which is 32-bit) to a `byte`, only the **lowest 8 bits** are preserved, and the rest are discarded
+
+---
+
+### ⚙️ What are the lowest 8 bits of `258`?
+
+Binary of `258` (in 32-bit int) is:
+
+```
+00000000 00000000 00000001 00000010
+                           ↑↑↑↑↑↑↑↑
+                       These 8 bits remain
+```
+
+That's `00000010` → which is **2** in decimal.
+
+---
+
+### ✅ Final Output:
+
+```
+2
+```
+
+---
+
+### 🧪 Bonus Experiment:
+
+Try changing `i` to other values, like `130`, `256`, `384`, etc., and observe how the byte value "wraps around" due to overflow.
+

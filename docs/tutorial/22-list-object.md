@@ -50,6 +50,10 @@ System.out.println(list); // [A, B]
 | `set(int index, E e)` | Replaces element at index         | `list.set(0, "Z")`       |
 | `remove(int index)`   | Removes element at index          | `list.remove(1)`         |
 | `remove(Object o)`    | Removes first occurrence of value | `list.remove("A")`       |
+| `removeIf(Predicate<? super E> filter)` | Removes elements matching condition | `list.removeIf(s -> s.startsWith("A"))` |
+| `toArray()`           | Converts to array                  | `list.toArray()`          |
+| `toArray(T[] a)`      | Converts to typed array            | `list.toArray(new String[0])` |
+| `contains(Object o)`  | Checks if list contains element   | `list.contains("A")`     |
 | `size()`              | Returns number of elements        | `list.size()`            |
 | `clear()`             | Removes all elements              | `list.clear()`           |
 | `contains(Object o)`  | Checks if list contains element   | `list.contains("A")`     |
@@ -58,6 +62,155 @@ System.out.println(list); // [A, B]
 
 ---
 
+## 📌 **What is `removeIf()`?**
+
+`removeIf()` is a method provided by the `Collection` interface (and therefore available in all implementing classes like `List`, `Set`, etc.) since **Java 8**.
+
+### ✅ Purpose:
+
+To **remove elements** from a collection **based on a condition (predicate)**.
+
+---
+
+## 🧬 **Method Signature**
+
+```java
+boolean removeIf(Predicate<? super E> filter);
+```
+
+* `Predicate<E>` is a **functional interface** that takes a single argument and returns a boolean:
+
+  ```java
+  boolean test(E e);
+  ```
+
+* `removeIf()` goes through each element in the collection and applies the predicate.
+
+* If `test(e)` returns `true`, the element is removed.
+
+---
+
+## 🛠️ Example Usage
+
+```java
+List<Integer> numbers = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6));
+
+// Remove all even numbers
+numbers.removeIf(n -> n % 2 == 0);
+
+System.out.println(numbers); // Output: [1, 3, 5]
+```
+
+---
+
+## 🧠 How It Works Internally (Conceptually)
+
+Internally, the method uses an iterator to avoid `ConcurrentModificationException`:
+
+```java
+Iterator<E> it = list.iterator();
+while (it.hasNext()) {
+    E e = it.next();
+    if (predicate.test(e)) {
+        it.remove();  // safe removal
+    }
+}
+```
+
+This ensures thread-safe iteration while modifying the list.
+
+---
+
+## 💡 Real-World Use Cases
+
+### 🧹 1. Clean up nulls:
+
+```java
+list.removeIf(Objects::isNull);
+```
+
+### 🔍 2. Filter based on string match:
+
+```java
+List<String> names = List.of("Alice", "Bob", "Charlie");
+names.removeIf(name -> name.startsWith("A")); // Removes "Alice"
+```
+
+### 📆 3. Remove expired items:
+
+```java
+list.removeIf(item -> item.getExpiryDate().isBefore(LocalDate.now()));
+```
+
+---
+
+## ⚠️ Notes and Gotchas
+
+### 1. ✅ Return Value:
+
+It returns a `boolean` indicating **whether any elements were removed**:
+
+```java
+boolean modified = list.removeIf(n -> n < 0);
+```
+
+---
+
+### 2. 🚫 No ConcurrentModificationException:
+
+Unlike manually removing in a `for-each` loop, this method is **safe**.
+
+### ❌ This is BAD:
+
+```java
+for (Integer n : list) {
+    if (n % 2 == 0) list.remove(n);  // ❌ Throws ConcurrentModificationException
+}
+```
+
+---
+
+## 🔗 Bonus: Combine with Streams (but Streams are not in-place)
+
+If you **don’t want to mutate** the original list:
+
+```java
+List<Integer> filtered = list.stream()
+                             .filter(n -> n % 2 != 0)
+                             .collect(Collectors.toList());
+```
+
+* `removeIf()` modifies the list in-place.
+* `stream().filter()` creates a **new list**.
+
+---
+
+## 🔚 Summary Table
+
+| Feature          | Description                                    |
+| ---------------- | ---------------------------------------------- |
+| 📌 Method        | `removeIf(Predicate<E> predicate)`             |
+| 🔍 Purpose       | Removes elements that match a condition        |
+| 💡 Returns       | `true` if any elements were removed            |
+| 🚫 Safe?         | ✅ Yes, uses iterator internally                |
+| 🧠 Introduced in | Java 8                                         |
+| ⚠️ Caution       | Don't use `for-each` loop for removal manually |
+
+---
+
+## 🧪 Mini Quiz for You?
+
+What will this print?
+
+```java
+List<String> list = new ArrayList<>(List.of("a", "bb", "ccc", "dd"));
+list.removeIf(s -> s.length() == 2);
+System.out.println(list);
+```
+
+Want me to solve or let you try? 😄
+
+---
 ## 💡 List Initialization Tips
 
 ### ✅ Java 8+ Short Syntax
