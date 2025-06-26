@@ -247,3 +247,9 @@ class Developer extends Employee {
 - [43. Interfaces](43-interfaces.md) - Interface concepts
 - [45. Inheritance](45-inheritance.md) - Inheritance principles
 - [46. Polymorphism](46-polymorphism.md) - Runtime behavior
+
+## Video Tutorials
+
+- [Abstract Class In Java Tutorial #79 - Alex Lee](https://www.youtube.com/watch?v=52frlN8webg&t=42s)
+- [Abstract Classes and Methods in Java Explained in 7 Minutes - Coding with John](https://www.youtube.com/watch?v=HvPlEJ3LHgE)
+- [Java abstraction 👻 - Bro Code](https://www.youtube.com/watch?v=Lvnb83qt57g)

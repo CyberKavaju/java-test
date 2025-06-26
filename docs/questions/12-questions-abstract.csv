@@ -1,0 +1,92 @@
+domain,topic,question_text,option_a,option_b,option_c,option_d,option_e,correct_answer,explanation
+Working with Inheritance,Abstract Classes,"Which of the following statements about abstract classes in Java is true?",An abstract class can be instantiated directly,An abstract class must have at least one abstract method,An abstract class can extend another abstract class,An abstract class cannot have any concrete methods,Abstract classes must be final,C,"An abstract class can extend another abstract class. It may contain abstract and concrete methods, and cannot be instantiated directly."
+Working with Inheritance,Abstract Classes,"What will happen when compiling the following code?
+
+```java
+abstract class Animal {
+    abstract void speak();
+}
+
+class Dog extends Animal { }
+```",Compiles and runs successfully,Compilation error due to missing method implementation in Dog,Runs with a runtime exception,Dog must be declared abstract,Compilation error in abstract class definition,B,"Since Dog does not implement the abstract method `speak()`, it must either be declared abstract or implement the method."
+Working with Inheritance,Abstract Classes,"What is the output of the following code?
+
+```java
+abstract class Shape {
+    abstract void draw();
+    void print() {
+        System.out.println(""Printing shape"");
+    }
+}
+
+class Circle extends Shape {
+    void draw() {
+        System.out.println(""Drawing circle"");
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        Shape s = new Circle();
+        s.print();
+    }
+}
+```",Printing shape,Drawing circle,Drawing circle then Printing shape,Printing shape then Drawing circle,Compilation error,A,"The print() method is concrete and will execute. Although draw() is implemented, it is never called."
+Working with Inheritance,Abstract Classes,"Choose the correct statement about abstract classes.",Abstract classes cannot have constructors,You cannot have abstract methods without declaring the class abstract,Abstract classes cannot implement interfaces,An abstract class must be public,Abstract classes cannot extend other classes,B,"Abstract methods must reside inside an abstract class. However, abstract classes can have constructors and can implement interfaces."
+Working with Inheritance,Abstract Classes,"What is the output of this code?
+
+```java
+abstract class Writer {
+    public abstract void write();
+}
+
+class Pen extends Writer {
+    public void write() {
+        System.out.println(""Writing with a pen"");
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        Writer w = new Pen();
+        w.write();
+    }
+}
+```",Writing with a pen,Compilation error,Runtime error,No output,Abstract class cannot be instantiated,A,"The Pen class implements the abstract method `write()` from Writer. The code compiles and runs, printing 'Writing with a pen'."
+Working with Inheritance,Abstract Classes,"What happens when compiling the following code?
+
+```java
+abstract class Machine {
+    abstract void start();
+    abstract void stop();
+}
+
+abstract class Printer extends Machine {
+    void start() {
+        System.out.println(""Printer starting"");
+    }
+}
+```",Compilation error,Compiles successfully,Runtime error,Printer must be made final,Machine must not be abstract,B,"It compiles. The Printer class provides a concrete implementation for one abstract method and inherits the other, so it remains abstract."
+Working with Inheritance,Abstract Classes,"Which statement is correct about abstract classes and interfaces in Java?",Abstract classes can have constructors but interfaces cannot,Abstract classes and interfaces both support multiple inheritance,Interfaces can have private constructors,Abstract classes must have at least one abstract method,Both abstract classes and interfaces can have static methods,A,"Abstract classes can have constructors while interfaces cannot. This is a key difference between abstract classes and interfaces in Java."
+Working with Inheritance,Abstract Classes,"What is the result of compiling and running this code?
+
+```java
+abstract class Engine {
+    abstract void ignite();
+}
+
+class DieselEngine extends Engine {
+    void ignite() {
+        System.out.println(""Igniting diesel engine"");
+    }
+}
+
+class Demo {
+    public static void main(String[] args) {
+        Engine e = new DieselEngine();
+        e.ignite();
+    }
+}
+```",Compilation error,Igniting diesel engine,Abstract class cannot be instantiated,No output,Runtime exception,B,"The DieselEngine class implements the abstract method from Engine. It compiles and runs, printing the message."
+Working with Inheritance,Abstract Classes,"Which statement is correct regarding abstract methods?",They can have a body,They must be static,They cannot be private,They must be final,They cannot throw exceptions,C,"Abstract methods cannot be private or final. They must be implemented in a subclass and cannot have a body."
+Working with Inheritance,Abstract Classes,"Which of the following statements is correct?",A class must be abstract to have abstract methods,A class can be abstract without having any abstract methods,A class can be both abstract and final,An abstract class cannot extend a concrete class,A class with no abstract methods must be concrete,B,"A class can be declared abstract even if it doesn't contain any abstract methods."

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { apiService } from '../services/api';
@@ -15,6 +15,7 @@ const Tutorial: React.FC<TutorialProps> = () => {
   const [error, setError] = useState<string | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const navigate = useNavigate();
 
   const selectedSlug = searchParams.get('tutorial');
 
@@ -67,7 +68,7 @@ const Tutorial: React.FC<TutorialProps> = () => {
   const startReview = () => {
     if (selectedSlug) {
       // Navigate to review page with the current tutorial topic
-      window.open(`/review?topic=${selectedSlug}`, '_blank');
+      navigate(`/review?topic=${selectedSlug}`);
     }
   };
 

@@ -181,6 +181,31 @@ System.out.println(a & b);
 | `>>>` | Unsigned RS | Fill with 0, ignore sign      |
 
 ---
+## 🔢 Decimal to Binary Table (0–20)
+
+| Decimal | Binary |
+| ------- | ------ |
+| 0       | 00000  |
+| 1       | 00001  |
+| 2       | 00010  |
+| 3       | 00011  |
+| 4       | 00100  |
+| 5       | 00101  |
+| 6       | 00110  |
+| 7       | 00111  |
+| 8       | 01000  |
+| 9       | 01001  |
+| 10      | 01010  |
+| 11      | 01011  |
+| 12      | 01100  |
+| 13      | 01101  |
+| 14      | 01110  |
+| 15      | 01111  |
+| 16      | 10000  |
+| 17      | 10001  |
+| 18      | 10010  |
+| 19      | 10011  |
+| 20      | 10100  |
 
 ## Final Rule of Thumb
 
@@ -189,3 +214,8 @@ System.out.println(a & b);
 * Work with **flags or binary masks**
 * Need **low-level performance**
 * Want to **manipulate data at the bit level**
+
+
+## Video Tutorials
+
+[Java Tutorial - 8: Bitwise Operators - Coding Simplified](https://www.youtube.com/watch?v=RrcTFXfZfVE)
