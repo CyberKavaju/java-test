@@ -150,7 +150,7 @@ function Home() {
           {loading ? 'Loading Questions...' : 'Start New Test'}
         </button>
         
-        <a href="/tutorial" className="btn btn-secondary" target="_blank" rel="noopener noreferrer">
+        <a href="/tutorial" className="btn btn-secondary" rel="noopener noreferrer">
           📚 Study Tutorial
         </a>
         
@@ -266,7 +266,7 @@ function AppRoutes() {
           </button>
           <div className={`nav-links ${mobileMenuOpen ? 'mobile-open' : ''}`}>
             <a href="/" onClick={() => setMobileMenuOpen(false)}>Home</a>
-            <a href="/tutorial" onClick={() => setMobileMenuOpen(false)} target="_blank" rel="noopener noreferrer">Tutorial</a>
+            <a href="/tutorial" onClick={() => setMobileMenuOpen(false)} rel="noopener noreferrer">Tutorial</a>
             <a href="/report" onClick={() => setMobileMenuOpen(false)}>Reports</a>
             <a href="/questions" onClick={() => setMobileMenuOpen(false)}>Questions</a>
           </div>
