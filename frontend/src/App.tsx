@@ -4,7 +4,7 @@ import { AppProvider, useApp } from './context/AppContext';
 import { apiService } from './services/api';
 import Quiz from './components/Quiz';
 import TestResults from './components/TestResults';
-import Report from './components/Report';
+import Report from './components/report';
 import Import from './components/Import';
 import Tutorial from './components/Tutorial';
 import Review from './components/Review';

@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 const dbPath = path.join(__dirname, '../../database/java_test.db');
-const schemaPath = path.join(__dirname, '../../database/recommendation_schema.sql');
+const schemaPath = path.join(__dirname, './recommendation_schema.sql');
 
 console.log('Applying recommendation schema to database...');
 console.log(`Database path: ${dbPath}`);

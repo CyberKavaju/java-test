@@ -855,10 +855,68 @@ export default function Report() {
           <div className="recommendations">
             <h3>Study Recommendations</h3>
             <div className="recommendations-list">
-              {userHistory.topicStats
-                .filter(topic => topic.success_rate < 70)
-                .sort((a, b) => a.success_rate - b.success_rate)
-                .map((topic) => {
+              {(() => {
+                // Safety check
+                if (!userHistory || !userHistory.topicStats) {
+                  return <div>Loading recommendations...</div>;
+                }
+                
+                const lowPerformanceTopics = userHistory.topicStats.filter(topic => topic.success_rate < 70);
+                
+                // Group topics by their tutorial slug
+                const tutorialGroups: { [key: string]: any[] } = {};
+                const ungroupedTopics: any[] = [];
+                
+                lowPerformanceTopics.forEach(topic => {
+                  const tutorialSlug = getTutorialSlug(topic.topic);
+                  if (tutorialSlug) {
+                    if (!tutorialGroups[tutorialSlug]) {
+                      tutorialGroups[tutorialSlug] = [];
+                    }
+                    tutorialGroups[tutorialSlug].push(topic);
+                  } else {
+                    ungroupedTopics.push(topic);
+                  }
+                });
+                
+                const consolidatedTopics = [];
+                
+                // Create consolidated recommendations for topics that share the same tutorial
+                Object.entries(tutorialGroups).forEach(([tutorialSlug, topics]) => {
+                  if (topics.length > 1) {
+                    // Multiple topics share the same tutorial - consolidate them
+                    const avgSuccessRate = Math.round(topics.reduce((sum, topic) => sum + topic.success_rate, 0) / topics.length);
+                    const totalAttempts = topics.reduce((sum, topic) => sum + topic.total_attempts, 0);
+                    const totalCorrect = topics.reduce((sum, topic) => sum + topic.correct_answers, 0);
+                    
+                    // Use the first topic's name as the main title, but indicate it's consolidated
+                    const mainTopic = topics[0].topic;
+                    const tutorialName = getTutorialDisplayName(tutorialSlug);
+                    
+                    consolidatedTopics.push({
+                      topic: tutorialName || mainTopic,
+                      success_rate: avgSuccessRate,
+                      total_attempts: totalAttempts,
+                      correct_answers: totalCorrect,
+                      isConsolidated: true,
+                      relatedTopics: topics.map(t => t.topic),
+                      tutorialSlug: tutorialSlug
+                    });
+                  } else {
+                    // Single topic for this tutorial
+                    consolidatedTopics.push({
+                      ...topics[0],
+                      tutorialSlug: tutorialSlug
+                    });
+                  }
+                });
+                
+                // Add ungrouped topics (those without tutorial mappings)
+                consolidatedTopics.push(...ungroupedTopics);
+                
+                return consolidatedTopics
+                  .sort((a, b) => a.success_rate - b.success_rate)
+                  .map((topic) => {
                   const isExpanded = expandedRecommendations.has(topic.topic);
                   const getSuccessRateClass = (rate: number) => {
                     if (rate < 30) return 'critical';
@@ -884,38 +942,69 @@ export default function Report() {
                       </div>
                       {isExpanded && (
                         <div className="recommendation-content">
-                          <p>Current success rate: {topic.success_rate}%. Consider reviewing this topic.</p>
-                          <div className="recommendation-details">
-                            <span>Attempts: {topic.total_attempts}</span>
-                            <span>Correct: {topic.correct_answers}</span>
-                            <span>Needs improvement</span>
-                          </div>
-                          <div className="recommendation-link">
-                            <a 
-                              href={getJavaDocumentationLink(topic.topic)} 
-                              target="_blank" 
-                              rel="noopener noreferrer"
-                              className="java-doc-link"
-                            >
-                              📚 Study {topic.topic} in Java Documentation
-                            </a>
-                            {getTutorialSlug(topic.topic) && (
-                              <a 
-                                href={`/tutorial?tutorial=${getTutorialSlug(topic.topic)}`}
-                                className="tutorial-link"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                📖 Study {topic.topic} Tutorial
-                              </a>
-                            )}
-                          </div>
+                          {topic.isConsolidated ? (
+                            <>
+                              <p>Exception handling covers multiple related concepts. Current average success rate: {topic.success_rate}%.</p>
+                              <div className="consolidated-topics">
+                                <h5>Related topics that need improvement:</h5>
+                                <div className="topic-chips">
+                                  {topic.relatedTopics.map((relatedTopic, idx) => (
+                                    <span key={idx} className="topic-chip">{relatedTopic}</span>
+                                  ))}
+                                </div>
+                              </div>
+                              <div className="recommendation-details">
+                                <span>Total Attempts: {topic.total_attempts}</span>
+                                <span>Total Correct: {topic.correct_answers}</span>
+                                <span>Consolidated recommendation</span>
+                              </div>
+                              <div className="recommendation-link">
+                                <a 
+                                  href="/docs/tutorial/26-exception-handling.md"
+                                  className="tutorial-link"
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  📖 Study Complete Exception Handling Tutorial
+                                </a>
+                              </div>
+                            </>
+                          ) : (
+                            <>
+                              <p>Current success rate: {topic.success_rate}%. Consider reviewing this topic.</p>
+                              <div className="recommendation-details">
+                                <span>Attempts: {topic.total_attempts}</span>
+                                <span>Correct: {topic.correct_answers}</span>
+                                <span>Needs improvement</span>
+                              </div>
+                              <div className="recommendation-link">
+                                <a 
+                                  href={getJavaDocumentationLink(topic.topic)} 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                  className="java-doc-link"
+                                >
+                                  📚 Study {topic.topic} in Java Documentation
+                                </a>
+                                {getTutorialSlug(topic.topic) && (
+                                  <a 
+                                    href={`/tutorial?tutorial=${getTutorialSlug(topic.topic)}`}
+                                    className="tutorial-link"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                  >
+                                    📖 Study {topic.topic} Tutorial
+                                  </a>
+                                )}
+                              </div>
+                            </>
+                          )}
                         </div>
                       )}
                     </div>
                   );
-                })
-              }
+                });
+              })()} {/* Added parenthesis closing the immediately invoked function */}
             </div>
           </div>
           
