@@ -30,7 +30,7 @@ class TopicQuestionMapper {
             '23-set-object': ['Working with Selected classes from the Java API'],
             '24-map-object': ['HashMap put', 'HashMap get', 'HashMap containsKey', 'HashMap size', 'HashMap remove', 'HashMap null key', 'Map', 'Map Object'],
             '25-date-time-api': ['Working with Selected classes from the Java API', 'DateTimeFormatter', 'LocalDate plusDays'],
-            '26-exception-handling': ['Handling Exceptions'],
+            '26-exception-handling': ['Handling Exceptions', 'Exception Handling', 'Try-Catch-Finally', 'Checked vs Unchecked Exceptions', 'Exception Hierarchy'],
             '27-oop-overview': ['Working with Methods and Encapsulation'],
             '28-classes-and-objects': ['Working with Methods and Encapsulation'],
             '29-fields-vs-attributes': ['Working with Methods and Encapsulation'],

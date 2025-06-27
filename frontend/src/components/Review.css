@@ -556,41 +556,271 @@
   text-align: center;
 }
 
-/* Responsive Design */
+/* Results Controls */
+.results-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 15px;
+  background: #1a1a1a;
+  border: 1px solid #374151;
+  border-radius: 8px;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.filter-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.filter-btn {
+  padding: 8px 16px;
+  border: 2px solid #374151;
+  background: #111827;
+  color: #e5e7eb;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.filter-btn:hover {
+  border-color: #6b7280;
+  background: #1f2937;
+}
+
+.filter-btn.active {
+  border-color: #3b82f6;
+  background: #1e293b;
+  color: #3b82f6;
+}
+
+.filter-btn.correct.active {
+  border-color: #10b981;
+  background: #064e3b;
+  color: #10b981;
+}
+
+.filter-btn.incorrect.active {
+  border-color: #ef4444;
+  background: #7f1d1d;
+  color: #ef4444;
+}
+
+.expand-controls {
+  display: flex;
+  align-items: center;
+}
+
+.expand-btn {
+  padding: 8px 16px;
+  border: 2px solid #6b7280;
+  background: #374151;
+  color: #e5e7eb;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.expand-btn:hover {
+  border-color: #9ca3af;
+  background: #4b5563;
+}
+
+/* Enhanced Result Items */
+.result-header.clickable {
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.result-header.clickable:hover {
+  background: #0f172a;
+}
+
+.result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background: #111827;
+}
+
+.result-header-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.expand-icon {
+  font-size: 14px;
+  color: #9ca3af;
+  transition: transform 0.2s;
+  width: 20px;
+  text-align: center;
+}
+
+.result-content {
+  padding: 0;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 1000px;
+  }
+}
+
+.result-content .question-text {
+  margin: 1.5rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  border-radius: 8px;
+  border-left: 3px solid #3b82f6;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.result-content .question-text h1,
+.result-content .question-text h2,
+.result-content .question-text h3 {
+  color: #e5e7eb;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.result-content .question-text h2 {
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+.result-content .question-text p {
+  color: #e5e7eb;
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+
+.result-content .question-text code:not(.inline-code) {
+  background: transparent;
+  color: #e5e7eb;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
+  font-size: 13px;
+}
+
+.result-content .question-text .code-block {
+  background: #0d1117 !important;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px 0;
+  overflow-x: auto;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.result-content .question-text .code-block code {
+  background: transparent;
+  color: #e6edf3;
+  font-family: 'JetBrains Mono', 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  padding: 0;
+  border: none;
+  display: block;
+  white-space: pre;
+}
+
+.result-content .question-text .inline-code {
+  background: rgba(59, 130, 246, 0.1);
+  color: #93c5fd;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
+  font-size: 13px;
+}
+
+.result-content .result-answers {
+  margin: 0 1.5rem 1.5rem;
+  padding: 1rem;
+  background: #1f2937;
+  border-radius: 6px;
+  border: 1px solid #374151;
+}
+
+.result-content .result-explanation {
+  margin: 0 1.5rem 1.5rem;
+}
+
+/* Responsive design for new features */
 @media (max-width: 768px) {
-  .review-container {
-    padding: 15px;
-  }
-  
-  .review-header {
+  .results-controls {
     flex-direction: column;
-    align-items: flex-start;
     gap: 15px;
-  }
-  
-  .question-container {
-    padding: 20px;
-  }
-  
-  .question-navigation {
-    flex-direction: column;
-    gap: 20px;
     align-items: stretch;
   }
-  
-  .nav-buttons {
-    justify-content: space-between;
+
+  .filter-controls {
+    justify-content: center;
+    flex-wrap: wrap;
   }
-  
-  .submit-section {
-    align-items: center;
+
+  .expand-controls {
+    justify-content: center;
   }
-  
-  .summary-stats {
-    grid-template-columns: 1fr;
+
+  .result-header-left {
+    gap: 10px;
   }
-  
-  .completion-actions {
-    flex-direction: column;
+
+  .result-content .question-text {
+    margin: 1rem;
+  }
+
+  .result-content .result-answers {
+    margin: 0 1rem 1rem;
+  }
+
+  .result-content .result-explanation {
+    margin: 0 1rem 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .filter-btn {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+
+  .expand-btn {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+
+  .result-header {
+    padding: 0.75rem 1rem;
+  }
+
+  .result-content .question-text {
+    margin: 0.75rem;
+    padding: 0.75rem;
+  }
+
+  .result-content .result-answers {
+    margin: 0 0.75rem 0.75rem;
+    padding: 0.75rem;
+  }
+
+  .result-content .result-explanation {
+    margin: 0 0.75rem 0.75rem;
+    padding: 0.75rem;
   }
 }

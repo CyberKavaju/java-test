@@ -31,6 +31,8 @@ const Review: React.FC<ReviewProps> = () => {
   const [roundSummary, setRoundSummary] = useState<ReviewRoundSummary | null>(null);
   const [sessionSummary, setSessionSummary] = useState<ReviewSessionSummary | null>(null);
   const [isCompleted, setIsCompleted] = useState(false);
+  const [expandedQuestions, setExpandedQuestions] = useState<Set<number>>(new Set());
+  const [showFilter, setShowFilter] = useState<'all' | 'correct' | 'incorrect'>('all');
 
   useEffect(() => {
     if (topicId) {
@@ -171,6 +173,39 @@ const Review: React.FC<ReviewProps> = () => {
     navigate('/tutorial');
   };
 
+  const toggleQuestionExpanded = (questionId: number) => {
+    setExpandedQuestions(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(questionId)) {
+        newSet.delete(questionId);
+      } else {
+        newSet.add(questionId);
+      }
+      return newSet;
+    });
+  };
+
+  const toggleAllQuestions = () => {
+    if (expandedQuestions.size === roundResults.length) {
+      setExpandedQuestions(new Set());
+    } else {
+      setExpandedQuestions(new Set(roundResults.map(r => r.questionId)));
+    }
+  };
+
+  const getFilteredResults = () => {
+    if (showFilter === 'correct') {
+      return roundResults.filter(r => r.isCorrect);
+    } else if (showFilter === 'incorrect') {
+      return roundResults.filter(r => !r.isCorrect);
+    }
+    return roundResults;
+  };
+
+  const getQuestionByIdFromSession = (questionId: number) => {
+    return session?.questions.find(q => q.id === questionId);
+  };
+
   if (loading && !session) {
     return (
       <div className="review-container">
@@ -249,26 +284,100 @@ const Review: React.FC<ReviewProps> = () => {
             </div>
           </div>
 
+          <div className="results-controls">
+            <div className="filter-controls">
+              <button 
+                className={`filter-btn ${showFilter === 'all' ? 'active' : ''}`}
+                onClick={() => setShowFilter('all')}
+              >
+                All ({roundResults.length})
+              </button>
+              <button 
+                className={`filter-btn correct ${showFilter === 'correct' ? 'active' : ''}`}
+                onClick={() => setShowFilter('correct')}
+              >
+                Correct ({roundResults.filter(r => r.isCorrect).length})
+              </button>
+              <button 
+                className={`filter-btn incorrect ${showFilter === 'incorrect' ? 'active' : ''}`}
+                onClick={() => setShowFilter('incorrect')}
+              >
+                Incorrect ({roundResults.filter(r => !r.isCorrect).length})
+              </button>
+            </div>
+            
+            <div className="expand-controls">
+              <button 
+                className="expand-btn"
+                onClick={toggleAllQuestions}
+              >
+                {expandedQuestions.size === roundResults.length ? 'Collapse All' : 'Expand All'}
+              </button>
+            </div>
+          </div>
+
           <div className="results-list">
-            {roundResults.map((result, index) => (
-              <div key={result.questionId} className={`result-item ${result.isCorrect ? 'correct' : 'incorrect'}`}>
-                <div className="result-header">
-                  <span className="question-number">Question {index + 1}</span>
-                  <span className={`result-status ${result.isCorrect ? 'correct' : 'incorrect'}`}>
-                    {result.isCorrect ? '✓ Correct' : '✗ Incorrect'}
-                  </span>
-                </div>
-                <div className="result-answers">
-                  <div>Your answer: <strong>{result.selectedAnswer}</strong></div>
-                  <div>Correct answer: <strong>{result.correctAnswer}</strong></div>
-                </div>
-                {result.explanation && (
-                  <div className="result-explanation">
-                    <strong>Explanation:</strong> {result.explanation}
+            {getFilteredResults().map((result, index) => {
+              const question = getQuestionByIdFromSession(result.questionId);
+              const isExpanded = expandedQuestions.has(result.questionId);
+              const originalIndex = roundResults.findIndex(r => r.questionId === result.questionId);
+              
+              return (
+                <div key={result.questionId} className={`result-item ${result.isCorrect ? 'correct' : 'incorrect'}`}>
+                  <div 
+                    className="result-header clickable"
+                    onClick={() => toggleQuestionExpanded(result.questionId)}
+                  >
+                    <div className="result-header-left">
+                      <span className="question-number">Question {originalIndex + 1}</span>
+                      <span className={`result-status ${result.isCorrect ? 'correct' : 'incorrect'}`}>
+                        {result.isCorrect ? '✓ Correct' : '✗ Incorrect'}
+                      </span>
+                    </div>
+                    <div className="expand-icon">
+                      {isExpanded ? '▼' : '▶'}
+                    </div>
                   </div>
-                )}
-              </div>
-            ))}
+
+                  {isExpanded && (
+                    <div className="result-content">
+                      {question && (
+                        <div className="question-text">
+                          <ReactMarkdown 
+                            remarkPlugins={[remarkGfm]}
+                            components={{
+                              code: ({className, children, ...props}) => {
+                                const match = /language-(\w+)/.exec(className || '');
+                                const isInline = !match;
+                                return isInline ? (
+                                  <code className="inline-code" {...props}>{children}</code>
+                                ) : (
+                                  <code className={className} {...props}>{children}</code>
+                                );
+                              },
+                              pre: ({children}) => <pre className="code-block">{children}</pre>,
+                            }}
+                          >
+                            {question.question_text}
+                          </ReactMarkdown>
+                        </div>
+                      )}
+
+                      <div className="result-answers">
+                        <div>Your answer: <strong>{result.selectedAnswer}</strong></div>
+                        <div>Correct answer: <strong>{result.correctAnswer}</strong></div>
+                      </div>
+                      
+                      {result.explanation && (
+                        <div className="result-explanation">
+                          <strong>Explanation:</strong> {result.explanation}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
 
           <div className="round-actions">
