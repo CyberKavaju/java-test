@@ -31,6 +31,7 @@ export default function Report() {
   const [expandedRecommendations, setExpandedRecommendations] = useState<Set<string>>(new Set());
   const [performanceFilter, setPerformanceFilter] = useState<'all' | 'green' | 'yellow' | 'red'>('all');
   const [topicFilter, setTopicFilter] = useState<'all' | 'mastered' | 'good' | 'needsWork' | 'struggling'>('all');
+  const [attemptFilter, setAttemptFilter] = useState<'all' | 'more-than-1' | 'more-than-5' | 'more-than-10'>('all');
   const [documentationLinks, setDocumentationLinks] = useState<{ [key: string]: string }>({});
 
   const toggleRecommendationExpand = (topic: string) => {

@@ -10,6 +10,7 @@ interface TopicsTabProps {
 
 const TopicsTab: React.FC<TopicsTabProps> = ({ topicStats, documentationLinks }) => {
   const [expandedRecommendations, setExpandedRecommendations] = useState<Set<string>>(new Set());
+  const [attemptFilter, setAttemptFilter] = useState<'all' | 'more-than-1' | 'more-than-5' | 'more-than-10'>('all');
 
   const toggleRecommendationExpand = (topic: string) => {
     setExpandedRecommendations(prev => {
@@ -23,8 +24,24 @@ const TopicsTab: React.FC<TopicsTabProps> = ({ topicStats, documentationLinks })
     });
   };
 
+  const getFilteredTopics = () => {
+    let filteredTopics = topicStats;
+    
+    // Filter by attempt count
+    if (attemptFilter === 'more-than-1') {
+      filteredTopics = filteredTopics.filter(topic => topic.total_attempts > 1);
+    } else if (attemptFilter === 'more-than-5') {
+      filteredTopics = filteredTopics.filter(topic => topic.total_attempts > 5);
+    } else if (attemptFilter === 'more-than-10') {
+      filteredTopics = filteredTopics.filter(topic => topic.total_attempts > 10);
+    }
+    
+    return filteredTopics;
+  };
+
   const renderRecommendations = () => {
-    const lowPerformanceTopics = topicStats.filter(topic => topic.success_rate < 70);
+    const filteredTopics = getFilteredTopics();
+    const lowPerformanceTopics = filteredTopics.filter(topic => topic.success_rate < 70);
     
     // Group topics by their tutorial slug
     const tutorialGroups: { [key: string]: any[] } = {};
@@ -172,6 +189,40 @@ const TopicsTab: React.FC<TopicsTabProps> = ({ topicStats, documentationLinks })
     <div className="topics-tab">
       <div className="recommendations">
         <h3>Study Recommendations</h3>
+        
+        {/* Attempt Count Filter */}
+        <div className="filter-section">
+          <div className="filter-group">
+            <label className="filter-label">Filter by Attempts:</label>
+            <div className="attempt-filter-buttons">
+              <button 
+                className={`filter-btn ${attemptFilter === 'all' ? 'active' : ''}`}
+                onClick={() => setAttemptFilter('all')}
+              >
+                All Topics ({topicStats.length})
+              </button>
+              <button 
+                className={`filter-btn ${attemptFilter === 'more-than-1' ? 'active' : ''}`}
+                onClick={() => setAttemptFilter('more-than-1')}
+              >
+                More than 1 attempt ({topicStats.filter(t => t.total_attempts > 1).length})
+              </button>
+              <button 
+                className={`filter-btn ${attemptFilter === 'more-than-5' ? 'active' : ''}`}
+                onClick={() => setAttemptFilter('more-than-5')}
+              >
+                More than 5 attempts ({topicStats.filter(t => t.total_attempts > 5).length})
+              </button>
+              <button 
+                className={`filter-btn ${attemptFilter === 'more-than-10' ? 'active' : ''}`}
+                onClick={() => setAttemptFilter('more-than-10')}
+              >
+                More than 10 attempts ({topicStats.filter(t => t.total_attempts > 10).length})
+              </button>
+            </div>
+          </div>
+        </div>
+        
         <div className="recommendations-list">
           {topicStats.length === 0 ? (
             <div>Loading recommendations...</div>
@@ -185,7 +236,7 @@ const TopicsTab: React.FC<TopicsTabProps> = ({ topicStats, documentationLinks })
         <h3>Performance by Topic</h3>
         <p className="section-description">Track your progress across different Java concepts and identify areas for improvement.</p>
         <div className="topics-analysis">
-          {topicStats.map((topic) => {
+          {getFilteredTopics().map((topic) => {
             const performanceLevel = topic.success_rate >= 80 ? 'green' : topic.success_rate >= 50 ? 'yellow' : 'red';
             const performanceLabel = topic.success_rate >= 80 ? 'Excellent' : topic.success_rate >= 50 ? 'Good' : 'Needs Work';
             const performanceEmoji = getPerformanceEmoji(performanceLevel);
