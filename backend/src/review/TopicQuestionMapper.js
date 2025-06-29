@@ -22,7 +22,9 @@ class TopicQuestionMapper {
             '15-the-enum-field': ['Working With Java Data Types'],
             '16-random-object': ['Working with Selected classes from the Java API'],
             '17-numeric-method': ['Working With Java Data Types', 'Numeric Literals'],
-            '18-string-class': ['Working with Selected classes from the Java API', 'String equals', 'String immutability'],
+            '18-string-class': ['String equals', 'String immutability', 'String', 'String Class', 'StringBuilder Class', 'StringBuffer', 'StringBuilder',
+                'StringBuffer Class', 'StringBuilder append', 'StringBuilder reverse'
+            ],
             '19-printf-method': ['Java Basics'],
             '20-looping-constructs': ['Using Loop Constructs'],
             '21-arrays': ['Creating and Using Arrays'],
