@@ -245,7 +245,14 @@ byte b3 = x;         // ✅ OK (x is final constant in range)
 int y = 10;
 byte b4 = y;         // ❌ Compile error (y is not final)
 ```
-
+#### 🚫 Why is int y = 10; not allowed?
+```java
+int y = 10;
+byte b = y; // ❌ Compile error
+```
+> ❌ Even though y is assigned 10, it's not final, so:
+- The compiler cannot guarantee that y won't change later.
+- It treats y as a regular int, and an int → byte assignment requires an explicit cast.
 ---
 
 ## 🔄 Object Lifecycle
@@ -292,6 +299,16 @@ str = null;  // Object becomes eligible for GC
 
 ### Local Variables
 **No default values** - must be explicitly initialized before use!
+#### 🤔 Why no default values for local variables?
+
+- 🔐 1. Safety and Determinism
+   - Java forces you to think about initialization.
+   - This prevents the infamous "uninitialized memory" bugs from C/C++ (e.g. reading garbage values).
+   - You always know exactly what value a local variable has — no surprises.
+
+- 🧠 2. Compiler Guarantees Initialization
+   - The compiler performs definite assignment analysis.
+   - If the variable might not be initialized before use, the compiler will stop you. ✔️
 
 ### Array Elements
 Arrays automatically initialize elements to default values:

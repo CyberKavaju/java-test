@@ -73,9 +73,123 @@ Examples:
 * `Predicate<T>` → `boolean test(T t)`
 * `Consumer<T>` → `void accept(T t)`
 * `Function<T, R>` → `R apply(T t)`
+* `Supplier<T>` → `T get()`
 
 ---
 
+### 1. **Runnable → `void run()`**
+
+🧠 **Concept**: `Runnable` is the oldest one here, introduced in Java 1.0. It represents a **task** that can be executed **without returning any result**.
+
+```java
+Runnable task = () -> System.out.println("Task is running...");
+new Thread(task).start();
+```
+
+📌 **Use Case**:
+
+* You want to **run code concurrently** (e.g., using `Thread`)
+* No input, no return — just run something.
+
+🛠️ Think of it like: *"Hey Java, just run this code, I don’t need anything back."*
+
+---
+
+### 2. **Comparator<T> → `int compare(T a, T b)`**
+
+🧠 **Concept**: Compares two objects of type `T`. Returns:
+
+* Negative number if `a < b`
+* Zero if `a == b`
+* Positive number if `a > b`
+
+```java
+Comparator<String> compareByLength = (a, b) -> Integer.compare(a.length(), b.length());
+```
+
+📌 **Use Case**:
+
+* Sorting collections: `Collections.sort(list, comparator);`
+* Custom order logic
+
+🔁 **Why use it**? You define **how to order elements** — alphabetically, by size, by weight, etc.
+
+---
+
+### 3. **Predicate<T> → `boolean test(T t)`**
+
+🧠 **Concept**: A **boolean-valued function**. Think of this like a **filter** or **condition checker**.
+
+```java
+Predicate<String> isLongWord = s -> s.length() > 10;
+```
+
+📌 **Use Case**:
+
+* `Stream.filter()`
+* Condition logic like validation
+
+💡 Think of it like a **yes/no question** about an object.
+
+---
+
+### 4. **Consumer<T> → `void accept(T t)`**
+
+🧠 **Concept**: Consumes a value and performs some **action**, but doesn’t return anything.
+
+```java
+Consumer<String> printer = s -> System.out.println("Printing: " + s);
+```
+
+📌 **Use Case**:
+
+* Processing elements in a stream: `.forEach(consumer)`
+* Logging, modifying, saving, etc.
+
+🔨 **Consumer eats the data** and does something with it.
+
+---
+
+### 5. **Function\<T, R> → `R apply(T t)`**
+
+🧠 **Concept**: Takes a value of type `T`, returns a value of type `R`. It **transforms input** into output.
+
+```java
+Function<String, Integer> lengthFinder = s -> s.length();
+```
+
+📌 **Use Case**:
+
+* Mapping objects: `.map(function)`
+* Conversions, transformations, lookups
+
+💡 Think of it as: *Input → Processing → Output*
+---
+
+### 6. **Supplier<T> → `T get()`**
+🧠 **Concept**: Provides a value of type `T` without taking any input. It’s like a **factory** for objects.
+
+```java
+Supplier<String> stringSupplier = () -> "Hello, Supplier!";
+```
+📌 **Use Case**
+* Lazy initialization
+* Generating values on demand
+💡 Think of it as a **value provider** that gives you something when you ask for it.
+
+---
+
+### Visual Summary
+
+| Interface       | Input | Output  | Purpose                     |
+| --------------- | ----- | ------- | --------------------------- |
+| `Runnable`      | none  | void    | Execute code (e.g., thread) |
+| `Comparator<T>` | T, T  | int     | Compare two objects         |
+| `Predicate<T>`  | T     | boolean | Test a condition            |
+| `Consumer<T>`   | T     | void    | Use the value               |
+| `Function<T,R>` | T     | R       | Transform value             |
+
+---
 ## 🧪 Lambda Examples
 
 ### 🔹 No Parameters

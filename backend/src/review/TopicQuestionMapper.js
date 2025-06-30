@@ -11,7 +11,7 @@ class TopicQuestionMapper {
             '04-variable': ['Working With Java Data Types'],
             '05-variable-casting-and-conversions': ['Working With Java Data Types', 'Primitive Casting and Overflow', 'Narrowing Conversion'],
             '06-scanner-input-object': ['Java Basics'],
-            '07-operators': ['Using Operators and Decision Constructs'],
+            '07-operators': ['Operators', 'Operator Precedence'],
             '08-comparison-operators': ['Using Operators and Decision Constructs'],
             '09-logical-operators': ['Using Operators and Decision Constructs', 'Bitwise vs Logical Operators'],
             '10-bitwise-operators': ['Bitwise vs Logical Operators', 'Bitwise', 'Bitwise Operators'],
