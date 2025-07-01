@@ -1,0 +1,371 @@
+ID,Domain,Topic,Question,Option A,Option B,Option C,Option D,Option E,Correct Answer,Explanation,Created At,Question Type
+25,Working with Java Data Types,Primitive Casting and Overflow,"What is the output of the following code?
+```java
+public class Test {
+    public static void main(String[] args) {
+        int i = 258;
+        byte b = (byte) i;
+        System.out.println(b);
+    }
+}
+```",258,2,0,-2,Compilation error,B,"Casting an int to a byte results in overflow when the value exceeds the byte range (-128 to 127).
+The value 258 in binary is truncated to fit in 8 bits, which gives us 2.
+Specifically, 258 modulo 256 equals 2, so the byte value is 2.",2025-06-19 19:10:39,single
+26,Using Operators and Decision Constructs,Nested if/else,"What does the following code print?
+```java
+public class Test {
+    public static void main(String[] args) {
+        int x = 5, y = 3;
+        if (x < 10)
+            if (y < 5)
+                System.out.println(""A"");
+        else
+            System.out.println(""B"");
+    }
+}
+```",A,B,Nothing,Compile error,Runtime exception,A,"The else clause pairs with the nearest if statement.
+Here, x < 10 (true) and y < 5 (true) are both true, so it prints ""A"".
+The else belongs to the inner if (y < 5).
+If y were >= 5, it would print ""B""; if x were >= 10, nothing would be printed.",2025-06-19 19:10:39,single
+27,Working with Java Data Types,Wrapper Caching,"What is the output of the following code?
+```java
+public class Test {
+    public static void main(String[] args) {
+        Integer i1 = 100, i2 = 100;
+        System.out.println(i1 == i2);
+        Integer i3 = 128, i4 = 128;
+        System.out.println(i3 == i4);
+    }
+}
+```",true true,true false,false true,false false,Compile error,B,"Java caches Integer objects for values in the range -128 to 127 for performance optimization.
+Thus i1 and i2 refer to the same cached object (true), but i3 and i4 are outside the cache range and refer to different objects (false).
+For values outside the cache range, new Integer objects are created.",2025-06-19 19:10:39,single
+28,Using Loop Constructs,Enhanced For Loop,"What is the output of the following code?
+```java
+public class Test {
+    public static void main(String[] args) {
+        int[] arr = {1, 2, 3};
+        for (int x : arr) {
+            x++;
+        }
+        System.out.println(arr[0]);
+    }
+}
+```",1,2,3,4,Compile error,A,"In an enhanced for loop (for-each), the loop variable x is a copy of the array element, not a reference to it.
+Incrementing x does not change the original array elements.
+Therefore, arr[0] remains 1.
+To modify array elements, you would need to use a traditional for loop with indices.",2025-06-19 19:10:39,single
+29,Working with Java Data Types,Autoboxing and NullPointerException,"What happens when the following code is executed?
+```java
+public class Test {
+    public static void main(String[] args) {
+        Integer i = null;
+        int j = i;
+    }
+}
+```",j will be 0,j will be null,Compilation error,Runtime NullPointerException,j will be uninitialized,D,"When assigning a wrapper object (Integer) to a primitive (int), automatic unboxing occurs.
+Since i is null, attempting to unbox it throws a `NullPointerException` at runtime.
+Primitives cannot be null, so the unboxing operation fails.",2025-06-19 19:10:39,single
+30,Using Loop Constructs,Break Statement,"What is the output of the following code?
+```java
+public class Test {
+    public static void main(String[] args) {
+        for (int i = 0; i < 3; i++) {
+            if (i == 1) break;
+            System.out.print(i);
+        }
+    }
+}
+```",012,01,0,1,Compile error,C,"When i becomes 1, the break statement immediately terminates the loop.
+The loop prints i for i=0, then when i becomes 1, the break executes before the print statement, so only 0 is printed.
+The loop never reaches i=2.",2025-06-19 19:10:39,single
+31,Java Basics,Import Statements,"What happens when compiling and running the following code?
+```java
+import java.util.Date;
+import java.sql.Date;
+
+public class Test {
+    public static void main(String[] args) {
+        Date d = new Date();
+    }
+}
+```",It prints the current date.,Compilation error: reference to Date is ambiguous.,Compilation error: cannot find symbol Date.,It prints 'null'.,Runtime exception (NullPointerException) is thrown.,B,"Two imports bring in classes named Date from different packages (java.util.Date and java.sql.Date), making the reference to Date ambiguous.
+The code fails to compile because the compiler cannot determine which Date class to use.
+To fix this, you would need to use fully qualified names or import only one of the Date classes.",2025-06-19 19:10:39,single
+32,Using Loop Constructs,do-while Loop,"What does the following code print?
+```java
+public class Test {
+    public static void main(String[] args) {
+        int i = 3;
+        do {
+            System.out.println(i);
+        } while (i < 3);
+    }
+}
+```",3,Nothing (no output),Infinite loop,Compile error,Runtime error,A,"A do-while loop executes its body at least once before checking the condition.
+Here i=3, so it prints 3 once.
+Then the condition (i < 3) is evaluated, which is false, so the loop terminates.
+The key difference from a while loop is that do-while guarantees at least one execution.",2025-06-19 19:10:39,single
+33,Using Operators and Decision Constructs,Switch Statement Fall-Through,"What is the output of the following code?
+```java
+public class Test {
+    public static void main(String[] args) {
+        int i = 1;
+        switch (i) {
+            case 1: System.out.println(""One"");
+            case 2: System.out.println(""Two"");
+        }
+    }
+}
+```",One Two,One,Two,Compile error,Runtime error,A,"Without break statements, execution falls through to subsequent cases.
+With i=1, it matches case 1 and prints ""One"", then continues executing case 2 and prints ""Two"".
+This demonstrates the fall-through behavior of switch statements.",2025-06-19 19:10:39,single
+34,Working with Inheritance,Static Method Hiding,"What is the output of the following code?
+```java
+class A {
+    static void m() { System.out.println(""A""); }
+}
+class B extends A {
+    static void m() { System.out.println(""B""); }
+}
+A a = new B();
+a.m();
+```",A,B,AB,Compile error,Runtime error,A,"Static methods are not overridden; they are hidden.
+Method resolution for static methods happens at compile time based on the reference type, not the object type.
+Since the reference a is of type A, the compiler resolves the call to A.m(), printing ""A"".
+This is different from instance method overriding.",2025-06-19 19:10:39,single
+35,Working with Methods and Encapsulation,Pass by Value (object reference),"What is the output of the following code?
+```java
+StringBuilder sb = new StringBuilder(""Hi"");
+modify(sb);
+System.out.println(sb);
+public static void modify(StringBuilder b) {
+    b.append(""!"");
+}
+```",Hi!,Hi,!,Compile error,Runtime error,A,"Java passes object references by value.
+The method receives a copy of the reference, but both references point to the same StringBuilder object.
+When the method calls b.append(""!""), it modifies the original StringBuilder object that sb also references.
+Therefore, the output is ""Hi!"".",2025-06-19 19:10:39,single
+36,Working with Methods and Encapsulation,Pass by Value (primitive),"What is the output of the following code?
+```java
+int i = 5;
+{
+    int x = i;
+    x = 10;
+}
+System.out.println(i);
+```",5,10,Compile error,Runtime error,5 then 10,A,"Java uses pass-by-value for primitives.
+The assignment x = i creates a copy of i's value.
+Changing x does not affect the original variable i.
+The variable i remains 5.
+The block scope doesn't change this behavior - x is simply a local variable that gets a copy of i's value.",2025-06-19 19:10:39,single
+37,Working with Inheritance,Polymorphism (Method Overriding),"What does the following code print?
+```java
+class A {
+    void m() { System.out.println(""A""); }
+}
+class B extends A {
+    void m() { System.out.println(""B""); }
+}
+A a = new B();
+a.m();
+```",A,B,AB,Compile error,Runtime error,B,"This demonstrates polymorphism and dynamic method dispatch.
+Even though the reference variable a is of type A, the actual object is of type B.
+At runtime, Java determines which method to call based on the actual object type, not the reference type.
+Therefore, B's overridden method m() is called, printing ""B"".",2025-06-19 19:10:39,single
+38,Working with Inheritance,Constructors and super,"What happens when compiling the following code?
+```java
+class A {
+    A(int x) {}
+}
+class B extends A {
+    B() {}
+}
+```",It compiles successfully.,Compile error: no default constructor in A.,Runtime error.,It compiles but throws exception at runtime.,Unknown behavior.,B,"Class A has only a parameterized constructor A(int x) and no default (no-argument) constructor.
+When B's constructor B() is called, it implicitly tries to call super() (the no-argument constructor of A), but A doesn't have one.
+This causes a compilation error.
+B's constructor must explicitly call super(someIntValue).",2025-06-19 19:10:39,single
+39,Creating and Using Arrays,Multi-dimensional arrays,"What happens when executing the following code?
+```java
+int[][] arr = new int[2][];
+arr[0] = new int[1];
+System.out.println(arr[1][0]);
+```",Prints 0,Prints null,Runtime NullPointerException,Compile error,Runtime ArrayIndexOutOfBoundsException,C,"The array arr is created with 2 rows but the individual row arrays are not automatically initialized (they are null).
+Only arr[0] is explicitly initialized with new int[1].
+When trying to access arr[1][0], arr[1] is null, so accessing arr[1][0] throws a `NullPointerException`.",2025-06-19 19:10:39,single
+40,Handling Exceptions,Finally Overrides Return,"What is the output of the following code?
+```java
+public static int test() {
+    try {
+        return 1;
+    } finally {
+        return 2;
+    }
+}
+System.out.println(test());
+```",1,2,No output (program hangs),Compile error,Runtime exception,B,"The finally block always executes, even when there's a return statement in the try block.
+When the finally block contains a return statement, it overrides any return value from the try or catch blocks.
+Therefore, the method returns 2, not 1.
+This is generally considered bad practice.",2025-06-19 19:10:39,single
+41,Handling Exceptions,Catch Order,"What is the problem with the following code?
+```java
+try {
+    // some code
+} catch (Exception e) {
+    // handle Exception
+} catch (ArithmeticException e) {
+    // handle ArithmeticException  
+}
+```",No problem; it compiles.,Unreachable catch block for ArithmeticException.,Catch blocks must be in alphabetical order.,Multiple catch blocks require finally block.,Cannot catch specific exceptions after a general one.,B,"The catch block for `ArithmeticException` is unreachable because `ArithmeticException` is a subclass of Exception.
+Since Exception is caught first, `ArithmeticException` would never reach its catch block.
+More specific exception types must be caught before more general ones.",2025-06-19 19:10:39,single
+42,Handling Exceptions,Checked vs Unchecked,"Which of the following code snippets causes a compilation error?
+```java
+A: void m() { throw new RuntimeException(); }
+B: void m() { throw new Error(); } 
+C: void m() throws Exception { throw new IOException(); }
+D: void m() { throw new IOException(); }
+E: void m() throws IOException { throw new IOException(); }
+```",A only,D only,C and E,D and E,B and D,B,"Checked exceptions (like `IOException`) must be declared or caught.
+Unchecked exceptions (`RuntimeException`, Error) don't need to be declared.
+✔️ Valid Snippets:
+    A: throws `RuntimeException` → unchecked
+    B: throws Error → unchecked
+    C: declares throws Exception, throws `IOException` → valid
+    E: declares throws `IOException`, throws it → valid
+❌ Invalid Snippet:
+    D: throws `IOException` (checked) without declaring or catching it → compilation error",2025-06-19 19:10:39,single
+43,Working with Methods and Encapsulation,Method Overloading,"What is the output of the following code?
+```java
+class A {
+    void m(int i) { System.out.println(""int""); }
+    void m(long l) { System.out.println(""long""); }
+}
+A a = new A();
+a.m(5);
+```",int,long,Compile error,Runtime error,No output,A,"The literal 5 is an int by default.
+Java chooses the method with the most specific parameter type that matches.
+Since there's an exact match with m(int), it's chosen over m(long).
+The method prints ""int"".
+If the int version were not available, Java would automatically promote 5 to long and call m(long).",2025-06-19 19:10:39,single
+44,Working with Selected classes from the Java API,LocalDate plusDays,"What does the following code print?
+```java
+LocalDate date = LocalDate.of(2020, 1, 31);
+date = date.plusDays(1);
+System.out.println(date);
+```",2020-01-32,2020-02-01,Compile error,Runtime error,None of the above,B,"LocalDate handles month boundaries automatically.
+Adding one day to January 31, 2020 correctly transitions to February 1, 2020.
+The LocalDate API is smart enough to handle month rollovers, leap years, and other calendar complexities.
+The output format follows ISO-8601 standard: 2020-02-01.",2025-06-19 19:10:39
+45,Creating and Using Arrays,Array Reference Aliasing,"What is the output of the following code?
+```java
+int[] a = {1, 2};
+int[] b = a;
+b[0] = 3;
+System.out.println(a[0]);
+```",1,2,3,Compile error,Runtime error,C,"Arrays are objects in Java.
+The assignment int[] b = a makes both variables a and b refer to the same array object in memory.
+When b[0] is changed to 3, it modifies the same array that a references.
+Therefore, a[0] now returns 3.
+This demonstrates that arrays are reference types, not value types.",2025-06-19 19:10:39
+46,Working with Selected classes from the Java API,StringBuilder reverse,"What is the output of this code?
+```java
+StringBuilder sb = new StringBuilder(""abc"");
+sb.reverse();
+System.out.println(sb);
+```",abc,cba,Compilation error,Runtime error,acb,B,"The StringBuilder.reverse() method reverses the sequence of characters in the StringBuilder.
+The string ""abc"" becomes ""cba"".
+Unlike String methods, StringBuilder methods modify the existing object rather than creating a new one.",2025-06-19 19:10:39
+47,Working with Selected classes from the Java API,StringBuilder append,"What does the following code print?
+```java
+StringBuilder sb = new StringBuilder(""Hello"");
+sb.append(""World"");
+System.out.println(sb);
+```",Hello,World,HelloWorld,Hello World,Runtime error,C,"StringBuilder is mutable, unlike String.
+The append() method adds the specified string to the end of the existing content and returns the same StringBuilder object.
+After appending ""World"" to ""Hello"", the StringBuilder contains ""HelloWorld"", which is what gets printed.",2025-06-19 19:10:39
+48,Working with Selected classes from the Java API,DateTimeFormatter,"What does this code print?
+```java
+DateTimeFormatter fmt = DateTimeFormatter.ofPattern(""MM/dd/yyyy"");
+System.out.println(LocalDate.of(2020,1,5).format(fmt));
+```",01/05/2020,1/5/2020,05/01/2020,Compile error,Runtime error,A,"The pattern MM/dd/yyyy formats the month and day with exactly two digits (leading zeros when necessary) and the year with four digits.
+January 5, 2020 is formatted as 01/05/2020.
+The MM forces two-digit month representation, and dd forces two-digit day representation.",2025-06-19 19:10:39
+49,Working with Selected classes from the Java API,Lambda Syntax,"What is wrong with this code?
+```java
+Predicate<String> p = s -> return s.isEmpty();
+```",It compiles and always returns true,It compiles and always returns false,It causes a runtime exception,Compilation error,Nothing is wrong,D,"Lambda expression syntax error: you cannot use the 'return' keyword in a lambda expression without braces.
+For single expressions, the return is implicit.
+The correct syntax would be either s -> s.isEmpty() or s -> { return s.isEmpty(); }.
+The current syntax is invalid and causes a compilation error.",2025-06-19 19:10:39
+50,Using Operators and Decision Constructs,Ternary Operator Type,"What is the output of the following code?
+```java
+int x = 5;
+long y = 10;
+System.out.println((true) ? x : y);
+```",5,5L,10,Compile error,Runtime error,A,"In the ternary operator, when the operands are of different types, the result type is determined by type promotion rules.
+Here, int x is promoted to long to match long y.
+Since the condition is true, x (5) is returned, but the expression type is long.
+However, when printed, it displays as 5 (not 5L) because println() handles the conversion.",2025-06-19 19:10:39
+51,Using Operators and Decision Constructs,Bitwise vs Logical Operators,"What is the output?
+```java
+int a = 5, b = 10;
+if (a < 10 & b++ > 10) {
+    // empty body
+}
+System.out.println(b);
+```",10,11,Compile error,Runtime error,0,B,"The single & operator is the bitwise AND, which evaluates both operands regardless of the first operand's value (no short-circuiting).
+Even though a < 10 is true and b++ > 10 is false, both expressions are evaluated.
+The b++ increments b from 10 to 11.
+If && were used instead, b++ might not be evaluated due to short-circuiting.",2025-06-19 19:10:39
+52,Using Operators and Decision Constructs,Switch with Strings,"What is the output?
+```java
+String s = ""Java"";
+switch (s) {
+    case ""java"":
+        System.out.println(""Lower"");
+        break;
+    default:
+        System.out.println(""Default"");
+}
+```",Lower,Default,java,Compile error,Runtime error,B,"String comparisons in switch statements are case-sensitive.
+The string ""Java"" (with uppercase J) does not match the case ""java"" (with lowercase j).
+Since there's no matching case, the default case executes, printing ""Default"".
+String switch statements use the equals() method for comparison.",2025-06-19 19:10:39
+53,Working with Selected classes from the Java API,Lambda Predicate,"What does the following code print?
+```java
+Predicate<String> p = s -> s.startsWith(""A"");
+System.out.println(p.test(""Apple""));
+```",true,false,Compile error,Runtime error,Nothing,A,"The lambda expression s -> s.startsWith(""A"") creates a Predicate that tests whether a string starts with ""A"".
+When testing the string ""Apple"", it returns true because ""Apple"" does indeed start with ""A"".
+The Predicate functional interface's test() method returns a boolean.",2025-06-19 19:10:39
+54,Working with Selected classes from the Java API,ArrayList remove,"What does the following code print?
+```java
+List<String> list = new ArrayList<>();
+list.add(""one"");
+list.add(""two"");
+list.remove(1);
+System.out.println(list.get(0));
+```",one,two,Compile error,Runtime error,None of the above,A,"The remove(1) method removes the element at index 1, which is ""two"".
+After removal, the list contains only [""one""] at index 0.
+Therefore, list.get(0) returns ""one"".
+ArrayList indices are zero-based, so index 1 refers to the second element.",2025-06-19 19:10:39
+55,Using Loop Constructs,Infinite loop with break,"What is the output?
+```java
+for (;;) {
+    System.out.println(""Hi"");
+    break;
+}
+```",Hi,Compile error,Runtime error,Infinite loop,HiHi,A,"The for(;;) syntax creates an infinite loop (empty initialization, condition, and increment).
+However, the break statement immediately exits the loop after the first iteration.
+Therefore, ""Hi"" is printed exactly once.
+Without the break, this would be an infinite loop.",2025-06-19 19:10:39
+56,Working with Selected classes from the Java API,ArrayList basic,"What is the output of the following code?
+```java
+List<String> list = new ArrayList<>();
+list.add(""a"");
+list.add(""b"");
+System.out.println(list.size());
+```",1,2,Compile error,Runtime error,0,B,"Two elements (""a"" and ""b"") were added to the ArrayList.
+The size() method returns the number of elements currently in the list, which is 2.
+ArrayList dynamically grows as elements are added.",2025-06-19 19:10:39

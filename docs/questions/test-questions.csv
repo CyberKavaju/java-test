@@ -1,4 +1,0 @@
-domain,topic,question_text,option_a,option_b,option_c,option_d,option_e,correct_answer,explanation
-Java Basics,Import Statements,What happens when you have two imports with the same class name?,It prints the current date,Compilation error: reference is ambiguous,Compilation error: cannot find symbol,It prints null,Runtime exception,B,Two imports bring in classes with the same name making the reference ambiguous.
-Data Types,Primitive Casting,What is the output when casting 258 to byte?,258,2,0,-2,Compilation error,B,Casting an int to byte results in overflow. 258 modulo 256 is 2.
-Data Types,Autoboxing,What happens when unboxing a null Integer?,j will be 0,j will be null,Compilation error,Runtime NullPointerException,j will be uninitialized,D,Unboxing a null Integer throws a NullPointerException at runtime.

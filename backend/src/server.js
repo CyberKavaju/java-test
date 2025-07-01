@@ -567,10 +567,10 @@ const validateQuestion = (question, rowIndex) => {
         }
     });
     
-    // Validate correct_answer is one of A, B, C, D, E
+    // Validate correct_answer is one or more of A, B, C, D, E
     const validAnswers = ['A', 'B', 'C', 'D', 'E'];
-    if (question.correct_answer && !validAnswers.includes(question.correct_answer.toUpperCase())) {
-        errors.push('Correct answer must be A, B, C, D, or E');
+    if (question.correct_answer && !question.correct_answer.split(',').map(a => a.trim().toUpperCase()).every(a => validAnswers.includes(a))) {
+        errors.push('Correct answer must be a comma-separated list of A, B, C, D, or E');
     }
     
     return errors;
@@ -988,10 +988,10 @@ app.post('/api/questions', async (req, res) => {
 
         // Validate correct_answer
         const validAnswers = ['A', 'B', 'C', 'D', 'E'];
-        if (!validAnswers.includes(correct_answer.toUpperCase())) {
+        if (!correct_answer.split(',').map(a => a.trim().toUpperCase()).every(a => validAnswers.includes(a))) {
             return res.status(400).json({
                 success: false,
-                error: 'Correct answer must be A, B, C, D, or E'
+                error: 'Correct answer must be a comma-separated list of A, B, C, D, or E'
             });
         }
 
@@ -1087,10 +1087,10 @@ app.put('/api/questions/:id', async (req, res) => {
 
         // Validate correct_answer
         const validAnswers = ['A', 'B', 'C', 'D', 'E'];
-        if (!validAnswers.includes(correct_answer.toUpperCase())) {
+        if (!correct_answer.split(',').map(a => a.trim().toUpperCase()).every(a => validAnswers.includes(a))) {
             return res.status(400).json({
                 success: false,
-                error: 'Correct answer must be A, B, C, D, or E'
+                error: 'Correct answer must be a comma-separated list of A, B, C, D, or E'
             });
         }
 

@@ -1,0 +1,374 @@
+ID,Domain,Topic,Question,Option A,Option B,Option C,Option D,Option E,Correct Answer,Explanation,Created At,Question Type
+107,Working with Selected classes from the Java API,String Class,"Which statement is true about String and StringBuilder in Java?",String is mutable StringBuilder is immutable.,Both String and StringBuilder are mutable.,String objects are stored on the heap StringBuilder objects are stored in the String pool.,StringBuilder is more efficient for frequent string modifications than String.,String is thread-safe StringBuilder is not.,D,"StringBuilder is mutable and more efficient for frequent modifications.",,single
+String is immutable and creates new objects for each modification.",2025-06-20 19:32:28
+108,Java Basics,Package Declaration,"Which statement about package declarations is true?",A Java source file can have multiple package declarations.,The package declaration must be the first statement in a Java source file.,If a package is not declared the class belongs to the java.lang package.,If a package is not declared the class belongs to the default package.,Package names must start with a capital letter.,D,"A source file can have at most one package declaration.",,single
+If no package is declared, the class belongs to the default package.",2025-06-20 19:32:28
+109,Working with Java Data Types,Primitive Data Types,"Which primitive data type has a size of 4 bytes?",byte,short,int,long,char,C,"byte=1 byte, short=2 bytes, int=4 bytes, long=8 bytes, char=2 bytes.",2025-06-20 19:32:28,single
+110,Working with Methods and Encapsulation,Method Declaration and Parameters,"What will be the output of this code? 
+```java
+public class MethodTest { 
+  public static void changeValue(int val) { val = 100; } 
+  public static void main(String args) { 
+    int data = 50; 
+    changeValue(data); 
+    System.out.println(data); 
+  } 
+}
+```",50,100,Compilation error,Runtime error,None of the above.,A,"Java uses pass-by-value.
+A copy of data (50) is passed to val.
+Modifying val doesn't affect the original data variable.",2025-06-20 19:32:28
+111,Working with Inheritance,Method Overriding,"What can be substituted for XXX and YYY? 
+```java
+class A { 
+  public XXX m1(int a) { 
+    return a * 10 / 4 - 30; 
+  } 
+} 
+class A2 extends A { 
+  public YYY m1(int a) { 
+    return a * 10 / 4.0; 
+  } 
+}
+```",int int,int double,double double,double int,Nothing they are not compatible.,C,"For overriding, return types must be same or covariant. double can accommodate int results, and double can be returned as double.",2025-06-20 19:32:28
+112,Using Loop Constructs,Looping Constructs,"Which loop construct guarantees execution of its body at least once?",for loop,while loop,do-while loop,enhanced for loop,None of the above.,C,"The do-while loop evaluates its condition after executing the body, guaranteeing at least one execution.",2025-06-20 19:32:28,single
+113,Java Basics,Import Statements,"Which statement about import statements is true?",They must appear before the package declaration.,They are optional if using fully qualified names.,They can import multiple specific classes with a single statement using a wildcard.,They can import specific methods from a class.,All of the above.,B,"Import statements are optional if you use fully qualified names.",,single
+They must appear after package declaration and cannot import specific methods (only classes or static members).",2025-06-20 19:32:28
+114,Using Loop Constructs,Break and Continue Statements,"What will be the output of this code? 
+```java
+int i = 0; 
+while (i < 10) { 
+  i++; 
+  if (i % 2 == 0) continue; 
+  System.out.print(i); 
+}
+```",13579,02468,123456789,246810,Compilation error,A,"The loop increments i first, then checks if even (continue skips print for even numbers).
+Only odd values are printed: 1,3,5,7,9.",2025-06-20 19:32:28
+115,Handling Exceptions,Exception Handling,"Which method declaration is valid?",public void method() throws Exception { throw new IOException(); },public void method() { throw new IOException(); },public void method() throws IOException { throw new Exception(); },public void method() throws RuntimeException { throw new IOException(); },public void method() { throw new RuntimeException(); },E,"Unchecked exceptions (`RuntimeException`) don't require declaration in throws clause.",,single
+Option E is valid.",2025-06-20 19:32:28
+116,Handling Exceptions,Exception Handling,"Which is an advantage of the Java exception mechanism?",Provides a set of standard exceptions that covers all possible errors.,Allows the creation of new exceptions customized to the particular program.,Improves program structure by separating error handling code from normal program flow.,Improves program structure because exceptions must be handled in the method in which they occur.,All of the above.,C,"The main advantage is separating error-handling logic from normal business logic, leading to cleaner and more readable code.",2025-06-20 19:32:28,single
+117,Working with Methods and Encapsulation,Access Modifiers,"What is the output of this code? 
+```java
+public class AccessTest { 
+  private int value = 10; 
+  public static void main(String args) { 
+    AccessTest at = new AccessTest(); 
+    System.out.println(at.value); 
+  } 
+}
+```",10,0,Compilation error,Runtime error,None of the above.,A,"Private members are accessible within the same class.
+Since main() is part of AccessTest, it can access the private value field.",2025-06-20 19:32:28
+118,Java Basics,Main Characteristics of Java,"Which statement is true about Java bytecode?",It can run on any platform.,It can run on any platform only if it was compiled for that platform.,It can run on any platform that has the Java Runtime Environment.,It can run on any platform that has a Java compiler.,It can run on any platform only if that platform has both the JRE and a Java compiler.,C,"Java bytecode is platform-independent and can run on any platform that has a Java Virtual Machine (JVM), which is part of the Java Runtime Environment (JRE).",2025-06-20 19:32:28,single
+119,Working with Java Data Types,Primitive Casting,"What is the output of the following code? 
+```java
+double d = 10.5; 
+int i = (int) d; 
+System.out.println(i);
+```",10.5,10,11,Compilation error,Runtime error,B,"When a double is cast to an int, the decimal part is truncated (removed), not rounded.
+So, 10.5 becomes 10.
+The output is 10.",2025-06-20 19:32:59
+120,Working with Java Data Types,Autoboxing/Unboxing,"What is the output of the following code?
+```java
+Integer a = 10; 
+Integer b = 10; 
+Integer c = 200; 
+Integer d = 200; 
+System.out.println(a == b); 
+System.out.println(c == d);
+```",true true,true false,false true,false false,Compilation error,B,"For Integer values between -128 and 127 (inclusive), Java caches the objects.
+So, a and b will refer to the same cached Integer object, making a == b true.
+For values outside this range, new Integer objects are typically created, so c and d will refer to different objects, making c == d false.
+This is a common trick question related to Integer caching.",2025-06-20 19:32:59
+121,Working with Java Data Types,Object References,"What is the output of the following code?
+```java
+Object obj1 = new Object(); 
+Object obj2 = obj1; 
+obj1 = null; 
+System.out.println(obj2 == null);
+```",true,false,null,Compilation error,Runtime error,B,"1.
+Object obj1 = new Object(); obj1 refers to a new Object instance. 2.
+Object obj2 = obj1; obj2 now also refers to the same Object instance as obj1. 3. obj1 = null; obj1 is reassigned to null, but obj2 still refers to the original Object instance.
+Therefore, System.out.println(obj2 == null) will print false because obj2 is not null.",2025-06-20 19:32:59
+122,Working with Methods and Encapsulation,Static Keyword,"What is the output of the following code? 
+```java
+public class Counter { 
+  static int count = 0; 
+  public Counter() { count++; } 
+  public static void main(String[] args) { 
+    Counter c1 = new Counter(); 
+    Counter c2 = new Counter(); 
+    System.out.println(Counter.count); 
+  } 
+}
+```",0,1,2,Compilation error,Runtime error,C,"The count variable is static, meaning it belongs to the class, not to individual objects.
+There is only one copy of count shared by all instances of Counter.
+Each time a Counter object is created (i.e., the constructor is called), count is incremented.
+So, c1 increments count to 1, and c2 increments count to 2.
+Printing Counter.count will output 2.",2025-06-20 19:32:59
+123,Handling Exceptions,Method Throwing Exception,"Consider the code: 
+```java
+class A { 
+  public void doA() throws Exception { 
+    throw new Exception(); 
+  } 
+} 
+class B extends A { 
+  public void doB() { 
+    doA(); 
+  } 
+} 
+public class Test { 
+  public static void main(String[] args) { 
+    B b = new B(); 
+    b.doB(); 
+  } 
+} 
+```
+Which statement is correct?",The code compiles and runs without error.,The code compiles if throws Exception is added to doB().,The code compiles if throws Exception is added to main().,The code compiles if throws Exception is added to doB() AND main().,The code compiles if doA() is enclosed in a try-catch block within doB().,D,"doA() declares that it throws Exception (a checked exception).
+Therefore, any method calling doA() must either handle the exception (with try-catch) or declare that it also throws Exception.
+Currently, doB() calls doA() but does neither, causing a compile-time error.
+If doB() is fixed to throws Exception, then main() which calls doB() must also either handle or declare the exception.
+Thus, both doB() and main() need throws Exception in their signatures for the code to compile.",2025-06-20 19:32:59
+124,Using Operators and Decision Constructs,Compound Assignment,"What is the value of x after the following code executes? 
+```java
+int x = 10; 
+x += 5; 
+x /= 3; 
+x %= 2;
+```",0,1,2,3,Compilation error,B,"Let's trace the value of x: 1. int x = 10; -> x is 10. 2. x += 5; (equivalent to x = x + 5;) -> x becomes 10 + 5 = 15. 3. x /= 3; (equivalent to x = x / 3;) -> x becomes 15 / 3 = 5 (integer division). 4. x %= 2; (equivalent to x = x % 2;) -> x becomes 5 % 2 = 1.
+The final value of x is 1.",2025-06-20 19:32:59
+125,Working with Methods and Encapsulation,Pass-by-Value,"What will the following program print? 
+```java
+public class ChangeTest { 
+  private int myValue = 0; 
+  public void showOne(int myValue) { 
+    myValue = myValue; 
+  } 
+  public void showTwo(int myValue) { 
+    this.myValue = myValue; 
+  } 
+  public static void main(String[] args) { 
+    ChangeTest ct = new ChangeTest(); 
+    ct.showTwo(200); 
+    System.out.println(ct.myValue); 
+    ct.showOne(100); 
+    System.out.println(ct.myValue); 
+  } 
+}
+```",0 followed by 100.,100 followed by 100.,0 followed by 200.,100 followed by 200.,200 followed by 200.,E,"In showTwo(int myValue), this.myValue = myValue; correctly assigns the parameter 200 to the instance variable myValue.
+So, the first print outputs 200.
+In showOne(int myValue), myValue = myValue; assigns the method parameter to itself due to variable shadowing (the parameter myValue hides the instance variable myValue).
+This line has no effect on the instance variable.
+Thus, ct.myValue remains 200.
+The second print also outputs 200.",2025-06-20 19:32:59
+126,Working with Java Data Types,Object Lifecycle,"How many objects are created by the time the main method finishes in the following code? 
+```java
+public class Creator { 
+  public Creator() { 
+    try { 
+      throw new Exception(); 
+    } 
+    catch (Exception e) {} 
+  } 
+  public static void main(String[] args) { 
+    Creator c1 = new Creator(); 
+    Creator c2 = new Creator(); 
+    Creator c3 = c1; 
+  } 
+}
+```",2,3,4,5,6,C,"Let's trace object creation: 1.
+Creator c1 = new Creator(); creates one Creator object.
+Inside its constructor, new Exception() creates one Exception object. (Total: 2 objects). 2.
+Creator c2 = new Creator(); creates another Creator object.
+Inside its constructor, another Exception object is created. (Total: 2 more objects). 3.
+Creator c3 = c1; only creates a new reference c3 and points it to the existing c1 object.
+No new object is created.
+Total objects created: 2 + 2 = 4.",2025-06-20 19:32:59
+127,Using Loop Constructs,For Loop,"What is the output of the following code? 
+```java
+for (int i = 0; i < 5; i++) { 
+  if (i == 2) continue; 
+  System.out.print(i); 
+}
+```",01234,0134,0123,1234,Compilation error,B,"The for loop iterates from i = 0 to 4.
+When i is 0, it prints 0.
+When i is 1, it prints 1.
+When i is 2, the if (i == 2) condition is true, and continue is executed. continue skips the rest of the current iteration and proceeds to the next iteration of the loop.
+So, 2 is not printed.
+When i is 3, it prints 3.
+When i is 4, it prints 4.
+The output is 0134.",2025-06-20 19:32:59
+128,Creating and Using Arrays,Array Declaration and Initialization,"What will be the output of the following program code?
+```java
+public class Main {
+    public static void main(String args[]) {
+        int[] arr = new int[10];
+        System.out.println(""Accessing Element Eleven: "" + arr[10]);
+    }
+}
+```",Compilation Fails.,ArrayIndexOutOfBoundsException,Accessing Element Eleven: 0,NoDataFoundException,,B,"Array is declared with 10 elements (indices 0-9).
+The code tries to access index 10, which is the 11th element that doesn't exist, throwing `ArrayIndexOutOfBoundsException`.",2025-06-20 19:33:21
+129,Java Basics,Simple Execution of Java Program,"Which of the following is valid for compiling a Java source file named ""Main.java""?",javac Main.java,java Main.class,java Main.java,javac Main,java Main,A,"The Java compiler is invoked with the 'javac' command.",,single
+When compiling a Java class, you must include the complete filename with the .java extension.",2025-06-20 19:33:21
+130,Handling Exceptions,Exception Handling,"Choose the correct option to complete the following program code.
+```java
+1. public void method() _____ Exception {
+2.     _____ new Exception();
+3. }
+```",throws in line 1 and throw in line 2,throws new in line 1 and throw in line 2,throw new in line 1 and throws in line 2,throws in line 1 and throws new in line 2,throw in line 1 and throw new in line 2,A,"In method declaration, the keyword 'throws' is used to declare exceptions.
+To actually throw an exception, the keyword 'throw' is used with 'new' to create the exception instance.",2025-06-20 19:33:21
+131,Using Loop Constructs,Enhanced For Loops,"Which option can replace the condition in the enhanced for loop?
+```java
+public class Main {
+    public static void main(String[] args) {
+        int[] testData = {1, 2, 3};
+        for(_____ : testData) {
+            System.out.println(i);
+        }
+    }
+}
+```",int i,int i = 0; i < 3; i++,i = 0; i < 3; i++,"int i, j",i < 3,A,Enhanced for loops (for-each) require a variable declaration that matches the array element type. 'int i' correctly declares the loop variable to iterate over the int array elements.,2025-06-20 19:33:21
+132,Using Loop Constructs,For Loops,"What will be the output of the following program code?
+```java
+public class Main {
+    public static void main(String[] args) {
+        int sum = 0;
+        for(int x = 0; x < 10; x++)
+            sum += x;
+        System.out.print(""sum for 0 to "" + x);
+        System.out.println("" = "" + sum);
+    }
+}
+```",sum for 0 to 9 = 45,sum for 0 to 10 = 45,Compilation fails due to an error in line 6.,Compilation fails due to an error in line 7.,Runtime Exception,D,"The scope of loop variable 'x' is limited to the for loop block.
+Trying to access 'x' outside the loop (in the print statement) causes a compilation error because 'x' is not in scope.",2025-06-20 19:33:21
+133,Working with Java Data Types,Variable Declaration and Initialization,"Which of the following is a valid identifier?",_2DPoint,$oca-jp,2DPoint,java@elabs,$*coffee,A,"Java identifiers can start with a letter, underscore (_), or dollar sign ($).",,single
+They cannot start with a digit or contain special characters like @ or *. '_2DPoint' and '$ocajp' are valid, but '_2DPoint' is option A.",2025-06-20 19:33:21
+134,Working with Methods and Encapsulation,Access Modifiers,"What is the output of the following code?
+```java
+package epracticelabs;
+public class A {
+    protected int y = 15;
+}
+package elab;
+import epracticelabs.A;
+public class B extends A {
+    int y = 10;
+    public void print() {
+        A a = new A();
+        System.out.println(a.y + y);
+    }
+}
+```",20,25,30,Compilation fails due to error at line 14,Compilation fails due to multiple errors,E,"The code has multiple issues: B cannot access the protected field 'y' of class A through an instance (a.y) from a different package, and there's variable shadowing with the field 'y' in class B.",2025-06-20 19:33:21
+135,Creating and Using Arrays,Array Declaration and Initialization,"Which exception will the following statement generate?
+```java
+int array[] = new int[-2];
+```",NullPointerException,NegativeArraySizeException,ArrayIndexOutOfBoundsException,IndexOutOfBoundsException,The statement executes without any exception.,B,"When creating an array with a negative size, Java throws `NegativeArraySizeException` because array sizes must be non-negative.",2025-06-20 19:33:21
+136,Working with Selected classes from the Java API,Date Time API,"What is the output of the following code?
+```java
+import java.time.LocalDate;
+public class MyExamCloudOCajps {
+    public static void main(String[] args) {
+        LocalDate date = LocalDate.parse(""2014-12-30"");
+        date = date.plusDays(2);
+        date.plusHours(12);
+        System.out.println(date.getYear() + "" "" + date.getMonth() + "" "" + date.getDayOfMonth());
+    }
+}
+```",2015 JANUARY 1,2015 JANUARY 2,2014 JANUARY 3,An exception is thrown,Compilation fails,E,"LocalDate class doesn't have a plusHours() method.
+Hours are handled by LocalTime or LocalDateTime classes, so the code fails to compile.",2025-06-20 19:33:21
+137,Working with Java Data Types,Variable Declaration and Initialization,"What will be the output of this program code?
+```java
+public class Main {
+    public static void main(String[] args) {
+        String str = ""1200"";
+        int num = Integer.parseInt(str);
+        System.out.println(num);
+    }
+}
+```",0,1200,Runtime exception NumberFormatException is generated.,Compilation fails due to an error at line 6.,Compilation fails due to an error at line 9.,B,"The string ""1200"" is a valid integer representation, so Integer.parseInt() successfully converts it to the integer 1200 and prints it.",2025-06-20 19:33:21
+138,Java 8 Features,Lambda Expressions,"Which of the following can be considered as enhancements in Java 8?
+1. Support for Lambda Expressions
+2. Multiple inheritance
+3. Default methods in interfaces
+4. Date and Time API",Only 1,Only 2,Only 1 and 3,"Only 1, 3, and 4",Only 2 and 4,D,"Java 8 introduced Lambda Expressions (1), default methods in interfaces (3), and a new Date and Time API (4).
+Java still doesn't support multiple inheritance of classes (2).",2025-06-20 19:33:21
+139,Working with Java Data Types,Variable Declaration and Initialization,"What is the output of the following code?
+```java
+public class MyExamCloudOCAIPs {
+    static int y = 10;
+    public static void main(String[] args) {
+        int y;
+        System.out.println(y + MyExamCloudOCAIPs.y);
+    }
+}
+```",10,11,20,NullPointerException,Compilation error,E,"Local variable 'y' is declared but not initialized.
+Java requires local variables to be initialized before use, causing a compilation error.",2025-06-20 19:33:21
+140,Working with Java Data Types,Wrapper Classes,"Which of the following will convert the string to a primitive float?
+```java
+String str = ""1.2"";
+```",Float.parseFloat(str),Float.valueOf(str),new Float(str),(float) str,All of the above,A,"Float.parseFloat() returns a primitive float.
+Float.valueOf() and new Float() return Float wrapper objects, not primitives. (float) str won't compile as you cannot cast a String to float.",2025-06-20 19:33:21
+141,Using Operators and Decision Constructs,Operators,"What is the output of the following code?
+```java
+public class Test {
+    public static void main(String[] args) {
+        int a = 5, b = 7;
+        int result = a + b;
+        System.out.println(result);
+    }
+}
+```",10,11,12,13,,C,The code adds 5 + 7 = 12 and prints the result.,2025-06-20 19:33:21
+142,Java Basics,Main Method,"Which of the following is a valid main method?",public static int main(String[] args),public void main(String args[]),public static void main(String[] args),static void main(String args),,C,"The main method must be public, static, void, and take String array as parameter.",,single
+Only option C meets all requirements.",2025-06-20 19:33:21
+143,Working with Java Data Types,Variable Declaration and Initialization,"What is the default value of a boolean variable in a class?",true,false,0,null,,B,"Instance variables of boolean type are automatically initialized to false in Java.",2025-06-20 19:33:21,single
+144,Working with Selected classes from the Java API,String Class,"What will be the result of the following code?
+```java
+String s = ""Hello"";
+s.concat("" World"");
+System.out.println(s);
+```",Hello,Hello World,World,Compilation Error,,A,"Strings are immutable in Java.
+The concat method returns a new String but doesn't modify the original.
+Since the result isn't assigned back to s, s remains ""Hello"".",2025-06-20 19:33:21
+145,Creating and Using Arrays,Arrays,"Which statement is true about Java arrays?",Arrays are dynamically sized.,Arrays can store different data types.,The size of an array must be specified at declaration.,Arrays are objects in Java.,,D,"In Java, arrays are objects.",,single
+They have a fixed size once created, store elements of the same type, and inherit from Object class.",2025-06-20 19:33:21
+146,Handling Exceptions,Exception Handling,"Which exception is most likely to occur with the following code?
+```java
+public static void main(String[] args) {
+    Float number = Float.valueOf(args[0]);
+}
+```",IllegalArgumentException,NumberFormatException,ArrayIndexOutOfBoundsException,NullPointerException,ClassCastException,B,"If args[0] contains a string that cannot be parsed as a float (like ""abc""), Float.valueOf() will throw `NumberFormatException`.
+`ArrayIndexOutOfBoundsException` could also occur if no arguments are passed, but `NumberFormatException` is more specific to the valueOf operation.",2025-06-20 19:33:21
+147,Using Operators and Decision Constructs,Operators,"What is printed by the following code?
+```java
+int i = 10;
+int j = 5;  
+int result = i++ + ++j;
+System.out.println(result);
+```",15,16,17,18,,B,"i++ uses the current value (10) then increments i to 11. ++j increments j to 6 first, then uses that value.
+So 10 + 6 = 16.",2025-06-20 19:33:21
+148,Java Basics,Import Statements,"Which lines contain redundant imports that are not necessary for this code to compile?
+```java
+1. import java.util.Random;
+2. import java.lang.System;
+3. import java.util.*;
+4. import java.lang.*;
+public class MyExamCloudOcajps {
+    public static void main(String[] args) {
+        Random r = new Random();
+        System.out.println(r.nextInt(10));
+    }
+}
+```",Only lines 1 and 2,"Only lines 1,2 and 3","Only lines 2,3 and 4","Only lines 1,3 and 4",All,C,"Line 2 (`java.lang.System`) is redundant because java.lang.* is imported by default.
+Line 3 (java.util.*) makes line 1 redundant.
+Line 4 (java.lang.*) is always redundant as it's automatically imported.",2025-06-20 19:33:21
+149,Working with Inheritance,Inheritance,"Which keyword is used to inherit a class?",implement,interface,inherits,extends,,D,"The 'extends' keyword is used for class inheritance in Java. 'implements' is used for interfaces.",2025-06-20 19:33:21,single
+150,Working with Selected classes from the Java API,String Class,"Which of the following classes is immutable?",StringBuilder,String,StringBuffer,All of the above,,B,"String class is immutable - once a String object is created, it cannot be changed.",,single
+StringBuilder and StringBuffer are mutable.",2025-06-20 19:33:21
+151,Working with Methods and Encapsulation,Access Modifiers,"Which of these access specifiers allows access only within the same class?",private,public,protected,default,,A,"The private access modifier restricts access to the same class only.",,single
+Other modifiers allow broader access.",2025-06-20 19:33:21
+152,Working with Java Data Types,Primitive Data Types,"Which of the following is not a primitive type?",int,float,char,String,,D,"String is a class (reference type), not a primitive type.",,single
+The primitive types are int, float, char, boolean, byte, short, long, and double.",2025-06-20 19:33:21
+153,Handling Exceptions,Exception Handling,"Which exception is thrown when dividing an integer by zero in Java?",NullPointerException,ArithmeticException,IllegalArgumentException,NumberFormatException,,B,"Integer division by zero throws `ArithmeticException` in Java.",2025-06-20 19:33:21,single
+154,Collections Framework,Set Object,"Which collection class maintains insertion order?",HashMap,TreeSet,LinkedHashSet,HashSet,,C,"LinkedHashSet maintains the insertion order of elements.",,single
+HashMap and HashSet don't guarantee order, TreeSet maintains sorted order.",2025-06-20 19:33:21
+155,Working with Java Data Types,Primitive Data Types,"What is the size of a char in Java?",4 bytes,2 bytes,1 byte,Depends on JVM,,B,"A char in Java is 2 bytes (16 bits) to support Unicode characters.",2025-06-20 19:33:21,single
+156,Working with Inheritance,Abstract Classes,"How do you declare an abstract method?",public void doIt();,public void doIt() {},abstract void doIt();,void abstract doIt();,,C,"Abstract methods are declared with the 'abstract' keyword and have no method body (no curly braces).",2025-06-20 19:33:21,single

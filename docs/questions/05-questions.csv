@@ -1,0 +1,252 @@
+ID,Domain,Topic,Question,Option A,Option B,Option C,Option D,Option E,Correct Answer,Explanation,Created At,Question Type
+207,Creating and Using Arrays,Multi-dimensional Arrays,"What will it print? 
+```java
+int[][] matrix = new int[2][]; 
+matrix[0] = new int[3]; 
+matrix[1] = new int[2]; 
+System.out.println(matrix[0].length + matrix[1].length);
+```",4,5,6,Compilation Error,,B,"matrix[0].length = 3, matrix[1].length = 2 → 3+2=5
+You're creating a ""jagged"" 2D array (rows with different column sizes), and printing the total number of elements across both rows.
+✅ matrix[0] has 3 elements
+✅ matrix[1] has 2 elements
+➡️ Total = 5",2025-06-20 19:33:38
+208,Creating and Using Arrays,Arrays,"What will it print? 
+```java
+int[] arr = {1, 2, 3}; 
+System.out.println(arr[3]);
+```",3,IndexOutOfBoundsException,Compilation Error,null,,B,Accessing arr[3] throws `ArrayIndexOutOfBoundsException`,2025-06-20 19:33:38
+209,Creating and Using Arrays,Array Declaration and Initialization,"What will it print?
+```java
+int[] arr = new int[2]; 
+System.out.println(arr[0]);
+```",0,null,Compilation Error,Exception,,A,Default value of int array element is 0,2025-06-20 19:33:38
+210,Handling Exceptions,Exception Handling,"What will it print?
+```java
+String[] names = new String[2]; 
+System.out.println(names[0].length());
+```",0,null,Compilation Error,NullPointerException,,D,"names[0] is null, so calling length() throws NPE",2025-06-20 19:33:38
+211,Using Loop Constructs,Do-While Loops,"What will it print? 
+```java
+int i = 0; 
+do { 
+  System.out.print(i + "" ""); 
+} while(i++ < 2);
+```",0 1 2,0 1 2 3,1 2 3,Infinite loop,,A,Post-increment allows print before check,2025-06-20 19:33:38
+212,Using Operators and Decision Constructs,Ternary Operator,"What will it print? 
+```java
+int a = 10, b = 20; 
+int max = (a > b) ? a : b; 
+System.out.println(max);
+```",10,20,0,Compilation Error,,B,b is greater → max = b,2025-06-20 19:33:38
+213,Creating and Using Arrays,Array Manipulation,"What will it print? 
+```java
+int[] a = {1, 2, 3}; 
+int[] b = a; 
+b[0] = 10; 
+System.out.println(a[0]);
+```",1,10,0,Compilation Error,,B,"Arrays in Java are objects and are passed by reference.
+Assigning one array to another does not create a copy — both variables refer to the same array.",2025-06-20 19:33:38
+214,Handling Exceptions,Exception Handling,"What will it print? 
+```java
+int x = Integer.parseInt(""abc"");
+```",Invalid format,abc,Compilation Error,Runtime Error,,A,'abc' cannot be parsed as integer; throws `NumberFormatException`,2025-06-20 19:33:38
+215,Creating and Using Arrays,Multi-dimensional Arrays,"What will it print? 
+```java
+int[][] grid = new int[1][2]; 
+System.out.println(grid.length + "" "" + grid[0].length);
+```",1 2,2 1,Compilation Error,1 0,,A,"grid[0].length = 2; grid.length = 1
+In Java, grid.length gives the number of rows.
+grid[0].length gives the number of columns in the first row.
+2D arrays in Java are really arrays of arrays.",2025-06-20 19:33:38
+216,Handling Exceptions,Exception Handling,"What will happen? 
+```java
+int[] arr = new int[-2];
+```",Length: -2,Compilation Error,NegativeArraySizeException,0,,C,Negative array size throws runtime exception,2025-06-20 19:33:38
+217,Working with Selected Classes from Java API,String Class,"What will it print?
+```java
+String s = null; 
+System.out.println(s + ""world"");
+```",world,nullworld,Compilation Error,NullPointerException,,B,null + string → 'nullworld',2025-06-20 19:33:38
+218,Creating and Using Arrays,Arrays,"What will it print? 
+```java
+int[] data = {10, 20, 30}; 
+for(int i = 0; i <= data.length; i++) System.out.print(data[i] + "" "");
+```",10 20 30,10 20 30 0,Compilation Error,ArrayIndexOutOfBoundsException,,D,"i <= data.length leads to out-of-bounds
+The loop uses i <= data.length, which causes i = 3 to be accessed.
+But array indices only go from 0 to 2, so it throws `ArrayIndexOutOfBoundsException`.
+Use i < data.length to fix it.",2025-06-20 19:33:38
+219,Creating and Using Arrays,Multi-dimensional Arrays,"What will it print?
+```java
+String[][] text = new String[2][]; 
+text[0] = new String[]{""A"", ""B""}; 
+text[1] = new String[]{""C""}; 
+System.out.println(text[1][0]);
+```",A,B,C,null,,C,"text[1][0] is ""C""",2025-06-20 19:33:38
+220,Java Basics,Main Characteristics of Java,"Which of the following is a valid `main` method?",public static int main(String[] args),public void main(String args[]),public static void main(String[] args),static void main(String args),,C,"Only public static void main(String[] args) is valid",2025-06-20 19:33:38,single
+221,Handling Exceptions,Exception Handling,"What will it print? 
+```java
+throw new IllegalArgumentException(""Bad input"");
+```",Bad input,Caught: Bad input,Compilation Error,IllegalArgumentException,,B,Exception caught and printed,2025-06-20 19:33:38
+222,Using Loop Constructs,For Loops,"What will it print? 
+```java
+int[] values = {1, 2, 3, 4}; 
+for (int i = values.length - 1; i >= 0; i--) System.out.print(values[i] + "" "");
+```",4 3 2 1,1 2 3 4,Compilation Error,Runtime Error,,A,Reverse order printing with for-loop,2025-06-20 19:33:38
+223,Handling Exceptions,Exception Handling,"What will it print?
+```java
+Integer.parseInt(""10.5"");
+```",Format error,10.5,Compilation Error,Runtime Error,,A,10.5 is not valid integer → `NumberFormatException`,2025-06-20 19:33:38
+224,Handling Exceptions,Exception Handling,"What will it print?
+```java
+Object[] obj = new String[2]; 
+obj[0] = 10;
+```",Done,Compilation Error,ArrayStoreException,null,,C,Storing Integer in String[] throws `ArrayStoreException`,2025-06-20 19:33:38
+225,Creating and Using Arrays,Arrays,"What will it print?
+```java
+String[] arr = {""one"", ""two"", ""three""}; 
+System.out.println(arr[arr.length]);
+```",three,Compilation Error,IndexOutOfBoundsException,Runtime Error,,C,"Index arr.length is out of bounds
+The array has 3 elements, so valid indices are 0, 1, and 2. arr.length is 3, so arr[arr.length] tries to access arr[3], which doesn't exist.
+This causes an `ArrayIndexOutOfBoundsException` at runtime.
+Always use index < length.",2025-06-20 19:33:38
+226,Using Operators and Decision Constructs,If-Else Statement,"What will it print? 
+```java
+int i = 5;
+if (i = 5) { 
+  System.out.println(""Equal"");
+}
+```",Equal,Nothing,Compilation Error,Runtime Error,,C,Can't assign inside condition directly,2025-06-20 19:33:38
+227,Working with Java Data Types,Variable Declaration and Initialization,"What will it print? 
+```java
+int x; //local variable
+System.out.println(x);
+```",0,Compilation Error,Runtime Exception,null,,B,Local variable 'x' not initialized,2025-06-20 19:33:38
+228,Working with Java Data Types,Variable Casting and Conversions,"What will it print? 
+```java
+byte b = 10; 
+b = b + 1;
+```",11,Compilation Error,10,Runtime Error,,B,b + 1 = int → must cast to byte,2025-06-20 19:33:38
+229,Working with Selected Classes from Java API,String Class,"What will it print?
+```java
+String s1 = ""Hello""; 
+String s2 = new String(""Hello""); 
+System.out.println(s1 == s2);
+```",true,false,Compilation Error,Runtime Error,,B,"== compares references, not values",2025-06-20 19:33:38
+230,Handling Exceptions,Exception Handling,"What will it print? 
+```java
+int[] nums = new int[5]; 
+nums[10] = 3;
+```",Caught: java.lang.Exception,Caught: java.lang.ArrayIndexOutOfBoundsException,Compilation Error,Runtime Error,,B,Index 10 is out of bounds; exception caught,2025-06-20 19:33:38
+231,Working with Java Data Types,Variable Casting and Conversions,"What will it print? 
+```java
+final int x = 100; 
+byte b = x; 
+System.out.println(b);
+```",100,Compilation Error,0,Runtime Exception,,A,final constant fits in byte; implicit cast allowed,2025-06-20 19:33:38
+232,Using Loop Constructs,Enhanced For Loops,"What will it print?
+```java
+String[] vals = {""one"", ""two"", ""three""}; 
+for(String s : vals) System.out.print(s + "" "");
+```",one two three,three two one,Compilation Error,Runtime Error,,A,Enhanced for-loop prints in order,2025-06-20 19:33:38
+233,Working with Selected Classes from Java API,String Class,"What will it print?
+```java
+System.out.println(""1"" + 2 + 3);
+```",123,6,33,15,,A,Left-to-right string concatenation,2025-06-20 19:33:38
+234,Working with Java Data Types,Primitive Data Types,"What will it print? 
+```java
+char c = 65; 
+System.out.println(c);
+```",A,65,Compilation Error,null,,A,65 is ASCII for 'A',2025-06-20 19:33:38
+235,Working with Java Data Types,Variable Casting and Conversions,"What will it print? 
+```java
+double d = 5 / 2; 
+System.out.println(d);
+```",2.0,2.5,Compilation Error,Runtime Exception,,A,5/2 is integer division first → 2 → then widened,2025-06-20 19:33:38
+236,Working with Java Data Types,Variable Casting and Conversions,"What will it print? 
+```java
+int a = 5; 
+a += 3.5;
+```",8,8.5,Compilation Error,Runtime Error,,C,+= with double → implicit cast not allowed without loss,2025-06-20 19:33:38
+237,Creating and Using Arrays,Arrays,"What will it print? 
+```java
+int[] arr = new int[]{1, 2, 3}; 
+System.out.println(arr.length());
+```",3,Compilation Error,Runtime Error,0,,B,"Array has 'length' field, not method
+The code causes a compile-time error because arr.length() is invalid.
+In Java, arrays use the field length (no parentheses), not a method.
+Correct usage is arr.length.
+Using length() tries to call a method that doesn't exist for arrays.",2025-06-20 19:33:38
+238,Working with Inheritance,Polymorphism,"What will it print?
+```java
+Object o = new int[]{1, 2, 3}; 
+System.out.println(o instanceof Object);
+```",true,false,Compilation Error,Runtime Exception,,A,Arrays are objects,2025-06-20 19:33:38
+239,Working with Java Data Types,Variable Casting and Conversions,"What will it print? 
+```java
+final int x = 100; 
+byte b = x; 
+System.out.println(b);
+```",100,Compilation Error,0,Runtime Error,,A,final constant in byte range can be implicitly cast,2025-06-20 19:33:38
+240,Working with Java Data Types,Variable Declaration and Initialization,"What will it print? 
+```java
+static int x = 10; 
+int x = 20; 
+System.out.println(x);
+```",10,20,Compilation Error,Runtime Error,,C,Local variable shadows class variable,2025-06-20 19:33:38
+241,Creating and Using Arrays,Arrays,"What will it print? 
+```java
+int[] a = new int[3]; 
+System.out.println(a[3]);
+```",0,3,Compilation Error,ArrayIndexOutOfBoundsException,,D,Index 3 out of bounds,2025-06-20 19:33:38
+242,Working with Selected Classes from Java API,String Class,"What will it print?
+```java
+System.out.println(10 + 20 + ""30"");
+```",30,1030,3030,3030.0,,C,"10+20=30, then string concat",2025-06-20 19:33:38
+243,Working with Java Data Types,Variable Casting and Conversions,"What will it print? 
+```java
+short s = 10; 
+s = s * 5;
+```",50,Compilation Error,Runtime Error,10,,B,s * 5 promotes to int → must cast to short,2025-06-20 19:33:38
+244,Using Operators and Decision Constructs,Ternary Operator,"What will it print? 
+```java
+true ? ""yes"" : 10;
+```",yes,10,Compilation Error,Runtime Error,,C,Incompatible types between true/false branches,2025-06-20 19:33:38
+245,Working with Selected Classes from Java API,String Class,"What will it print?
+```java
+String str = ""null""; 
+System.out.println(str == null);
+```",true,false,null,Compilation Error,,B,"""null"" is a string literal, not null",2025-06-20 19:33:38
+246,Using Loop Constructs,For Loops,"What will it print? 
+```java
+for (System.out.print(""A""); i < 1; i++) System.out.print(""B""); 
+System.out.print(""C"");
+```",ABC,BAC,ACB,Compilation Error,,A,"'A' prints first from loop init, then loop body → 'B', then 'C'",2025-06-20 19:33:38
+247,Handling Exceptions,Exception Handling,"What will it print? 
+```java
+int x = 10 / 0;
+```",ArithmeticException,0,Compilation Error,Runtime Exception,,A,"Divide by zero throws `ArithmeticException`, caught and printed",2025-06-20 19:33:38
+248,Handling Exceptions,Exception Handling,"What will it print?
+```java
+String[] list = null; 
+System.out.println(list[0]);
+```",null,Caught NullPointerException,Compilation Error,Runtime Error,,B,Accessing list[0] on null array throws `NullPointerException`,2025-06-20 19:33:38
+249,Creating and Using Arrays,Array Declaration and Initialization,"What will it print? 
+```java
+int[] nums = new int[0]; 
+System.out.println(nums.length);
+```",0,1,Compilation Error,Exception,,A,Zero-length array is legal; prints 0,2025-06-20 19:33:38
+250,Using Operators and Decision Constructs,Switch Statement,"What will it print? 
+```java
+int x = 5;
+switch(x) { 
+  case 5: System.out.print(""Five""); 
+  default: System.out.print(""Default""); 
+}
+```",Five,Default,Five Default,Compilation Error,,C,No break → fall-through occurs,2025-06-20 19:33:38
+251,Working with Selected classes from the Java API,Map Object,"Which `Map` implementation maintains the insertion order of entries?",HashMap,TreeMap,LinkedHashMap,ConcurrentHashMap,EnumMap,C,"`LinkedHashMap` maintains the insertion order of keys. `HashMap` does not. `TreeMap` sorts keys. `ConcurrentHashMap` and `EnumMap` have no guaranteed insertion order.",2025-06-20 19:57:15,single
+252,Working with Selected classes from the Java API,Map Object,"What happens when you try to retrieve a value for a key that does not exist in a `HashMap`?",The method throws an exception,Returns -1,Returns null,Returns Optional.empty(),Compilation error,C,"If a key is not present in a HashMap, the `get()` method returns `null`.",,single
+It does not throw an exception or return -1 by default.",2025-06-20 19:57:15
+253,Working with Selected classes from the Java API,Map Object,"Which of the following maps is most suitable for concurrent access by multiple threads?",Hashtable,HashMap,ConcurrentHashMap,TreeMap,LinkedHashMap,C,"`ConcurrentHashMap` is designed for high-concurrency environments. `Hashtable` is synchronized but inefficient. `HashMap`, `TreeMap`, and `LinkedHashMap` are not thread-safe.",2025-06-20 19:57:15,single
+254,Working with Selected classes from the Java API,Map Object,"Which map uses `==` instead of `.equals()` to compare keys?",EnumMap,TreeMap,IdentityHashMap,WeakHashMap,HashMap,C,"`IdentityHashMap` compares keys using reference equality (`==`).",2025-06-20 19:57:15,single
+255,Working with Selected classes from the Java API,Map Object,"Which implementation is designed to store enum constants as keys efficiently?",TreeMap,EnumMap,HashMap,LinkedHashMap,Properties,B,"`EnumMap` is specifically designed for enum key efficiency.",2025-06-20 19:57:15,single
+256,Working with Selected classes from the Java API,Map Object,"What is the result of calling `map.clear()` on a populated map?",All values become null,Keys are set to null,All entries are removed,Map becomes immutable,It throws an exception,C,"`clear()` removes all entries from the map — size becomes zero.",2025-06-20 19:57:15,single

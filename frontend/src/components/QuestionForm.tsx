@@ -101,11 +101,15 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({ question, onSave, on
     }
 
     const validAnswers = ['A', 'B', 'C', 'D', 'E'];
-    if (!validAnswers.includes(formData.correct_answer)) {
-      return 'Correct answer must be A, B, C, D, or E';
-    }
+    const correctAnswers = formData.correct_answer.split(',').map(a => a.trim().toUpperCase());
 
-    // Check if the selected correct answer has a corresponding option
+    for (const answer of correctAnswers) {
+        if (!validAnswers.includes(answer)) {
+            return 'Correct answer must be a comma-separated list of A, B, C, D, or E';
+        }
+    }
+    
+    // Check if the selected correct answers have corresponding options
     const answerMap = {
       'A': formData.option_a,
       'B': formData.option_b,
@@ -114,8 +118,10 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({ question, onSave, on
       'E': formData.option_e
     };
 
-    if (!answerMap[formData.correct_answer as keyof typeof answerMap].trim()) {
-      return `Option ${formData.correct_answer} is selected as correct answer but is empty`;
+    for (const answer of correctAnswers) {
+        if (!answerMap[answer as keyof typeof answerMap].trim()) {
+          return `Option ${answer} is selected as correct answer but is empty`;
+        }
     }
 
     return null;

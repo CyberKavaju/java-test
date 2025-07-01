@@ -1,0 +1,378 @@
+ID,Domain,Topic,Question,Option A,Option B,Option C,Option D,Option E,Correct Answer,Explanation,Created At,Question Type
+57,Working with Inheritance,Constructor Chaining,"What is the output of the following code?
+```java
+class A {
+    public A() { System.out.print(""A""); }
+}
+class B extends A {
+    public B() { System.out.print(""B""); }
+}
+new B();
+```",A,B,AB,BA,Compile error,C,"When creating an object of class B, constructor chaining occurs.
+Java automatically inserts a call to super() as the first statement in B's constructor.
+This calls A's constructor first, which prints ""A"", then B's constructor prints ""B"", resulting in ""AB"".",2025-06-19 19:10:39
+58,Creating and Using Arrays,Varargs,"What is printed?
+```java
+public static void m(int... nums) {
+    System.out.println(nums.length);
+}
+// Called with:
+m(1, 2, 3);
+```",1,3,0,Compile error,Runtime error,B,"Varargs (variable arguments) allows a method to accept zero or more arguments of the specified type.
+The arguments are collected into an array.
+When m(1, 2, 3) is called, nums becomes an array containing [1, 2, 3], so nums.length is 3.",2025-06-19 19:10:39
+59,Using Operators and Decision Constructs,Assignment in if condition,"What does the following code print?
+```java
+boolean b = false;
+if (b = true) {
+    System.out.println(""Yes"");
+} else {
+    System.out.println(""No"");
+}
+```",Yes,No,Compile error,Runtime error,Nothing,A,"Inside the if condition, b = true is an assignment (not comparison).
+The assignment sets b to true and the assignment expression evaluates to true.
+Therefore, the if condition is true, and ""Yes"" is printed.
+This is a common source of bugs - use == for comparison, = for assignment.",2025-06-19 19:10:39
+60,Working with Inheritance,Final Class,"What happens when compiling this code?
+```java
+final class A {}
+class B extends A {}
+```",It compiles successfully.,Compile error: cannot inherit from final A.,Runtime error,No output,An exception is thrown,B,"A class declared as final cannot be subclassed.
+The final keyword prevents inheritance.
+Attempting to declare class B extends final class A results in a compilation error.
+This is similar to how final classes like String cannot be extended.",2025-06-19 19:10:39
+61,Handling Exceptions,Finally Always Executes,"What is the output?
+```java
+try {
+    System.out.println(1);
+} finally {
+    System.out.println(2);
+}
+```",1,2,1 then 2,Compile error,Runtime exception,C,"The try block executes and prints 1.
+The finally block always executes after the try block, regardless of whether an exception occurs, printing 2.
+Since there's no exception and no return/break statements, both statements execute in order: 1 then 2.",2025-06-19 19:10:39
+62,Working with Java Data Types,char Arithmetic,"What does the following code print?
+```java
+char c = 'A' + 1;
+System.out.println(c);
+```",A,B,65,Compile error,Runtime error,B,"The character 'A' has ASCII value 65.
+Adding 1 yields 66, which corresponds to the character 'B'.
+When performing arithmetic on char values, they are promoted to int, but the result can be assigned back to char if it's a compile-time constant.",2025-06-19 19:10:39
+63,Working with Java Data Types,Narrowing Conversion,"What happens when compiling this code?
+```java
+short s = 5;
+s = s + 2;
+```","It compiles and runs, printing 7",Compile error: cannot convert int to short,It compiles with a warning,Runtime error,Nothing happens,B,"When performing arithmetic operations, operands are promoted to at least int.
+The expression s + 2 results in an int value.
+Assigning an int to a short requires explicit casting because it's a narrowing conversion.
+The correct code would be s = (short)(s + 2) or s += 2 (compound assignment operators include implicit casting).",2025-06-19 19:10:39
+64,Working with Methods and Encapsulation,Private Constructor,"What happens if you try to compile and run this?
+```java
+class A {
+    private A() {}
+}
+// In another class or method:
+new A();
+```",It compiles successfully.,Compile error: A() has private access.,Runtime error,It prints an empty line,None of the above,B,"The constructor A() is declared private, making it inaccessible from outside the class A.
+Attempting to call new A() from outside the class results in a compilation error due to access restriction.
+Private constructors are often used in singleton patterns or utility classes.",2025-06-19 19:10:39
+65,Handling Exceptions,Catching RuntimeException,"What is the output?
+```java
+try {
+    System.out.println(1/0);
+} catch (Exception e) {
+    System.out.println(""Exception"");
+}
+```",1,Exception,No output,Runtime error,Compile error,B,"Division by zero (1/0) throws an `ArithmeticException`, which is a subclass of `RuntimeException`, which is a subclass of Exception.
+The catch block for Exception catches the `ArithmeticException` and prints ""Exception"".
+The division operation never completes, so 1/0 is never printed.",2025-06-19 19:10:39
+66,Working with Inheritance,Private Method Hiding,"What happens if you try to compile and run this?
+```java
+class A {
+    private void m() {}
+}
+class B extends A {
+    public void m() { System.out.println(""B""); }
+}
+A a = new B();
+a.m();
+```",It prints B,It prints nothing,Compile error,Runtime error,It prints A,C,"Class A has a private method m(), which is not visible outside of A.
+Class B's method m() is not an override but a completely new method since private methods are not inherited.
+The reference a of type A cannot access any method m() because A's m() is private and B's m() is not visible through an A reference.
+This causes a compilation error.",2025-06-19 19:10:39
+67,Working with Java Data Types,Numeric Literals,"What is wrong with the following declaration?
+```java
+long l = 10000000000;
+```",No error; l is 10000000000,Compile error: integer number too large,It prints a random number,Runtime error,It becomes a double,B,"The literal 10000000000 (10 billion) exceeds the range of int (-2,147,483,648 to 2,147,483,647).
+Since numeric literals without suffix are treated as int by default, this causes a compilation error.
+To create a long literal, append L or l: long l = 10000000000L.",2025-06-19 19:10:39
+68,Working with Java Data Types,Float precision,"What is the output of this code?
+```java
+float f = 0.1f + 0.1f + 0.1f;
+System.out.println(f == 0.3f);
+```",true,false,Compile error,Runtime error,0.3,B,"Floating-point arithmetic is inherently imprecise due to binary representation limitations.
+The sum of three 0.1f values is not exactly equal to 0.3f due to rounding errors in binary floating-point representation.
+This demonstrates why direct equality comparisons with floating-point numbers should be avoided in favor of range-based comparisons.",2025-06-19 19:10:39
+69,Working with Selected classes from the Java API,String equals,"What is the output?
+```java
+String s1 = new String(""hello"");
+String s2 = new String(""hello"");
+System.out.println(s1 == s2);
+System.out.println(s1.equals(s2));
+```",true true,true false,false true,false false,Compile error,C,"The == operator compares object references, not content.
+Since s1 and s2 are created with new String(), they are different objects in memory, so s1 == s2 is false.
+The equals() method compares the actual string content, so s1.equals(s2) is true because both strings contain ""hello"".",2025-06-19 19:10:39
+70,Working with Selected classes from the Java API,HashMap put,"What does this code print?
+```java
+Map<String, Integer> map = new HashMap<>();
+map.put(""key"", 1);
+map.put(""key"", 2);
+System.out.println(map.get(""key""));
+```",1,2,null,Compile error,Runtime error,B,"HashMap stores key-value pairs where each key is unique.
+When put() is called with an existing key, it replaces the previous value.
+The first put(""key"", 1) stores the mapping, then put(""key"", 2) replaces the value 1 with 2.
+Therefore, map.get(""key"") returns 2.",2025-06-19 19:10:39
+71,Working with Selected classes from the Java API,String immutability,"What does the following code print?
+```java
+String s = ""Hello"";
+s.concat(""World"");
+System.out.println(s);
+```",Hello,HelloWorld,World,Compilation error,Runtime error,A,"String objects are immutable in Java.
+The concat() method returns a new String object containing ""HelloWorld"", but this new string is not assigned to any variable.
+The original string s remains unchanged and still contains ""Hello"".
+To get ""HelloWorld"", you would need to assign the result: s = s.concat(""World"").",2025-06-19 19:10:39
+72,Working with Inheritance,Abstract Class,"What is wrong with the following code?
+```java
+abstract class A {}
+class B {
+    public static void main(String[] args) {
+        A a = new A();
+    }
+}
+```",It prints A,It prints nothing,Compile error: cannot instantiate abstract A.,Runtime error,It compiles successfully,C,"Abstract classes cannot be instantiated directly using the new operator.
+They are meant to be extended by concrete classes.
+Attempting to create new A() where A is abstract causes a compilation error.
+You can only create instances of concrete (non-abstract) subclasses of A.",2025-06-19 19:10:39
+73,Working with Selected classes from the Java API,ArrayList contains,"What is the output?
+```java
+List<Integer> list = new ArrayList<>();
+list.add(1);
+list.add(2);
+System.out.println(list.contains(1));
+```",true,false,1,Compile error,Runtime error,A,"ArrayList.contains() returns true if the list contains the specified element, false otherwise.
+The list contains the Integer 1 (added first), so list.contains(1) returns true.
+The method uses the equals() method to compare elements, and autoboxing handles the conversion between int and Integer.",2025-06-19 19:10:39
+74,Working with Methods and Encapsulation,Static vs Instance Methods,"What is the output of this code? 
+```java
+public class Counter { 
+  static int count = 0; 
+  public Counter() { 
+    count++; 
+  } 
+  public static void main(String args) { 
+    Counter c1 = new Counter(); 
+    Counter c2 = new Counter(); 
+    System.out.println(Counter.count); 
+  } 
+}
+```",0,1,2,Compilation error,Runtime error,C,"The static variable count is shared by all instances.
+Each constructor call increments it: c1 increments to 1, c2 increments to 2.",2025-06-20 19:32:28
+75,Working with Methods and Encapsulation,Access Modifiers,"Which access modifier allows a member to be accessed only within its own class?",public,protected,private,default,static,C,"The private access modifier restricts access to members to only within the class where they are declared.",2025-06-20 19:32:28,single
+76,Working with Inheritance,Abstract Classes,"Which statement about abstract classes and interfaces is true?",A class can implement multiple abstract classes.,An interface can have concrete methods before Java 8.,An abstract class can have constructors.,All methods in an interface must be abstract.,An abstract class cannot have any concrete methods.,C,"An abstract class can have constructors, though they cannot be directly instantiated.",,single
+They are used when a concrete subclass is instantiated.",2025-06-20 19:32:28
+77,Handling Exceptions,Checked vs Unchecked Exceptions,"Which of the following is an unchecked exception?",IOException,SQLException,FileNotFoundException,NullPointerException,InterruptedException,D,"`NullPointerException` is a `RuntimeException` and thus an unchecked exception.",,single
+The others are checked exceptions.",2025-06-20 19:32:28
+78,Working with Java Data Types,Working with Java Data Types,"How many objects are created by the time the main method finishes in this code: 
+```java
+public class Creator { 
+  public Creator() { 
+    try { 
+      throw new Exception(); 
+    } 
+    catch (Exception e) {} 
+  } 
+  public static void main(String args) { 
+    Creator c1 = new Creator(); 
+    Creator c2 = new Creator(); 
+    Creator c3 = c1; 
+  } 
+}
+```",2,3,4,5,6,C,"Two Creator objects are created (c1 and c2).
+Two Exception objects are created (one in each constructor call). c3 = c1 only creates a new reference, not a new object.
+Total: 4 objects.",2025-06-20 19:32:28
+79,Using Operators and Decision Constructs,Operator Precedence,"What is the final value of result? 
+```java
+int x = 5; 
+int y = 10; 
+int z = 15; 
+boolean result = x < y && y < z || z > x;
+```",true,false,Compilation error,Runtime error,Depends on JVM,A,The expression evaluates as: (x < y && y < z) || z > x = (true && true) || true = true || true = true,2025-06-20 19:32:28
+80,Working with Java Data Types,Variable Casting and Conversions,"What is the output of this code? 
+```java
+double d = 10.5; 
+int i = (int) d; 
+System.out.println(i);
+```",10.5,10,11,Compilation error,Runtime error,B,"When a double is cast to an int, the decimal part is truncated (not rounded).
+So 10.5 becomes 10.",2025-06-20 19:32:28
+81,Handling Exceptions,Exception Handling,"What is correct about this code? 
+```java
+class A { 
+  public void doA() throws Exception { 
+    throw new Exception(); 
+  } 
+} 
+class B extends A { 
+  public void doB() { 
+    doA(); 
+  } 
+}
+```",The code compiles and runs without error.,The code compiles if throws Exception is added to doB().,The code compiles if throws Exception is added to main().,The code compiles if throws Exception is added to doB() AND main().,The code compiles if doA() is enclosed in a try-catch block within doB().,D,"doA() throws a checked exception, so doB() must either handle it or declare it.
+If doB() declares it, then main() must also handle or declare it.",2025-06-20 19:32:28
+82,Working with Methods and Encapsulation,Method Declaration and Parameters,"What will this program print? 
+```java
+public class ChangeTest { 
+  private int myValue = 0; 
+  public void showOne(int myValue) { 
+    myValue = myValue; 
+  } 
+  public void showTwo(int myValue) { 
+    this.myValue = myValue; 
+  } 
+  public static void main(String args) { 
+    ChangeTest ct = new ChangeTest(); 
+    ct.showTwo(200); 
+    System.out.println(ct.myValue); 
+    ct.showOne(100); 
+    System.out.println(ct.myValue); 
+  } 
+}
+```",0 followed by 100.,100 followed by 100.,0 followed by 200.,100 followed by 200.,200 followed by 200.,E,"showTwo() correctly assigns the parameter to the instance variable using this.myValue. showOne() assigns the parameter to itself due to variable shadowing, not affecting the instance variable.
+Result: 200 followed by 200.",2025-06-20 19:32:28
+83,Working with Java Data Types,Autoboxing and Unboxing,"What is the output of this code?
+```java
+Integer a = 10; 
+Integer b = 10; 
+Integer c = 200; 
+Integer d = 200; 
+System.out.println(a == b); 
+System.out.println(c == d);
+```",true true,true false,false true,false false,Compilation error,B,"Integer values between -128 and 127 are cached, so a and b refer to the same object (true).
+Values outside this range create new objects, so c and d are different objects (false).",2025-06-20 19:32:28
+84,Working with Methods and Encapsulation,Constructors,"Given the class: class MyClass { int x; } Which statement is true about its constructor?",It has an implicit public no-argument constructor.,It has an implicit default constructor that initializes x to 0.,It requires an explicit constructor to be defined.,It will not compile without a constructor.,It has an implicit private no-argument constructor.,B,"If no constructor is explicitly defined, Java provides a default no-argument constructor that initializes instance variables to their default values (int x to 0).",2025-06-20 19:32:28,single
+85,Using Operators and Decision Constructs,Operators,"What is the value of result? 
+```java
+int x = 5; 
+int y = ++x; 
+int z = y--; 
+int result = x + y + z;
+```",15,16,17,18,Compilation error,C,"x starts at 5. y = ++x makes x = 6, y = 6. z = y-- makes z = 6, y = 5. result = 6 + 5 + 6 = 17.",2025-06-20 19:32:28
+86,Using Loop Constructs,Looping Constructs,"What will this code print? 
+```java
+void crazyLoop() { 
+  int c = 0; 
+  JACK: while (c < 8) { 
+    JILL: System.out.println(c); 
+    if (c > 3) break JACK; 
+    else c++; 
+  } 
+}
+```",It will not compile.,It will throw an exception at runtime.,It will print numbers from 0 to 8,It will print numbers from 0 to 3,It will print numbers from 0 to 4,E,"The loop prints c (0,1,2,3,4) and breaks when c > 3, which happens after printing 4.",2025-06-20 19:32:28
+87,Working with Methods and Encapsulation,Static vs Instance Methods,"What is the output of this code? 
+```java
+public class StaticTest { 
+  static int x = 10; 
+  static { x += 5; } 
+  public static void main(String args) { 
+    System.out.println(x); 
+  } 
+  static { x += 10; } 
+}
+```",10,15,25,Compilation error,Runtime error,C,"Static initializers execute in order when the class is loaded. x starts at 10, first static block adds 5 (x=15), second static block adds 10 (x=25).",2025-06-20 19:32:28
+88,Java Basics,Variable Declaration and Initialization,"What is the output of this code? 
+```java
+public class ScopeTest { 
+  public static void main(String args) { 
+    int x = 10; 
+    { 
+      int y = 20; 
+      System.out.println(x + y); 
+    } 
+    System.out.println(x); 
+  } 
+}
+```",30 10,30 20,Compilation error,Runtime error,30,A,"Variables declared within a block are only accessible within that block. x is accessible throughout main, y is only accessible in the inner block.
+Output: 30 (x+y), then 10 (x).",2025-06-20 19:32:28
+89,Using Operators and Decision Constructs,Bitwise Operators,"What is the output of this code? 
+```java
+int a = 5; 
+int b = 3; 
+System.out.println(a | b);
+```",1,3,5,7,Compilation error,D,Bitwise OR operation: 5 (0101) | 3 (0011) = 7 (0111).,2025-06-20 19:32:28
+90,Handling Exceptions,Exception Handling,"Which is the correct order for catch blocks if both Exception and IOException might be thrown?",catch (Exception e) {} catch (IOException e) {},catch (IOException e) {} catch (Exception e) {},The order does not matter.,It will not compile with both catch blocks.,None of the above.,B,"More specific exceptions must be caught before more general ones.",,single
+`IOException` is more specific than Exception, so it must come first.",2025-06-20 19:32:28
+91,Java Basics,Main Characteristics of Java,"Which of the following is NOT a core feature of Java?",Platform Independence,Object Orientation,Pointers,Automatic Memory Management,Multi-threading,C,"Java is designed without explicit pointers for security and simplified memory management.",,single
+The other options are all core features of Java.",2025-06-20 19:32:28
+92,Creating and Using Arrays,Arrays,"What is the output of this code?
+```java
+String[] names = new String[3]; 
+System.out.println(names[0]);
+```",null,empty string,Compilation error,Runtime error,undefined,A,"When an array of objects is created, elements are initialized to null. names[0] is null.",2025-06-20 19:32:28
+93,Using Loop Constructs,While Loops,"What will this code print? 
+```java
+int i = 0; 
+while (i < 5) { 
+System.out.print(i); 
+}
+```",01234,000... (infinite loop),Compilation error,Runtime error,None of the above.,B,"i is never incremented, so the condition i < 5 remains true forever, printing 0 infinitely.",2025-06-20 19:32:28
+94,Working with Selected classes from the Java API,Generics,"Which ArrayList declaration will cause a compile-time error?",ArrayList list = new ArrayList();,ArrayList<String> list = new ArrayList<String>();,ArrayList<Object> list = new ArrayList<String>();,ArrayList<Integer> list = new ArrayList<>();,ArrayList<Number> list = new ArrayList<Integer>();,C,"Due to generic invariance, ArrayList<String> cannot be assigned to ArrayList<Object> even though String is a subtype of Object.",2025-06-20 19:32:28,single
+95,Java Basics,Comments,"Which type of comment is used for Javadoc documentation?",// single line comment,/* multi-line comment */,/** Javadoc comment */,# shell-style comment,<!-- HTML comment -->,C,"Javadoc comments start with /** and end with */.",,single
+They are used to generate API documentation.",2025-06-20 19:32:28
+96,Using Operators and Decision Constructs,Operators,"What is the output of this code? 
+```java
+int x = 10; 
+System.out.println(x++ + ++x);
+```",20,21,22,23,Compilation error,C,"x++ uses current value 10 then increments x to 11. ++x increments x to 12 then uses 12.
+Result: 10 + 12 = 22.",2025-06-20 19:32:28
+97,Creating and Using Arrays,Arrays,"What is the output of this code? 
+```java
+int[] arr = new int[3]; 
+System.out.println(arr[0] + arr[1] + arr[2]);
+```",0,1,2,Compilation error,Runtime error,A,Arrays of primitive numeric types are initialized to their default value (0 for int). 0 + 0 + 0 = 0.,2025-06-20 19:32:28
+98,Using Operators and Decision Constructs,Operators,"What is the value of x after this code executes? 
+```java
+int x = 10; 
+x += 5; 
+x /= 3; 
+x %= 2;
+```",0,1,2,3,Compilation error,B,"x starts at 10, becomes 15 after +=5, becomes 5 after /=3 (integer division), becomes 1 after %=2.",2025-06-20 19:32:28
+99,Working with Inheritance,Interfaces,"Which statement is true about interfaces in Java 8?",Interfaces can have private methods.,Interfaces can have abstract methods default methods and static methods.,Interfaces can have constructors.,Interfaces can extend classes.,Interfaces can implement other interfaces.,B,"Java 8 introduced default and static methods to interfaces, in addition to abstract methods.",,single
+Private methods were added in Java 9.",2025-06-20 19:32:28
+100,Handling Exceptions,Exception Hierarchy,"Which exception type is a subclass of RuntimeException?",IOException,SQLException,ClassNotFoundException,IllegalArgumentException,InterruptedException,D,"`IllegalArgumentException` is a direct subclass of `RuntimeException` (unchecked).",,single
+The others are checked exceptions.",2025-06-20 19:32:28
+101,Working with Selected classes from the Java API,StringBuilder Class,"What is the initial capacity of a StringBuilder object created with no arguments?",11,16,17,34,Compilation error,B,"When a StringBuilder is created with no arguments, its initial capacity is 16 characters.",2025-06-20 19:32:28,single
+102,Java Basics,Class Structure,"Which of the following is NOT a component of a Java class?",Field,Method,Constructor,Interface,Nested Class,D,"A Java class consists of fields, methods, constructors, and nested classes.",,single
+An interface is a separate construct, not a component of a class.",2025-06-20 19:32:28
+103,Using Operators and Decision Constructs,Ternary Operator,"What will be printed? 
+```java
+int x = 1; 
+int y = 2; 
+int z = x++; 
+int a = --y; 
+int b = z--; 
+b += ++z; 
+int answ = x > a? y > b? y : b : x > z? x : z; 
+System.out.println(answ);
+```",0,1,2,3,-1,C,"After all operations: x=2, y=1, z=1, a=1, b=2.
+The ternary expression evaluates to b=2.",2025-06-20 19:32:28
+104,Using Loop Constructs,For Loops,"What is the output of this code? 
+```java
+for (int i = 0; i < 5; i++) { 
+  if (i == 2) continue; 
+  System.out.print(i); 
+}
+```",01234,0134,0123,1234,Compilation error,B,"The loop prints 0, 1, skips 2 (due to continue), prints 3, 4.
+Output: 0134",2025-06-20 19:32:28
+105,Java Basics,Class Structure,"What is the minimum requirement for a Java source file to compile and run successfully?",It must contain a public class with a main method.,It must contain a class with a main method.,It must contain a public static void main(String args) method.,It must contain at least one class definition.,It must have a package declaration.,B,"A Java source file only needs to contain a class with a main method to compile and run.",,single
+The class does not necessarily have to be public, nor does it need a package declaration if it's in the default package.",2025-06-20 19:32:28
+106,Working with Java Data Types,Variable Declaration and Initialization,"What is the default value for an uninitialized instance variable of type double?",0,0.0,null,undefined,It depends on the JVM.,B,"Instance variables (fields) in Java are automatically initialized to their default values if not explicitly assigned.",,single
+For numeric primitive types like double, the default value is 0.0.",2025-06-20 19:32:28
