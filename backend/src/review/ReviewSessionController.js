@@ -1,3 +1,5 @@
+const ValidationService = require('../services/ValidationService');
+
 class ReviewSessionController {
     constructor(database, topicQuestionMapper) {
         this.database = database;
@@ -20,20 +22,12 @@ class ReviewSessionController {
         // Create review session
         const sessionId = await this.createReviewSession(userId, topicId, questions.length);
 
-        // Return questions without correct answers
-        const sanitizedQuestions = questions.map(q => ({
-            id: q.id,
-            question_text: q.question_text,
-            option_a: q.option_a,
-            option_b: q.option_b,
-            option_c: q.option_c,
-            option_d: q.option_d,
-            option_e: q.option_e
-        }));
+        // Format questions for API response using ValidationService
+        const formattedQuestions = ValidationService.formatQuestionsForAPI(questions);
 
         return {
             sessionId,
-            questions: sanitizedQuestions,
+            questions: formattedQuestions,
             roundInfo: {
                 currentRound: 1,
                 totalQuestions: questions.length
@@ -84,18 +78,33 @@ class ReviewSessionController {
             const question = questionMap[answer.questionId];
             if (!question) continue;
 
-            const isCorrect = question.correct_answer === answer.selectedAnswer;
+            // Use ValidationService for proper multi-selection validation
+            const isCorrect = ValidationService.validateAnswer(
+                answer.selectedAnswer,
+                question.correct_answer,
+                question.question_type || 'single'
+            );
+            
             if (isCorrect) correctCount++;
 
-            // Record attempt
-            await this.recordReviewAttempt(sessionId, answer.questionId, session.current_round, answer.selectedAnswer, isCorrect);
+            // Record attempt - for multi-selection, store as JSON string if array
+            const storedAnswer = Array.isArray(answer.selectedAnswer) 
+                ? JSON.stringify(answer.selectedAnswer) 
+                : answer.selectedAnswer;
+            await this.recordReviewAttempt(sessionId, answer.questionId, session.current_round, storedAnswer, isCorrect);
+
+            // Format correct answer for response
+            const correctAnswerFormatted = question.question_type === 'multiple' 
+                ? question.correct_answer.split(',')
+                : question.correct_answer;
 
             results.push({
                 questionId: answer.questionId,
                 selectedAnswer: answer.selectedAnswer,
-                correctAnswer: question.correct_answer,
+                correctAnswer: correctAnswerFormatted,
                 isCorrect,
-                explanation: question.explanation
+                explanation: question.explanation,
+                question_type: question.question_type || 'single'
             });
         }
 

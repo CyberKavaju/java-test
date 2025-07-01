@@ -84,7 +84,7 @@ const Review: React.FC<ReviewProps> = () => {
     }
   };
 
-  const handleAnswerSelect = (questionId: number, selectedAnswer: string) => {
+  const handleAnswerSelect = (questionId: number, selectedAnswer: string | string[]) => {
     setAnswers(prev => {
       const existing = prev.find(a => a.questionId === questionId);
       if (existing) {

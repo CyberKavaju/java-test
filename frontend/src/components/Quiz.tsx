@@ -1,100 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
 import { useApp } from '../context/AppContext';
-import type { Question } from '../types';
-
-interface QuizQuestionProps {
-  question: Question;
-  questionNumber: number;
-  selectedAnswer: string | null;
-  onAnswerSelect: (answer: string) => void;
-}
-
-function QuizQuestion({ question, questionNumber, selectedAnswer, onAnswerSelect }: QuizQuestionProps) {
-  const options = [
-    { key: 'A', value: question.option_a },
-    { key: 'B', value: question.option_b },
-    { key: 'C', value: question.option_c },
-    question.option_d && { key: 'D', value: question.option_d },
-    question.option_e && { key: 'E', value: question.option_e },
-  ].filter(Boolean) as Array<{ key: string; value: string }>;
-
-  return (
-    <div className="question-container">
-      <div className="question-header">
-        <h3>Question {questionNumber}</h3>
-        <div className="question-meta">
-          <span className="domain-badge">{question.domain}</span>
-          <span className="topic-badge">{question.topic}</span>
-        </div>
-      </div>
-      
-      <div className="question-text">
-        <ReactMarkdown 
-          remarkPlugins={[remarkGfm]}
-          components={{
-            // Custom styling for code blocks
-            code: ({className, children, ...props}) => {
-              const match = /language-(\w+)/.exec(className || '');
-              const isInline = !match;
-              
-              return isInline ? (
-                <code className="inline-code" {...props}>
-                  {children}
-                </code>
-              ) : (
-                <code className={className} {...props}>
-                  {children}
-                </code>
-              );
-            },
-            // Custom styling for pre blocks (code blocks)
-            pre: ({children}) => (
-              <pre className="code-block">{children}</pre>
-            ),
-          }}
-        >
-          {question.question_text}
-        </ReactMarkdown>
-      </div>
-      
-      <div className="options">
-        {options.map((option) => (
-          <label key={option.key} className="option-label">
-            <input
-              type="radio"
-              name={`question-${question.id}`}
-              value={option.key}
-              checked={selectedAnswer === option.key}
-              onChange={() => onAnswerSelect(option.key)}
-            />
-            <span className="option-key">{option.key}.</span>
-            <span className="option-text">
-              <ReactMarkdown 
-                remarkPlugins={[remarkGfm]}
-                components={{
-                  code: ({className, children, ...props}) => {
-                    const match = /language-(\w+)/.exec(className || '');
-                    const isInline = !match;
-                    return isInline ? (
-                      <code className="inline-code" {...props}>{children}</code>
-                    ) : (
-                      <code className={className} {...props}>{children}</code>
-                    );
-                  },
-                  pre: ({children}) => <pre className="code-block">{children}</pre>,
-                }}
-              >
-                {option.value}
-              </ReactMarkdown>
-            </span>
-          </label>
-        ))}
-      </div>
-    </div>
-  );
-}
+import { isFormattedQuestion, convertQuestionToFormatted } from '../types/utils';
+import MultiSelectQuizQuestion from './MultiSelectQuizQuestion';
 
 export default function Quiz() {
   const { state, dispatch } = useApp();
@@ -160,7 +67,7 @@ export default function Quiz() {
     return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
 
-  const handleAnswerSelect = (answer: string) => {
+  const handleAnswerSelect = (answer: string | string[]) => {
     dispatch({
       type: 'ANSWER_QUESTION',
       payload: {
@@ -207,8 +114,8 @@ export default function Quiz() {
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
         >
-          <QuizQuestion
-            question={currentQuestion}
+          <MultiSelectQuizQuestion
+            question={isFormattedQuestion(currentQuestion) ? currentQuestion : convertQuestionToFormatted(currentQuestion)}
             questionNumber={currentQuestionIndex + 1}
             selectedAnswer={getSelectedAnswer(currentQuestion.id)}
             onAnswerSelect={handleAnswerSelect}

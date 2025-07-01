@@ -16,7 +16,7 @@ interface AppState {
 
 type AppAction =
   | { type: 'START_TEST'; payload: { questions: Question[] } }
-  | { type: 'ANSWER_QUESTION'; payload: { questionId: number; selectedAnswer: string } }
+  | { type: 'ANSWER_QUESTION'; payload: { questionId: number; selectedAnswer: string | string[] } }
   | { type: 'UPDATE_TIMER'; payload: { timeRemaining: number } }
   | { type: 'END_TEST' }
   | { type: 'SET_TEST_RESULTS'; payload: { results: TestResult[] } }

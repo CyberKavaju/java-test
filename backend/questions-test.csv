@@ -1,0 +1,11 @@
+domain,topic,question_text,option_a,option_b,option_c,option_d,option_e,correct_answer,explanation,question_type
+Java Basics,Keywords,Which of the following are valid Java keywords?,"class","interface","goto","const",,"A,B","class and interface are valid Java keywords. goto and const are reserved but not used.",multiple
+Java Basics,Access Modifiers,Select all valid Java access modifiers:,"public","private","protected","package",,"A,B,C","public, private, and protected are the three explicit access modifiers in Java.",multiple
+Java Basics,Data Types,Which are primitive data types in Java?,"int","String","boolean","char",,"A,C,D","int, boolean, and char are primitive types. String is a reference type.",multiple
+Java Basics,Variables,What is the default value of an int variable?,0,null,1,undefined,,A,"The default value of an int variable is 0.",single
+Java Basics,Arrays,Which statements about Java arrays are correct?,"Arrays are objects","Arrays have fixed size","Array indices start at 0","Arrays can hold mixed types",,"A,B,C","Arrays are objects, have fixed size, and use zero-based indexing. They cannot hold mixed primitive types.",multiple
+OOP,Inheritance,Which keywords are related to inheritance in Java?,"extends","implements","super","this",,"A,B,C","extends, implements, and super are inheritance-related keywords.",multiple
+OOP,Encapsulation,What is the primary access modifier for encapsulation?,"private","public","protected","default",,A,"private is the most restrictive access modifier and is preferred for encapsulation.",single
+Collections,List Interface,Which classes implement the List interface?,"ArrayList","LinkedList","Vector","HashSet",,"A,B,C","ArrayList, LinkedList, and Vector implement List. HashSet implements Set.",multiple
+Exception Handling,Try-Catch,Which statements about try-catch are true?,"try block is mandatory","catch block is optional","finally block always executes","multiple catch blocks are allowed",,"A,D","A try block is mandatory when using try-catch, and multiple catch blocks are allowed.",multiple
+String Manipulation,String Methods,What does the String.trim() method do?,Removes leading spaces,Removes trailing spaces,Removes leading and trailing spaces,Converts to lowercase,,C,"The trim() method removes leading and trailing whitespace characters.",single

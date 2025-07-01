@@ -5,7 +5,7 @@ const csv = require('csv-parser');
 const fs = require('fs');
 const path = require('path');
 const Database = require('./database/Database');
-const initialQuestions = require('./data/questions');
+const ValidationService = require('./services/ValidationService');
 const createReviewRoutes = require('./review/reviewRoutes');
 
 const app = express();
@@ -80,26 +80,24 @@ app.get('/api/questions/random', async (req, res) => {
     try {
         const userId = req.query.userId || 'default_user';
         const limit = parseInt(req.query.limit) || 25;
+        const questionType = req.query.type; // 'single', 'multiple', or undefined for mixed
         
-        const questions = await db.getRandomQuestions(userId, limit);
+        let questions;
+        if (questionType && (questionType === 'single' || questionType === 'multiple')) {
+            questions = await db.getQuestionsByType(questionType);
+            // Shuffle and limit the results
+            questions = questions.sort(() => 0.5 - Math.random()).slice(0, limit);
+        } else {
+            questions = await db.getRandomQuestions(userId, limit);
+        }
         
-        // Remove correct answers from response
-        const questionsForTest = questions.map(q => ({
-            id: q.id,
-            domain: q.domain,
-            topic: q.topic,
-            question_text: q.question_text,
-            option_a: q.option_a,
-            option_b: q.option_b,
-            option_c: q.option_c,
-            option_d: q.option_d,
-            option_e: q.option_e
-        }));
+        // Format questions for API response using ValidationService
+        const formattedQuestions = ValidationService.formatQuestionsForAPI(questions);
         
         res.json({
             success: true,
-            questions: questionsForTest,
-            total: questionsForTest.length
+            questions: formattedQuestions,
+            total: formattedQuestions.length
         });
     } catch (error) {
         console.error('Error fetching questions:', error);
@@ -167,22 +165,37 @@ app.post('/api/submit-answers', async (req, res) => {
             const question = questions.find(q => q.id === answer.questionId);
             if (!question) continue;
             
-            const isCorrect = question.correct_answer === answer.selectedAnswer;
+            // Use ValidationService for proper multi-selection validation
+            const isCorrect = ValidationService.validateAnswer(
+                answer.selectedAnswer,
+                question.correct_answer,
+                question.question_type || 'single'
+            );
+            
             if (isCorrect) correctCount++;
             
-            // Record attempt
-            await db.recordAttempt(userId, answer.questionId, answer.selectedAnswer, isCorrect);
+            // Record attempt - for multi-selection, store as JSON string if array
+            const storedAnswer = Array.isArray(answer.selectedAnswer) 
+                ? JSON.stringify(answer.selectedAnswer) 
+                : answer.selectedAnswer;
+            await db.recordAttempt(userId, answer.questionId, storedAnswer, isCorrect);
             
             // Update question stats
             await db.updateQuestionStats(answer.questionId, isCorrect);
             
+            // Format correct answer for response
+            const correctAnswerFormatted = question.question_type === 'multiple' 
+                ? question.correct_answer.split(',')
+                : question.correct_answer;
+            
             results.push({
                 questionId: answer.questionId,
                 selectedAnswer: answer.selectedAnswer,
-                correctAnswer: question.correct_answer,
+                correctAnswer: correctAnswerFormatted,
                 isCorrect,
                 explanation: question.explanation,
-                question_text: question.question_text
+                question_text: question.question_text,
+                question_type: question.question_type || 'single'
             });
         }
         

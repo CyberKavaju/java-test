@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS questions (
     option_e TEXT,
     correct_answer TEXT NOT NULL,
     explanation TEXT,
+    question_type TEXT DEFAULT 'single' CHECK(question_type IN ('single', 'multiple')),
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 

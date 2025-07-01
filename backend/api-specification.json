@@ -1,0 +1,310 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Java Test Application API - Multi-Selection Support",
+    "version": "2.0.0",
+    "description": "Enhanced API specification supporting both single and multiple choice questions"
+  },
+  "paths": {
+    "/api/questions/random": {
+      "get": {
+        "summary": "Get random questions (mixed single and multiple choice)",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "minimum": 1,
+              "maximum": 100
+            },
+            "description": "Number of questions to return"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["single", "multiple", "mixed"],
+              "default": "mixed"
+            },
+            "description": "Filter by question type"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Random questions retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "questions": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Question"
+                      }
+                    },
+                    "total": {
+                      "type": "integer",
+                      "description": "Total number of questions returned"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/questions/{id}": {
+      "get": {
+        "summary": "Get a specific question by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Question retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Question"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/answers/submit": {
+      "post": {
+        "summary": "Submit answers for validation",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "answers": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/AnswerSubmission"
+                    }
+                  },
+                  "sessionId": {
+                    "type": "string",
+                    "description": "Optional session identifier"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Answers validated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Question": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Unique question identifier"
+          },
+          "question": {
+            "type": "string",
+            "description": "The question text"
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Option"
+            },
+            "description": "Available answer options"
+          },
+          "question_type": {
+            "type": "string",
+            "enum": ["single", "multiple"],
+            "description": "Type of question - single or multiple choice"
+          },
+          "max_selections": {
+            "type": "integer",
+            "description": "Maximum number of options that can be selected",
+            "minimum": 1
+          }
+        },
+        "required": ["id", "question", "options", "question_type", "max_selections"],
+        "examples": [
+          {
+            "id": 1,
+            "question": "What is the default value of an int variable?",
+            "options": [
+              {"key": "A", "text": "0"},
+              {"key": "B", "text": "null"},
+              {"key": "C", "text": "1"},
+              {"key": "D", "text": "undefined"}
+            ],
+            "question_type": "single",
+            "max_selections": 1
+          },
+          {
+            "id": 2,
+            "question": "Which of the following are valid Java keywords?",
+            "options": [
+              {"key": "A", "text": "class"},
+              {"key": "B", "text": "interface"},
+              {"key": "C", "text": "goto"},
+              {"key": "D", "text": "const"}
+            ],
+            "question_type": "multiple",
+            "max_selections": 2
+          }
+        ]
+      },
+      "Option": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": "Option identifier (A, B, C, D, E)",
+            "pattern": "^[A-E]$"
+          },
+          "text": {
+            "type": "string",
+            "description": "Option text content"
+          }
+        },
+        "required": ["key", "text"]
+      },
+      "AnswerSubmission": {
+        "type": "object",
+        "properties": {
+          "questionId": {
+            "type": "integer",
+            "description": "ID of the question being answered"
+          },
+          "selectedAnswer": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Single selected answer for single choice questions",
+                "pattern": "^[A-E]$"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[A-E]$"
+                },
+                "description": "Array of selected answers for multiple choice questions",
+                "minItems": 1
+              }
+            ]
+          }
+        },
+        "required": ["questionId", "selectedAnswer"],
+        "examples": [
+          {
+            "questionId": 1,
+            "selectedAnswer": "A"
+          },
+          {
+            "questionId": 2,
+            "selectedAnswer": ["A", "B"]
+          }
+        ]
+      },
+      "ValidationResult": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AnswerResult"
+            }
+          },
+          "score": {
+            "$ref": "#/components/schemas/Score"
+          }
+        },
+        "required": ["success", "results", "score"]
+      },
+      "AnswerResult": {
+        "type": "object",
+        "properties": {
+          "questionId": {
+            "type": "integer"
+          },
+          "isCorrect": {
+            "type": "boolean"
+          },
+          "selectedAnswer": {
+            "oneOf": [
+              {"type": "string"},
+              {"type": "array", "items": {"type": "string"}}
+            ]
+          },
+          "correctAnswer": {
+            "oneOf": [
+              {"type": "string"},
+              {"type": "array", "items": {"type": "string"}}
+            ]
+          },
+          "explanation": {
+            "type": "string",
+            "description": "Explanation of the correct answer"
+          }
+        },
+        "required": ["questionId", "isCorrect", "selectedAnswer", "correctAnswer"]
+      },
+      "Score": {
+        "type": "object",
+        "properties": {
+          "correct": {
+            "type": "integer",
+            "description": "Number of correct answers"
+          },
+          "total": {
+            "type": "integer",
+            "description": "Total number of questions"
+          },
+          "percentage": {
+            "type": "integer",
+            "description": "Percentage score (0-100)"
+          }
+        },
+        "required": ["correct", "total", "percentage"]
+      }
+    }
+  }
+}

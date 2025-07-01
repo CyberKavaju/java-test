@@ -213,8 +213,8 @@ class Database {
     // Create a new question
     async createQuestion(question) {
         const query = `
-            INSERT INTO questions (domain, topic, question_text, option_a, option_b, option_c, option_d, option_e, correct_answer, explanation)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO questions (domain, topic, question_text, option_a, option_b, option_c, option_d, option_e, correct_answer, explanation, question_type)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
 
         return new Promise((resolve, reject) => {
@@ -228,7 +228,8 @@ class Database {
                 question.option_d || null,
                 question.option_e || null,
                 question.correct_answer,
-                question.explanation || null
+                question.explanation || null,
+                question.question_type || 'single'
             ], function(err) {
                 if (err) {
                     reject(err);
@@ -254,12 +255,17 @@ class Database {
         });
     }
 
+    // Alias for getQuestionById for backward compatibility and test consistency
+    async getQuestion(questionId) {
+        return this.getQuestionById(questionId);
+    }
+
     // Update an existing question
     async updateQuestion(questionId, question) {
         const query = `
             UPDATE questions SET 
                 domain = ?, topic = ?, question_text = ?, option_a = ?, option_b = ?, option_c = ?, 
-                option_d = ?, option_e = ?, correct_answer = ?, explanation = ?
+                option_d = ?, option_e = ?, correct_answer = ?, explanation = ?, question_type = ?
             WHERE id = ?
         `;
 
@@ -275,6 +281,7 @@ class Database {
                 question.option_e || null,
                 question.correct_answer,
                 question.explanation || null,
+                question.question_type || 'single',
                 questionId
             ], function(err) {
                 if (err) {
@@ -355,8 +362,8 @@ class Database {
                             } else {
                                 // Insert new question
                                 this.db.run(
-                                    `INSERT INTO questions (domain, topic, question_text, option_a, option_b, option_c, option_d, option_e, correct_answer, explanation)
-                                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                                    `INSERT INTO questions (domain, topic, question_text, option_a, option_b, option_c, option_d, option_e, correct_answer, explanation, question_type)
+                                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                                     [
                                         question.domain,
                                         question.topic,
@@ -367,7 +374,8 @@ class Database {
                                         question.option_d || null,
                                         question.option_e || null,
                                         question.correct_answer,
-                                        question.explanation || null
+                                        question.explanation || null,
+                                        question.question_type || 'single'
                                     ],
                                     function(insertErr) {
                                         if (insertErr) {
@@ -413,6 +421,21 @@ class Database {
                         recommendationsMap[row.topic] = row.documentation_url;
                     });
                     resolve(recommendationsMap);
+                }
+            });
+        });
+    }
+
+    // Get questions by type
+    async getQuestionsByType(questionType) {
+        const query = `SELECT * FROM questions WHERE question_type = ? ORDER BY RANDOM()`;
+        
+        return new Promise((resolve, reject) => {
+            this.db.all(query, [questionType], (err, rows) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(rows);
                 }
             });
         });

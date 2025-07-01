@@ -1,5 +1,8 @@
 // Types for the Java Test application
 
+// Question Types
+export type QuestionType = 'single' | 'multiple';
+
 export interface Question {
   id: number;
   domain: string;
@@ -13,20 +16,62 @@ export interface Question {
   correct_answer: string;
   explanation?: string;
   created_at?: string;
+  question_type?: QuestionType; // Optional for backward compatibility
+}
+
+// Formatted question for frontend display
+export interface FormattedQuestion {
+  id: number;
+  question: string;
+  options: Option[];
+  question_type: QuestionType;
+  max_selections: number;
+}
+
+export interface Option {
+  key: string;
+  text: string;
 }
 
 export interface Answer {
   questionId: number;
-  selectedAnswer: string;
+  selectedAnswer: string | string[]; // Support both single and multiple answers
+}
+
+// API Submission format
+export interface AnswerSubmission {
+  questionId: number;
+  selectedAnswer: string | string[];
 }
 
 export interface TestResult {
   questionId: number;
-  selectedAnswer: string;
-  correctAnswer: string;
+  selectedAnswer: string | string[];
+  correctAnswer: string | string[];
   isCorrect: boolean;
   explanation: string;
   question_text: string;
+}
+
+// Validation result from backend
+export interface ValidationResult {
+  success: boolean;
+  results: AnswerResult[];
+  score: Score;
+}
+
+export interface AnswerResult {
+  questionId: number;
+  isCorrect: boolean;
+  selectedAnswer: string | string[];
+  correctAnswer: string | string[];
+  explanation?: string;
+}
+
+export interface Score {
+  correct: number;
+  total: number;
+  percentage: number;
 }
 
 export interface TestSession {
