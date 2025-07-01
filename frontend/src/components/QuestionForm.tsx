@@ -16,6 +16,7 @@ interface Question {
   correct_answer: string;
   explanation?: string;
   created_at?: string;
+  question_type?: 'single' | 'multi';
 }
 
 interface QuestionFormProps {
@@ -35,6 +36,7 @@ interface FormData {
   option_e: string;
   correct_answer: string;
   explanation: string;
+  question_type: 'single' | 'multi';
 }
 
 export const QuestionForm: React.FC<QuestionFormProps> = ({ question, onSave, onCancel }) => {
@@ -48,7 +50,8 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({ question, onSave, on
     option_d: '',
     option_e: '',
     correct_answer: 'A',
-    explanation: ''
+    explanation: '',
+    question_type: 'single'
   });
   
   const [loading, setLoading] = useState(false);
@@ -73,7 +76,8 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({ question, onSave, on
         option_d: question.option_d || '',
         option_e: question.option_e || '',
         correct_answer: question.correct_answer,
-        explanation: question.explanation || ''
+        explanation: question.explanation || '',
+        question_type: question.question_type || 'single'
       });
     }
   }, [question]);
@@ -89,6 +93,14 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({ question, onSave, on
 
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleQuestionTypeChange = (isMulti: boolean) => {
+    setFormData(prev => ({
+      ...prev,
+      question_type: isMulti ? 'multi' : 'single',
+      correct_answer: isMulti ? '' : 'A'
+    }));
   };
 
   const validateForm = (): string | null => {
@@ -231,7 +243,6 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({ question, onSave, on
 
           <div className="options-section">
             <h3>Answer Options</h3>
-            
             <div className="form-group">
               <label htmlFor="option_a">Option A *</label>
               <input
@@ -291,21 +302,45 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({ question, onSave, on
             </div>
           </div>
 
+          <div className="form-group form-check">
+            <input
+              type="checkbox"
+              id="question_type"
+              className="form-check-input"
+              checked={formData.question_type === 'multi'}
+              onChange={(e) => handleQuestionTypeChange(e.target.checked)}
+            />
+            <label htmlFor="question_type" className="form-check-label">
+              Multiple Correct Answers
+            </label>
+          </div>
+
           <div className="form-row">
             <div className="form-group">
               <label htmlFor="correct_answer">Correct Answer *</label>
-              <select
-                id="correct_answer"
-                value={formData.correct_answer}
-                onChange={(e) => handleInputChange('correct_answer', e.target.value)}
-                required
-              >
-                <option value="A">A</option>
-                <option value="B">B</option>
-                <option value="C">C</option>
-                <option value="D" disabled={!formData.option_d.trim()}>D</option>
-                <option value="E" disabled={!formData.option_e.trim()}>E</option>
-              </select>
+              {formData.question_type === 'multi' ? (
+                <input
+                  type="text"
+                  id="correct_answer"
+                  value={formData.correct_answer}
+                  onChange={(e) => handleInputChange('correct_answer', e.target.value)}
+                  placeholder="e.g., A, C"
+                  required
+                />
+              ) : (
+                <select
+                  id="correct_answer"
+                  value={formData.correct_answer}
+                  onChange={(e) => handleInputChange('correct_answer', e.target.value)}
+                  required
+                >
+                  <option value="A">A</option>
+                  <option value="B">B</option>
+                  <option value="C">C</option>
+                  <option value="D">D</option>
+                  <option value="E">E</option>
+                </select>
+              )}
             </div>
           </div>
 
