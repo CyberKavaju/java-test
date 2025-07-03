@@ -5,7 +5,7 @@ A comprehensive mock testing application for the Oracle Certified Associate Java
 ## Features
 
 - 🎯 **Randomized Tests**: 25 unique questions per test session from a comprehensive question pool
-- ⏱️ **Timed Tests**: 50-minute timer per test session (similar to actual exam)
+- ⏱️ **Timed Tests**: 30-minute timer per test session (similar to actual exam)
 - 📊 **Performance Tracking**: Track correct/incorrect answers and attempt history
 - 🎨 **Color-coded Reports**: Visual performance indicators (Red → Yellow → Green)
 - 📋 **Detailed Results**: View correct answers and explanations after test completion

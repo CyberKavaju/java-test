@@ -16,7 +16,7 @@ interface Question {
   correct_answer: string;
   explanation?: string;
   created_at?: string;
-  question_type?: 'single' | 'multi';
+  question_type?: 'single' | 'multiple';
 }
 
 interface QuestionFormProps {
@@ -36,7 +36,7 @@ interface FormData {
   option_e: string;
   correct_answer: string;
   explanation: string;
-  question_type: 'single' | 'multi';
+  question_type: 'single' | 'multiple';
 }
 
 export const QuestionForm: React.FC<QuestionFormProps> = ({ question, onSave, onCancel }) => {
@@ -98,7 +98,7 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({ question, onSave, on
   const handleQuestionTypeChange = (isMulti: boolean) => {
     setFormData(prev => ({
       ...prev,
-      question_type: isMulti ? 'multi' : 'single',
+      question_type: isMulti ? 'multiple' : 'single',
       correct_answer: isMulti ? '' : 'A'
     }));
   };
@@ -307,7 +307,7 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({ question, onSave, on
               type="checkbox"
               id="question_type"
               className="form-check-input"
-              checked={formData.question_type === 'multi'}
+              checked={formData.question_type === 'multiple'}
               onChange={(e) => handleQuestionTypeChange(e.target.checked)}
             />
             <label htmlFor="question_type" className="form-check-label">
@@ -318,7 +318,7 @@ export const QuestionForm: React.FC<QuestionFormProps> = ({ question, onSave, on
           <div className="form-row">
             <div className="form-group">
               <label htmlFor="correct_answer">Correct Answer *</label>
-              {formData.question_type === 'multi' ? (
+              {formData.question_type === 'multiple' ? (
                 <input
                   type="text"
                   id="correct_answer"

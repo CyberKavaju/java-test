@@ -5,19 +5,19 @@ What is the result of the following code?
 ```java
 class Base {
     public void test() {
-        System.out.println("Base ");
+        System.out.println(""Base "");
     }
 }
 
 class DerivedA extends Base {
     public void test() {
-        System.out.println("DerivedA ");
+        System.out.println(""DerivedA "");
     }
 }
 
 class DerivedB extends DerivedA {
     public void test() {
-        System.out.println("DerivedB ");
+        System.out.println(""DerivedB "");
     }
 
     public static void main(String[] args) {
@@ -30,7 +30,7 @@ class DerivedB extends DerivedA {
 }
 ```
 
-","Base","BaseDerived","ClassCastException","DerivedA",,"D","b2 is an instance of DerivedA, and b1 is reassigned to b2. Therefore, b1.test() calls the test() method of the DerivedA class.","single"
+",Base,BaseDerived,ClassCastException,DerivedA,,D,"b2 is an instance of DerivedA, and b1 is reassigned to b2. Therefore, b1.test() calls the test() method of the DerivedA class.",single
 Working with Inheritance,Polymorphism,"
 
 What is the output of the following code?
@@ -57,8 +57,8 @@ What is the output of the following code?
 ```java
 public class Test {
     public static void main(String[] args) {
-        String s1 = "abc";
-        String s2 = "abc";
+        String s1 = ""abc"";
+        String s2 = ""abc"";
         System.out.println(s1 == s2);
     }
 }
@@ -77,17 +77,17 @@ public class Main {
 }
 class A {
     public void method() {
-        System.out.println("Class A");
+        System.out.println(""Class A"");
     }
 }
 class B extends A {
     public void method() {
-        System.out.println("Class B");
+        System.out.println(""Class B"");
     }
 }
 ```
 ",Class A,Class B,Compilation error,Runtime error,,B,"Method overriding depends on the object's actual type (B), so 'B's method' executes at runtime, printing 'Class B'.",single
-Java Basics,Class Structure,"Which of the following is a valid Java identifier?",1variable,variable1,variable-1,variable.1,,B,"Identifiers can't start with numbers or contain hyphens or dots. 'variable1' is valid.",single
+Java Basics,Class Structure,Which of the following is a valid Java identifier?,1variable,variable1,variable-1,variable.1,,B,Identifiers can't start with numbers or contain hyphens or dots. 'variable1' is valid.,single
 Using Operators and Decision Constructs,Operators,"
 
 What is the output of the following code?
@@ -123,8 +123,8 @@ What is the output of the following code?
 ```java
 public class Test {
     public static void main(String[] args) {
-        String s1 = new String("abc");
-        String s2 = new String("abc");
+        String s1 = new String(""abc"");
+        String s2 = new String(""abc"");
         System.out.println(s1 == s2);
     }
 }
@@ -142,17 +142,17 @@ public class Main {
 }
 class A {
     A() {
-        System.out.println("A");
+        System.out.println(""A"");
     }
 }
 class B extends A {
     B() {
-        System.out.println("B");
+        System.out.println(""B"");
     }
 }
 class C extends B {
     C() {
-        System.out.println("C");
+        System.out.println(""C"");
     }
 }
 ```
@@ -208,13 +208,13 @@ public class Test {
         Product prt = new Product();
         prt.price = 200;
         new Test().updatePrice(prt, prt.price);
-        System.out.println("Price = " + prt.price);
+        System.out.println(""Price = "" + prt.price);
     }
 }
 ```
 
-","Price = 200.0","Price = 400.0","Price = 500.0","Price = 600.0","Compilation fails","D","The method receives a primitive double (passed by value), so changing it does not affect the original. The object's price field is updated by adding the doubled value, leading to 200 + 400 = 600.","single"
-Using Operators and Decision Constructs,Switch Statement,"Which statement is true about the switch statement?","It must contain the default section.","The break statement at the end of each case block is optional.","Its case label literals can be changed at runtime.","Its expression must result in a collection of values.",,"B","The break is optional in a switch block. If omitted, execution falls through. Default is also optional, and case values must be compile-time constants.","single"
+",Price = 200.0,Price = 400.0,Price = 500.0,Price = 600.0,Compilation fails,D,"The method receives a primitive double (passed by value), so changing it does not affect the original. The object's price field is updated by adding the doubled value, leading to 200 + 400 = 600.",single
+Using Operators and Decision Constructs,Switch Statement,Which statement is true about the switch statement?,It must contain the default section.,The break statement at the end of each case block is optional.,Its case label literals can be changed at runtime.,Its expression must result in a collection of values.,,B,"The break is optional in a switch block. If omitted, execution falls through. Default is also optional, and case values must be compile-time constants.",single
 Working with Selected classes from the Java API,Date Time API,"
 
 What is the output of the following code?
@@ -225,13 +225,13 @@ import java.time.format.DateTimeFormatter;
 
 public class Main {
     public static void main(String[] args) {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-        LocalDateTime dt = LocalDateTime.parse("2015-05-10T10:00:00");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(""yyyy/MM/dd"");
+        LocalDateTime dt = LocalDateTime.parse(""2015-05-10T10:00:00"");
         System.out.println(dtf.format(dt));
     }
 }
 ```
-","May 10, 2015T00:00:00","2015/05/10","5/10/15","2015-05-10T00:00:00","An exception is thrown at runtime.","B","The formatter converts the LocalDateTime into the pattern yyyy/MM/dd, producing 2015/05/10.","single"
+","May 10, 2015T00:00:00",2015/05/10,5/10/15,2015-05-10T00:00:00,An exception is thrown at runtime.,B,"The formatter converts the LocalDateTime into the pattern yyyy/MM/dd, producing 2015/05/10.",single
 Working With Java Data Types,Wrapper Classes,"
 
 What is the output of the following code?
@@ -249,8 +249,8 @@ public class Main {
     }
 }
 ```
-","false false","false true","true false","false true","A ClassCastException is thrown","B","1000 is not cached so x and y are different objects (false). 10 is cached so z and w are the same object (true).","single"
-Java Basics,Package Declarations,"Which two are valid declarations of a module?","module com.foo.bar {}","module com.foo.bar;","open module com.foo.bar {}","import module com.foo.bar {}","requires module com.foo.bar {}","A,C","Valid declarations use 'module' or 'open module' with block syntax. Others are invalid syntax.","multiple"
+",false false,false true,true false,false true,A ClassCastException is thrown,B,1000 is not cached so x and y are different objects (false). 10 is cached so z and w are the same object (true).,single
+Java Basics,Package Declarations,Which two are valid declarations of a module?,module com.foo.bar {},module com.foo.bar;,open module com.foo.bar {},import module com.foo.bar {},requires module com.foo.bar {},"A,C",Valid declarations use 'module' or 'open module' with block syntax. Others are invalid syntax.,multiple
 Using Operators and Decision Constructs,Logical Operators,"
 
 What is the result of the following code?
@@ -263,15 +263,15 @@ public class Main {
         boolean b2 = false;
 
         if ((x == 4) && !b2)
-            System.out.print("1 ");
-        System.out.print("2 ");
+            System.out.print(""1 "");
+        System.out.print(""2 "");
 
         if ((b2 = true) && b1)
-            System.out.print("3 ");
+            System.out.print(""3 "");
     }
 }
 ```
-","Compilation fails","2 3","2","1 2","1 2 3","B","x != 4 so first if fails. Then b2 = true (assignment), and b1 is true, so second if runs.","single"
+",Compilation fails,2 3,2,1 2,1 2 3,B,"x != 4 so first if fails. Then b2 = true (assignment), and b1 is true, so second if runs.",single
 Working With Java Data Types,Variable Scope,"
 
 What is the result of the following code?
@@ -280,7 +280,7 @@ What is the result of the following code?
 public class App {
     static int count;
     public static void displayMsg() {
-        System.out.println("Welcome Visit Count: " + count++); // n1
+        System.out.println(""Welcome Visit Count: "" + count++); // n1
     }
     public static void main(String[] args) {
         App.displayMsg(); // n2
@@ -289,7 +289,7 @@ public class App {
 }
 ```
 
-","Compilation fails at line n1 and line n4","Compilation fails at line n1 and line n2","Welcome Visit Count: 0 Welcome Visit Count: 1","Welcome Visit Count: 0 Welcome Visit Count: 0",,"C","The static variable 'count' is initialized to 0. The first call prints 0 and increments count. The second call prints 1 and increments it again.","single"
+",Compilation fails at line n1 and line n4,Compilation fails at line n1 and line n2,Welcome Visit Count: 0 Welcome Visit Count: 1,Welcome Visit Count: 0 Welcome Visit Count: 0,,C,The static variable 'count' is initialized to 0. The first call prints 0 and increments count. The second call prints 1 and increments it again.,single
 Using Operators and Decision Constructs,Operator Precedence,"
 What is the result of the following code?
 
@@ -300,13 +300,13 @@ public class Main {
         int a = x++;
         int b = ++x;
         int c = x++;
-        System.out.println(a + " " + b + " " + c);
+        System.out.println(a + "" "" + b + "" "" + c);
     }
 }
 ```
-","100 101 101","100 102 102","101 102 103","100 101 102",,"B","x++ and ++x behave differently. Final values are a=100, b=102, c=102. Output is 100 102 102.","single"
-Handling Exceptions,Exception Handling,"Which three statements are true about exception handling?","Only unchecked exceptions can be thrown.","All subclasses of the RuntimeException class are not recoverable.","The parameter in a catch block can be final.","A method can declare to throw only unchecked exceptions.","All subclasses of the Error class are not recoverable.","C,D,E","Catch parameters can be final. Methods can declare unchecked exceptions. Error subclasses are system-level and unrecoverable.","multiple"
-Working With Java Data Types,Variable Initialization,"Which two statements are true about Java byte code?","It can be serialized across networks.","It runs only on platforms that have the Java compiler.","It can run on any platform.","It has a .jav extension.","It can run on any platform that has the Java Runtime Environment.","A,E","Bytecode is portable and can be transmitted. It runs on any machine with a JVM.","multiple"
+",100 101 101,100 102 102,101 102 103,100 101 102,,B,"x++ and ++x behave differently. Final values are a=100, b=102, c=102. Output is 100 102 102.",single
+Handling Exceptions,Exception Handling,Which three statements are true about exception handling?,Only unchecked exceptions can be thrown.,All subclasses of the RuntimeException class are not recoverable.,The parameter in a catch block can be final.,A method can declare to throw only unchecked exceptions.,All subclasses of the Error class are not recoverable.,"C,D,E",Catch parameters can be final. Methods can declare unchecked exceptions. Error subclasses are system-level and unrecoverable.,multiple
+Working With Java Data Types,Variable Initialization,Which two statements are true about Java byte code?,It can be serialized across networks.,It runs only on platforms that have the Java compiler.,It can run on any platform.,It has a .jav extension.,It can run on any platform that has the Java Runtime Environment.,"A,E",Bytecode is portable and can be transmitted. It runs on any machine with a JVM.,multiple
 Working with Inheritance,Abstract Classes,"
 
 Which three code fragments are valid members of the following class?
@@ -317,6 +317,6 @@ abstract class Toy {
 }
 ```
 
-","public static void insertToy() {}","final Toy getToy() { return new Toy(); }","public void printToy() {}","abstract int calculatePrice();","public abstract int computeDiscount();","A,C,E","An abstract class can have static, non-abstract, and abstract methods. You cannot create an instance of an abstract class, so `new Toy()` is invalid. `calculatePrice()` is a valid abstract method declaration (default access).","multiple"
-Java Basics,Class Structure,"Which three statements are true about the structure of a Java class?","A public class must have a main method.","A class can have only one private constructor.","A method can have the same name as a field.","A class can have overloaded static methods.","The fields must be initialized before use.","C,D,E","A class can have multiple private constructors (overloaded). A public class does not need a main method unless it is the entry point. Fields have default values if not explicitly initialized.","multiple"
-Working with Inheritance,Encapsulation,"What is the name of the Java concept that uses access modifiers to protect variables and hide them within a class?","Encapsulation","Inheritance","Abstraction","Initialization","Polymorphism","A","Encapsulation hides class internals using private/protected access. Access via methods.","single"
+",public static void insertToy() {},final Toy getToy() { return new Toy(); },public void printToy() {},abstract int calculatePrice();,public abstract int computeDiscount();,"A,C,E","An abstract class can have static, non-abstract, and abstract methods. You cannot create an instance of an abstract class, so `new Toy()` is invalid. `calculatePrice()` is a valid abstract method declaration (default access).",multiple
+Java Basics,Class Structure,Which three statements are true about the structure of a Java class?,A public class must have a main method.,A class can have only one private constructor.,A method can have the same name as a field.,A class can have overloaded static methods.,The fields must be initialized before use.,"C,D,E",A class can have multiple private constructors (overloaded). A public class does not need a main method unless it is the entry point. Fields have default values if not explicitly initialized.,multiple
+Working with Inheritance,Encapsulation,What is the name of the Java concept that uses access modifiers to protect variables and hide them within a class?,Encapsulation,Inheritance,Abstraction,Initialization,Polymorphism,A,Encapsulation hides class internals using private/protected access. Access via methods.,single

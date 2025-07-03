@@ -972,7 +972,8 @@ app.post('/api/questions', async (req, res) => {
             option_d,
             option_e,
             correct_answer,
-            explanation
+            explanation,
+            question_type
         } = req.body;
 
         // Validate required fields
@@ -1007,8 +1008,8 @@ app.post('/api/questions', async (req, res) => {
         // Insert new question with formatting applied
         const questionId = await new Promise((resolve, reject) => {
             db.db.run(
-                `INSERT INTO questions (domain, topic, question_text, option_a, option_b, option_c, option_d, option_e, correct_answer, explanation)
-                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                `INSERT INTO questions (domain, topic, question_text, option_a, option_b, option_c, option_d, option_e, correct_answer, explanation, question_type)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                 [
                     domain.trim(),
                     topic.trim(),
@@ -1019,7 +1020,8 @@ app.post('/api/questions', async (req, res) => {
                     option_d ? formatOptions(option_d.trim()) : null,
                     option_e ? formatOptions(option_e.trim()) : null,
                     correct_answer.toUpperCase().trim(),
-                    formatExplanation(explanation ? explanation.trim() : null)
+                    formatExplanation(explanation ? explanation.trim() : null),
+                    question_type || 'single'
                 ],
                 function(err) {
                     if (err) reject(err);
@@ -1056,7 +1058,8 @@ app.put('/api/questions/:id', async (req, res) => {
             option_d,
             option_e,
             correct_answer,
-            explanation
+            explanation,
+            question_type
         } = req.body;
 
         // Check if question exists
@@ -1114,7 +1117,7 @@ app.put('/api/questions/:id', async (req, res) => {
             db.db.run(
                 `UPDATE questions SET 
                     domain = ?, topic = ?, question_text = ?, option_a = ?, option_b = ?, option_c = ?, 
-                    option_d = ?, option_e = ?, correct_answer = ?, explanation = ?
+                    option_d = ?, option_e = ?, correct_answer = ?, explanation = ?, question_type = ?
                  WHERE id = ?`,
                 [
                     domain.trim(),
@@ -1127,6 +1130,7 @@ app.put('/api/questions/:id', async (req, res) => {
                     option_e ? formatOptions(option_e.trim()) : null,
                     correct_answer.toUpperCase().trim(),
                     formatExplanation(explanation ? explanation.trim() : null),
+                    question_type || 'single',
                     questionId
                 ],
                 function(err) {

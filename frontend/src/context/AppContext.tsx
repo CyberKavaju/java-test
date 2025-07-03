@@ -26,7 +26,7 @@ const initialState: AppState = {
   currentTest: {
     questions: [],
     answers: [],
-    timeRemaining: 50 * 60, // 50 minutes in seconds
+    timeRemaining: 30 * 60, // 30 minutes in seconds
     isActive: false,
     startTime: null,
   },
@@ -42,7 +42,7 @@ function appReducer(state: AppState, action: AppAction): AppState {
         currentTest: {
           questions: action.payload.questions,
           answers: [],
-          timeRemaining: 50 * 60,
+          timeRemaining: 30 * 60,
           isActive: true,
           startTime: Date.now(),
         },
@@ -106,7 +106,7 @@ function appReducer(state: AppState, action: AppAction): AppState {
         currentTest: {
           questions: [],
           answers: [],
-          timeRemaining: 50 * 60,
+          timeRemaining: 30 * 60,
           isActive: false,
           startTime: null,
         },

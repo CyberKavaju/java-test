@@ -116,7 +116,7 @@ If question pool is exhausted, reset.
 
 ## ⏱️ Timer (Frontend)
 
-Use `useEffect` + `setInterval` to implement the 50-minute countdown, or use a countdown library like `react-countdown`.
+Use `useEffect` + `setInterval` to implement the 30-minute countdown, or use a countdown library like `react-countdown`.
 
 ---
 
