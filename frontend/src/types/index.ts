@@ -168,7 +168,7 @@ export interface ReviewSession {
   topic: string;
   currentRound: number;
   totalQuestions: number;
-  questions: Question[];
+  questions: FormattedQuestion[];
 }
 
 export interface ReviewRoundResult {

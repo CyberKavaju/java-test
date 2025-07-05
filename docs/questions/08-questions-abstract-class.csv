@@ -1,0 +1,132 @@
+domain,topic,question_text,option_a,option_b,option_c,option_d,option_e,correct_answer,explanation,question_type
+Working with Inheritance,Abstract Classes,"What is the output of the following code?
+
+```java
+abstract class Animal {
+    abstract void makeSound();
+    void sleep() { System.out.println(""Sleeping...""); }
+}
+class Dog extends Animal {
+    void makeSound() { System.out.println(""Bark""); }
+}
+public class Test {
+    public static void main(String[] args) {
+        Animal a = new Dog();
+        a.makeSound();
+        a.sleep();
+    }
+}
+```","Bark Sleeping...","Sleeping... Bark","Compilation error","Runtime exception","No output",A,"The abstract method is overridden and the concrete method `sleep()` is inherited as-is. So both methods are executed in order.",single
+Working with Inheritance,Abstract Classes,"What happens when compiling and running the following code?
+```java
+abstract class Shape {
+    abstract double area();
+}
+class Square extends Shape {
+    // no area() implementation
+}
+public class Test {
+    public static void main(String[] args) {
+        Shape s = new Square();
+        System.out.println(s.area());
+    }
+}
+```","Prints 0.0","Compilation error","Runtime exception","Prints null","No output",B,"`Square` must implement the abstract method `area()`. Since it does not, it must be declared abstract, or the code will not compile.",single
+Working with Inheritance,Abstract Classes,"Which of the following are valid characteristics of abstract classes in Java?",They can contain constructors,They cannot have non-abstract methods,They cannot be instantiated directly,They must have at least one abstract method,They can be declared final,"A,C","Abstract classes can have constructors and cannot be directly instantiated. However, they may or may not contain abstract methods.",multiple
+Working with Inheritance,Abstract Classes,"What is the result of the following code execution?
+
+```java
+abstract class Machine {
+    abstract void start();
+    void stop() { System.out.println(""Machine stopped""); }
+}
+class Car extends Machine {
+    void start() {
+        System.out.println(""Car started"");
+    }
+}
+public class Test {
+    public static void main(String[] args) {
+        Machine m = new Car();
+        m.start();
+        m.stop();
+    }
+}
+```","Car started Machine stopped","Machine stopped Car started","Compilation error","Runtime exception","Car started",A,"The `Car` class overrides `start()` and inherits the concrete `stop()` method. Both are invoked.",single
+Working with Inheritance,Abstract Classes,"What happens when compiling and running the following code?
+
+```java
+abstract class Appliance {
+    abstract void turnOn();
+}
+class Fan extends Appliance {
+    void turnOn() {
+        System.out.println(""Fan turned on"");
+    }
+}
+class Test {
+    public static void main(String[] args) {
+        Appliance a = null;
+        a.turnOn();
+    }
+}
+```","Fan turned on","Compilation error","Runtime exception","No output","Fan turned on followed by Runtime exception",C,"Although the method is implemented, calling it on a `null` reference leads to a `NullPointerException` at runtime.",single
+Working with Inheritance,Abstract Classes,"Which of the following statements about abstract classes are true?",An abstract class can have final methods,A class with all abstract methods must be declared abstract,A class that extends an abstract class must implement all inherited abstract methods or be declared abstract,An abstract class can be instantiated using reflection,Abstract methods can be private,"A,B,C","final methods can exist in abstract classes. Any class extending an abstract class must implement all abstract methods unless it too is abstract.",multiple
+Working with Inheritance,Abstract Classes,"What is the output of the following code?
+
+```java
+abstract class Creature {
+    Creature() {
+        System.out.println(""Creature created"");
+    }
+}
+class Spider extends Creature {
+    Spider() {
+        System.out.println(""Spider created"");
+    }
+}
+public class Test {
+    public static void main(String[] args) {
+        Spider s = new Spider();
+    }
+}
+```","Spider created Creature created","Creature created Spider created","Compilation error","Runtime exception","Spider created",B,"Constructors in abstract classes are called when the subclass object is instantiated. So first `Creature`, then `Spider` constructor runs.",single
+Working with Inheritance,Abstract Classes,"What happens when compiling and running the following code?
+
+```java
+abstract class Gadget {
+    abstract void operate();
+}
+public class Test {
+    public static void main(String[] args) {
+        Gadget g = new Gadget() {
+            void operate() {
+                System.out.println(""Operating anonymously!"");
+            }
+        };
+        g.operate();
+    }
+}
+```","Operating anonymously!","Compilation error","Runtime exception","Nothing happens","Anonymous class is not allowed in abstract context",A,"Anonymous inner class is used to create a concrete subclass of the abstract class on the fly and override `operate()`.",single
+Working with Inheritance,Abstract Classes,"Which of the following code snippets would fail to compile?","An abstract class with both abstract and concrete methods","A subclass failing to override all abstract methods","Declaring an abstract method as static","Instantiating an abstract class","Declaring an abstract class without any abstract method","C,D","Static methods cannot be abstract and abstract classes cannot be instantiated.",multiple
+Working with Inheritance,Abstract Classes,"What is the output of the following code?
+
+```java
+abstract class Vehicle {
+    void display() {
+        show();
+    }
+    abstract void show();
+}
+class Bike extends Vehicle {
+    void show() {
+        System.out.println(""Bike show"");
+    }
+}
+public class Test {
+    public static void main(String[] args) {
+        Vehicle v = new Bike();
+        v.display();
+    }
+}
+```","Bike show","Compilation error","Runtime exception","null","Nothing is printed",A,"The `display()` method calls the abstract `show()` method, which is overridden in `Bike`. So `Bike show` is printed.",single

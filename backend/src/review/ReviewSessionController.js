@@ -259,19 +259,11 @@ class ReviewSessionController {
         // Get the full question data
         const questions = await this.getQuestionsByIds(incorrectQuestionIds);
         
-        // Return questions without correct answers
-        const sanitizedQuestions = questions.map(q => ({
-            id: q.id,
-            question_text: q.question_text,
-            option_a: q.option_a,
-            option_b: q.option_b,
-            option_c: q.option_c,
-            option_d: q.option_d,
-            option_e: q.option_e
-        }));
+        // Format questions for API response using ValidationService
+        const formattedQuestions = ValidationService.formatQuestionsForAPI(questions);
 
         return {
-            questions: sanitizedQuestions,
+            questions: formattedQuestions,
             roundInfo: {
                 currentRound: session.current_round,
                 totalQuestions: questions.length

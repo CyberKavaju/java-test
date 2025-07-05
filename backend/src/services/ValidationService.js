@@ -107,8 +107,13 @@ class ValidationService {
 
         // Calculate max_selections for multiple choice questions
         if (formatted.question_type === 'multiple') {
-            const correctAnswers = question.correct_answer.split(',');
-            formatted.max_selections = correctAnswers.length;
+            if (question.correct_answer) {
+                const correctAnswers = question.correct_answer.split(',');
+                formatted.max_selections = correctAnswers.length;
+            } else {
+                // Default to 2 for multiple choice when correct_answer is not available
+                formatted.max_selections = 2;
+            }
         } else {
             formatted.max_selections = 1;
         }

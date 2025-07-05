@@ -156,6 +156,18 @@
   gap: 15px;
 }
 
+.multi-select-instructions {
+  background: #1e293b;
+  border: 1px solid #3b82f6;
+  border-radius: 6px;
+  padding: 12px 16px;
+  color: #93c5fd;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
 .answer-option {
   display: flex;
   align-items: flex-start;
@@ -178,7 +190,8 @@
   background: #1e293b;
 }
 
-.answer-option input[type="radio"] {
+.answer-option input[type="radio"], 
+.answer-option input[type="checkbox"] {
   display: none;
 }
 
@@ -195,15 +208,13 @@
   font-size: 14px;
 }
 
-.answer-option.selected .option-letter {
-  background: #2563eb;
+/* For checkboxes, make the letter background square */
+.answer-option input[type="checkbox"] + .option-letter {
+  border-radius: 4px;
 }
 
-.option-text {
-  flex: 1;
-  font-size: 16px;
-  line-height: 1.4;
-  color: #e5e7eb;
+.answer-option.selected .option-letter {
+  background: #2563eb;
 }
 
 .question-navigation {

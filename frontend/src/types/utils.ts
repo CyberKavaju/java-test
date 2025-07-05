@@ -72,8 +72,14 @@ export function formatQuestionForDisplay(question: Question): FormattedQuestion 
 
   // Calculate max selections for multiple choice questions
   if (questionType === 'multiple') {
-    const correctAnswers = question.correct_answer.split(',');
-    maxSelections = correctAnswers.length;
+    if (question.correct_answer) {
+      const correctAnswers = question.correct_answer.split(',');
+      maxSelections = correctAnswers.length;
+    } else {
+      // Default to allowing multiple selections when correct_answer is not available
+      // This happens during review sessions where correct answers are hidden for security
+      maxSelections = options.length; // Allow selecting all options
+    }
   }
 
   return {

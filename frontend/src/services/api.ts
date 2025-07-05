@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { Question, Answer, TestResult, UserStats, TestSession, TopicStats, QuestionPerformance, PerformanceTrend, DetailedQuestionPerformance, Tutorial, TutorialContent, ReviewReport } from '../types/index.js';
+import type { Question, Answer, TestResult, UserStats, TestSession, TopicStats, QuestionPerformance, PerformanceTrend, DetailedQuestionPerformance, Tutorial, TutorialContent, ReviewReport, FormattedQuestion } from '../types/index.js';
 
 const API_BASE_URL = 'http://localhost:3001/api';
 
@@ -259,7 +259,7 @@ export const apiService = {
   async startReviewSession(userId: string, topicId: string): Promise<{
     success: boolean;
     sessionId: number;
-    questions: Question[];
+    questions: FormattedQuestion[]; // Backend sends already formatted questions
     roundInfo: {
       currentRound: number;
       totalQuestions: number;
@@ -300,7 +300,7 @@ export const apiService = {
   // Get next round questions
   async getNextRound(sessionId: number): Promise<{
     success: boolean;
-    questions: Question[];
+    questions: FormattedQuestion[]; // Backend sends already formatted questions
     roundInfo: {
       currentRound: number;
       totalQuestions: number;

@@ -8,8 +8,7 @@ import type {
   ReviewRoundResult, 
   ReviewRoundSummary,
   ReviewSessionSummary,
-  Answer,
-  Question 
+  Answer
 } from '../types';
 import './Review.css';
 
@@ -57,7 +56,7 @@ const Review: React.FC<ReviewProps> = () => {
           topic: topicId,
           currentRound: response.roundInfo.currentRound,
           totalQuestions: response.roundInfo.totalQuestions,
-          questions: response.questions
+          questions: response.questions // Don't format - backend already sends formatted questions
         });
         setAnswers([]);
         setCurrentQuestionIndex(0);
@@ -66,7 +65,7 @@ const Review: React.FC<ReviewProps> = () => {
         console.log('Review session failed:', response);
         setError('Failed to start review session');
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error('API Error details:', err);
       if (err.response) {
         console.error('Error response data:', err.response.data);
@@ -100,7 +99,26 @@ const Review: React.FC<ReviewProps> = () => {
   };
 
   const submitRound = async () => {
-    if (!session || answers.length !== session.questions.length) {
+    if (!session) {
+      setError('No active session');
+      return;
+    }
+
+    // Check if all questions are answered
+    const unansweredQuestions = session.questions.filter(question => {
+      const answer = answers.find(a => a.questionId === question.id);
+      if (!answer) return true;
+      
+      // For multi-selection, check if at least one option is selected
+      if (question.question_type === 'multiple') {
+        return !Array.isArray(answer.selectedAnswer) || answer.selectedAnswer.length === 0;
+      }
+      
+      // For single selection, check if an option is selected
+      return !answer.selectedAnswer;
+    });
+
+    if (unansweredQuestions.length > 0) {
       setError('Please answer all questions before submitting');
       return;
     }
@@ -126,7 +144,7 @@ const Review: React.FC<ReviewProps> = () => {
       } else {
         setError('Failed to submit round');
       }
-    } catch (err) {
+    } catch (err: any) {
       setError('Error submitting round');
       console.error('Submit round error:', err);
     } finally {
@@ -145,7 +163,7 @@ const Review: React.FC<ReviewProps> = () => {
       if (response.success) {
         setSession({
           ...session,
-          questions: response.questions,
+          questions: response.questions, // Don't format - backend already sends formatted questions
           currentRound: response.roundInfo.currentRound,
           totalQuestions: response.roundInfo.totalQuestions
         });
@@ -157,7 +175,7 @@ const Review: React.FC<ReviewProps> = () => {
       } else {
         setError('Failed to get next round');
       }
-    } catch (err) {
+    } catch (err: any) {
       setError('Error getting next round');
       console.error('Next round error:', err);
     } finally {
@@ -317,7 +335,7 @@ const Review: React.FC<ReviewProps> = () => {
           </div>
 
           <div className="results-list">
-            {getFilteredResults().map((result, index) => {
+            {getFilteredResults().map((result) => {
               const question = getQuestionByIdFromSession(result.questionId);
               const isExpanded = expandedQuestions.has(result.questionId);
               const originalIndex = roundResults.findIndex(r => r.questionId === result.questionId);
@@ -358,7 +376,7 @@ const Review: React.FC<ReviewProps> = () => {
                               pre: ({children}) => <pre className="code-block">{children}</pre>,
                             }}
                           >
-                            {question.question_text}
+                            {question.question}
                           </ReactMarkdown>
                         </div>
                       )}
@@ -448,27 +466,49 @@ const Review: React.FC<ReviewProps> = () => {
               ),
             }}
           >
-            {currentQuestion?.question_text}
+            {currentQuestion?.question}
           </ReactMarkdown>
         </div>
 
         <div className="answer-options">
-          {['A', 'B', 'C', 'D', 'E'].map(option => {
-            const optionKey = `option_${option.toLowerCase()}` as keyof Question;
-            const optionText = currentQuestion?.[optionKey] as string;
-            
-            if (!optionText) return null;
+          {currentQuestion?.question_type === 'multiple' && (
+            <div className="multi-select-instructions">
+              Select all that apply (multiple answers possible)
+            </div>
+          )}
+          {currentQuestion?.options?.map(option => {
+            const isMultiple = currentQuestion?.question_type === 'multiple';
+            const isSelected = isMultiple 
+              ? Array.isArray(currentAnswer) && currentAnswer.includes(option.key)
+              : currentAnswer === option.key;
+
+            const handleChange = () => {
+              if (isMultiple) {
+                const currentSelected = Array.isArray(currentAnswer) ? currentAnswer : [];
+                if (currentSelected.includes(option.key)) {
+                  // Remove option
+                  const newSelected = currentSelected.filter(opt => opt !== option.key);
+                  handleAnswerSelect(currentQuestion.id, newSelected);
+                } else {
+                  // Add option
+                  const newSelected = [...currentSelected, option.key];
+                  handleAnswerSelect(currentQuestion.id, newSelected);
+                }
+              } else {
+                handleAnswerSelect(currentQuestion.id, option.key);
+              }
+            };
 
             return (
-              <label key={option} className={`answer-option ${currentAnswer === option ? 'selected' : ''}`}>
+              <label key={option.key} className={`answer-option ${isSelected ? 'selected' : ''}`}>
                 <input
-                  type="radio"
+                  type={isMultiple ? "checkbox" : "radio"}
                   name={`question-${currentQuestion.id}`}
-                  value={option}
-                  checked={currentAnswer === option}
-                  onChange={() => handleAnswerSelect(currentQuestion.id, option)}
+                  value={option.key}
+                  checked={isSelected}
+                  onChange={handleChange}
                 />
-                <span className="option-letter">{option}</span>
+                <span className="option-letter">{option.key}</span>
                 <span className="option-text">
                   <ReactMarkdown 
                     remarkPlugins={[remarkGfm]}
@@ -485,7 +525,7 @@ const Review: React.FC<ReviewProps> = () => {
                       pre: ({children}) => <pre className="code-block">{children}</pre>,
                     }}
                   >
-                    {optionText}
+                    {option.text}
                   </ReactMarkdown>
                 </span>
               </label>
