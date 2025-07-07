@@ -960,8 +960,6 @@ export default function Report() {
                               <a 
                                 href={`/tutorial?tutorial=${getTutorialSlug(topic.topic)}`}
                                 className="tutorial-link"
-                                target="_blank"
-                                rel="noopener noreferrer"
                               >
                                 📖 Study {topic.topic} Tutorial
                               </a>

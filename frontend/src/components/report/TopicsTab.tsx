@@ -141,8 +141,6 @@ const TopicsTab: React.FC<TopicsTabProps> = ({ topicStats, documentationLinks })
                       <a 
                         href={`/docs/tutorial/${topic.tutorialSlug}.md`}
                         className="tutorial-link"
-                        target="_blank"
-                        rel="noopener noreferrer"
                       >
                         📖 Study Complete {topic.topic} Tutorial
                       </a>
@@ -169,8 +167,6 @@ const TopicsTab: React.FC<TopicsTabProps> = ({ topicStats, documentationLinks })
                         <a 
                           href={`/tutorial?tutorial=${getTutorialSlug(topic.topic)}`}
                           className="tutorial-link"
-                          target="_blank"
-                          rel="noopener noreferrer"
                         >
                           📖 Study {topic.topic} Tutorial
                         </a>
