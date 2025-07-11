@@ -1,0 +1,191 @@
+domain,topic,question_text,option_a,option_b,option_c,option_d,option_e,correct_answer,explanation,question_type
+Handling Exceptions,Try-Catch-Finally,"What is the output of the following code when compiled and executed?
+
+```java
+public class ExceptionOrder {
+    public static void main(String[] args) {
+        try {
+            System.out.print(""A"");
+            throw new ClassCastException();
+        } catch (IllegalArgumentException e) {
+            System.out.print(""B"");
+        } catch (ClassCastException e) {
+            System.out.print(""C"");
+        } finally {
+            System.out.print(""D"");
+        }
+        System.out.print(""E"");
+    }
+}
+```",ACDE,ABCDE,ADE,ACE,Compilation error,A,"The code inside the try block executes until an exception occurs. 'A' is printed. Then, ClassCastException is thrown. The JVM looks for the first catch block that can handle ClassCastException. The second catch block (catch (ClassCastException e)) matches, so 'C' is printed. Regardless of whether an exception was caught or not, the finally block always executes, so 'D' is printed. Finally, the code after the try-catch-finally block executes, printing 'E'.",single
+Handling Exceptions,Checked vs Unchecked Exceptions,"What happens when the following code is compiled and executed?
+
+```java
+import java.io.IOException;
+
+public class ExceptionMethod {
+    public static void main(String[] args) {
+        try {
+            methodA();
+            System.out.print(""1"");
+        } catch (IOException e) {
+            System.out.print(""2"");
+        } catch (RuntimeException e) {
+            System.out.print(""3"");
+        } finally {
+            System.out.print(""4"");
+        }
+        System.out.print(""5"");
+    }
+
+    public static void methodA() {
+        throw new NullPointerException();
+    }
+}
+```",1245,345,245,Compilation error,Runtime exception,B,"methodA() throws a NullPointerException, which is an unchecked exception (a subclass of RuntimeException). The try block executes methodA(), throwing the NullPointerException. The first catch block (IOException) does not match. The second catch block (RuntimeException) catches NullPointerException, so '3' is printed. Then the finally block executes, printing '4'. Finally, the code after the try-catch-finally block executes, printing '5'. The output is 345.",single
+Handling Exceptions,Exception Hierarchy,"Which of the following statements about Java exceptions are true?","All checked exceptions must be explicitly handled or declared in the method signature","Error is a subclass of Exception","RuntimeException is a checked exception","Methods throwing unchecked exceptions must declare them using the 'throws' keyword","IOException is an unchecked exception",A,"Option A is correct: All checked exceptions must be explicitly handled or declared in the method signature. Option B is incorrect: Error is NOT a subclass of Exception; both Error and Exception are direct subclasses of Throwable. Option C is incorrect: RuntimeException is an unchecked exception, not checked. Option D is incorrect: Methods throwing unchecked exceptions do NOT need to declare them using 'throws' keyword. Option E is incorrect: IOException IS a checked exception, not unchecked.",single
+Handling Exceptions,Try-Catch-Finally,"Consider the following code. What will be the output?
+
+```java
+public class FinallyReturn {
+    public static void main(String[] args) {
+        System.out.println(getValue());
+    }
+
+    public static int getValue() {
+        try {
+            return 10;
+        } finally {
+            System.out.print(""Finally Block "");
+            return 20;
+        }
+    }
+}
+```",Finally Block 10,Finally Block 20,10,20,Compilation error,B,"When a `return` statement is encountered in a `try` block, the `finally` block is still executed. If the `finally` block also contains a `return` statement, that `return` statement will override the `return` from the `try` block. Therefore, ""Finally Block "" is printed, and then 20 is returned.",single
+Handling Exceptions,Exception Hierarchy,"What happens when the following code is compiled and executed?
+
+```java
+public class ExceptionFlow {
+    public static void main(String[] args) {
+        try {
+            badMethod();
+            System.out.print(""A"");
+        } catch (Exception e) {
+            System.out.print(""B"");
+        } finally {
+            System.out.print(""C"");
+        }
+        System.out.print(""D"");
+    }
+
+    public static void badMethod() throws RuntimeException {
+        throw new IllegalArgumentException();
+    }
+}
+```",BC,BCD,ABCD,BD,Compilation error,B,"The `badMethod()` throws an `IllegalArgumentException`, which is a subclass of `RuntimeException`. `RuntimeException` is itself a subclass of `Exception`. The `main` method calls `badMethod()` within a `try` block. When `IllegalArgumentException` is thrown, the `catch (Exception e)` block catches it, printing ""B"". The `finally` block then executes, printing ""C"". Finally, the code after the `try-catch-finally` block executes, printing ""D"".",single
+Handling Exceptions,Checked vs Unchecked Exceptions,"Which of the following code snippets will result in a compilation error?
+
+A)
+```java
+public class TestA {
+    public static void main(String[] args) {
+        try {
+            Integer.parseInt(""abc"");
+        } catch (NumberFormatException e) { }
+    }
+}
+```
+
+B)
+```java
+public class TestB {
+    public static void main(String[] args) {
+        try {
+            throw new java.io.FileNotFoundException();
+        } catch (Exception e) { }
+    }
+}
+```
+
+C)
+```java
+public class TestC {
+    public static void main(String[] args) {
+        try {
+            methodX();
+        } catch (InterruptedException e) { }
+    }
+    public static void methodX() throws InterruptedException {
+        Thread.sleep(100);
+    }
+}
+```
+
+D)
+```java
+import java.io.IOException;
+
+public class TestD {
+    public static void main(String[] args) {
+        methodY();
+    }
+    public static void methodY() throws IOException {
+        throw new IOException();
+    }
+}
+```
+
+E)
+```java
+public class TestE {
+    public static void main(String[] args) {
+        try {
+            throw new RuntimeException();
+        } catch (Throwable t) { }
+    }
+}
+```",D,A,B,C,E,D,"Option A: `NumberFormatException` is an unchecked exception, so catching it is optional, and the code compiles. Option B: `FileNotFoundException` is a checked exception. It is thrown in the `try` block but caught by `catch (Exception e)`, which is a superclass, so it compiles. Option C: `InterruptedException` is a checked exception. `methodX` declares it with `throws InterruptedException`, and the `main` method calls `methodX()` within a `try-catch` block that handles `InterruptedException`, so it compiles. Option D: `methodY()` declares that it throws `IOException` (a checked exception). However, `main()` calls `methodY()` but does not handle the `IOException` with a `try-catch` block nor declare it with `throws`. This will result in a compilation error. Option E: `RuntimeException` is unchecked, and `Throwable` can catch any exception or error, so this compiles.",single
+Handling Exceptions,Try-Catch-Finally,"What will be printed when the following code is executed?
+
+```java
+public class ExceptionPrintOrder {
+    public static void main(String[] args) {
+        try {
+            System.out.print(""Start"");
+            divideByZero(10, 0);
+            System.out.print(""EndTry""); // This line is not reached
+        } catch (ArithmeticException e) {
+            System.out.print(""Catch"");
+        } finally {
+            System.out.print(""Finally"");
+        }
+        System.out.println(""Done"");
+    }
+
+    public static void divideByZero(int a, int b) {
+        int result = a / b;
+    }
+}
+```",StartCatchFinallyDone,StartFinallyDone,StartEndTryCatchFinallyDone,StartCatchDone,Compilation Error,A,"The `main` method starts by printing ""Start"". The `divideByZero` method is called with `b` as 0, which immediately throws an `ArithmeticException`. The line `System.out.print(""EndTry"")` is never reached. The `catch (ArithmeticException e)` block is executed, printing ""Catch"". The `finally` block always executes, printing ""Finally"". Finally, `System.out.println(""Done"")` is executed, printing ""Done"" and a newline.",single
+Handling Exceptions,Exception Hierarchy,"Which of the following statements correctly describe the relationship between `Exception`, `RuntimeException`, and `Error` in Java?","Error and Exception are direct subclasses of Throwable","RuntimeException is a subclass of Error","Exception is a subclass of RuntimeException","All Error and RuntimeException classes are checked exceptions","Only Exception and its subclasses (excluding RuntimeException) are considered checked exceptions","A,E","Option A is correct: Both `Error` and `Exception` are direct subclasses of `Throwable`, which is the superclass of all throwables in Java. Option B is incorrect: `RuntimeException` is a subclass of `Exception`, not `Error`. Option C is incorrect: `RuntimeException` is a subclass of `Exception`, meaning `Exception` is the superclass. Option D is incorrect: `Error` and `RuntimeException` are *unchecked* exceptions. Option E is correct: Checked exceptions are those that inherit from `Exception` but *not* `RuntimeException` (or `Error`). They must be declared or caught.",multiple
+Handling Exceptions,Try-Catch-Finally,"Consider the following Java code. What will be the output? (TRICK QUESTION)
+
+```java
+public class TrickyFinally {
+    public static void main(String[] args) {
+        System.out.print(process());
+    }
+
+    public static int process() {
+        try {
+            return 1;
+        } finally {
+            try {
+                return 2;
+            } finally {
+                return 3;
+            }
+        }
+    }
+}
+```",1,2,3,Compilation Error,Runtime Exception,C,"This is a tricky one! The `process` method's outermost `try` block attempts to return 1. However, the `finally` block *always* executes before the return. Inside the first `finally` block, there's another `try-finally` structure. The inner `try` attempts to return 2. Again, its `finally` block executes. This innermost `finally` block returns 3. Since a `return` in a `finally` block overrides any pending `return` from the `try` block or an outer `finally` block, the value 3 is ultimately returned. This is a classic example of how `finally` blocks can alter control flow in unexpected ways.",single

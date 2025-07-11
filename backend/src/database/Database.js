@@ -229,7 +229,8 @@ class Database {
                 question.option_e || null,
                 question.correct_answer,
                 question.explanation || null,
-                question.question_type || 'single'
+                // Determine question_type: multiple if correct_answer contains commas
+                question.question_type || (question.correct_answer.includes(',') ? 'multiple' : 'single')
             ], function(err) {
                 if (err) {
                     reject(err);
