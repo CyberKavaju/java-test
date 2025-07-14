@@ -221,7 +221,8 @@ const Tutorial: React.FC<TutorialProps> = () => {
         { id: 2, slug: "simple-execution-of-java-program" },
         { id: 3, slug: "multiple-classes-in-one-java-file" },
         { id: 4, slug: "variable" },
-        { id: 6, slug: "scanner-input-object" }
+        { id: 6, slug: "scanner-input-object" },
+        { id: 49, slug: "packages" }
       ]
     },
     {

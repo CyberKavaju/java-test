@@ -1,0 +1,58 @@
+domain,topic,question_text,option_a,option_b,option_c,option_d,option_e,correct_answer,explanation,question_type
+Java Basics,Package Declarations,"What happens when compiling and running the following code?
+
+```java
+// File location: src/com/example/Main.java
+package com.example.utility;
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Running main...");
+    }
+}
+```",Program prints: Running main...,Compilation error due to mismatched package and directory,Compilation error due to missing import,Runtime exception,Code runs but nothing prints,"B","The file is in src/com/example but declares package com.example.utility, causing a mismatch that leads to a compilation error.",single
+Java Basics,Import Statements,"What will be the result of compiling and running the following code?
+
+```java
+import java.util.Date;
+import java.sql.Date;
+
+public class Test {
+    public static void main(String[] args) {
+        Date date = new Date(0L);
+        System.out.println(date);
+    }
+}
+```",Prints java.util.Date formatted output,Prints java.sql.Date formatted output,Compilation error due to ambiguity,Runtime exception,Prints null,"C","Both java.util.Date and java.sql.Date are imported, making 'Date' ambiguous. The compiler throws an error because it can't resolve which one to use.",single
+Java Basics,Package Declarations,"Which of the following package declarations are valid according to Java naming conventions?",package com.example.project;,package com.Example.Project;,package my-company.code;,package 123tools.code;,package org.apache.commons;,"A,E","Options A and E follow Java naming conventions with lowercase names. Option B uses capital letters, option C contains hyphens (invalid identifier), and option D starts with numbers (invalid identifier).",multiple
+Java Basics,Import Statements,"Which of the following statements about wildcard imports are true?",They import all public classes in the package,They import classes from sub-packages,They can cause name clashes if classes have the same name,They make code less readable,They are recommended over specific imports,"A,C,D","Wildcard imports bring in all public classes in a package but not sub-packages. They may lead to ambiguity and reduce code clarity.",multiple
+Java Basics,Package Declarations,"What happens if the following code is compiled?
+
+```java
+import java.util.List;
+package com.example;
+
+public class Test {}
+```",Code compiles successfully,Compilation error due to incorrect import order,Compilation error due to syntax error,Compilation error due to reserved keyword,"B","The `package` statement must be the very first line in a Java file (after comments). Having an `import` before it causes a compilation error.",single
+Java Basics,Package Declarations,"Which of the following members are accessible within the same package but NOT from subclasses in different packages?",`protected` fields,`public` methods,default (package-private) classes,`private` constructors,default (package-private) methods,"C,E","Package-private (default) members are accessible only within the same package. They are not visible to subclasses in different packages.",multiple
+Java Basics,Package Declarations,"What will be the output of the following code?
+
+```java
+package com.example;
+import java.util.*;
+
+public class Test {
+    public static void main(String[] args) {
+        List<String> list = new ArrayList<>();
+        System.out.println(list.getClass().getName());
+    }
+}
+```","java.util.ArrayList","ArrayList","Compilation error","java.lang.ArrayList","Runtime exception","A","The wildcard import 'java.util.*' brings in ArrayList and List. getClass().getName() returns the fully qualified class name.",single
+Java Basics,Import Statements,"Which of the following are true regarding static imports?",They allow usage of static members without class qualification,They import non-static methods too,They can reduce readability if overused,They require 'static' keyword in import,They automatically import all static methods,"A,C,D","Static imports are used to bring static members (like constants or utility methods) into scope without the class name. B and E are false.",multiple
+Java Basics,Package Declarations,"What happens when compiling the following file?
+
+```java
+package com.example.one;
+package com.example.two;
+
+public class Demo {}
+```",Compilation error due to multiple package declarations,Code compiles but uses last package declaration,Code compiles and runs fine,Only one class is placed in com.example.two,Runtime exception,"A","Java allows only one package declaration per file. Multiple package statements result in a compilation error.",single

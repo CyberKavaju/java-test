@@ -157,7 +157,7 @@ export const getTutorialSlug = (topic: string) => {
     'Polymorphism': '46-polymorphism',
     'Encapsulation': '48-encapsulation',
     'Packages': '49-packages',
-    'Package Declaration': '49-packages',
+    'Package Declarations': '49-packages',
     'File I/O': '50-file-io',
     'Generics': '51-generics',
     'Threads': '52-threads',
