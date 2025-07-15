@@ -422,6 +422,101 @@ try {
 ### 🚫 But: the exception variable `e` is **implicitly final**
 
 You can't assign a new value to `e` inside the block.
+---
+Great question! You're noticing the use of ***try-with-resources***, which is a Java feature introduced in **Java 7** that looks like this:
+
+```java
+try (SomeResource resource = new SomeResource()) {
+    // use resource
+} catch (Exception e) {
+    // handle exception
+}
+```
+--- 
+## try-with-resources 
+
+When dealing with **resources that need to be closed**, like:
+
+* `InputStream`, `OutputStream`
+* `BufferedReader`, `BufferedWriter`
+* `Connection`, `Statement`, `ResultSet` (in JDBC)
+* Any class that implements `AutoCloseable` (or the older `Closeable` interface)
+
+you can use **try-with-resources** to ensure they are automatically closed after use, even if an exception occurs.
+
+---
+
+### 💡 What's Going On?
+
+The `try (<something>)` syntax is for declaring **resources** that are automatically **closed at the end of the try block**, whether or not an exception occurred.
+
+Behind the scenes, Java generates code to call `.close()` on those resources — and does so **safely and correctly**, even when exceptions are thrown.
+
+---
+
+### 🔧 Example
+
+#### Without try-with-resources:
+
+```java
+BufferedReader reader = null;
+try {
+    reader = new BufferedReader(new FileReader("file.txt"));
+    String line = reader.readLine();
+    System.out.println(line);
+} catch (IOException e) {
+    e.printStackTrace();
+} finally {
+    if (reader != null) {
+        try {
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+#### ✅ With try-with-resources:
+
+```java
+try (BufferedReader reader = new BufferedReader(new FileReader("file.txt"))) {
+    String line = reader.readLine();
+    System.out.println(line);
+} catch (IOException e) {
+    e.printStackTrace();
+}
+```
+
+Much cleaner, right? 😎
+
+---
+
+### 📌 Requirements for try-with-resources
+
+* The variable inside `try(...)` **must be a type that implements `AutoCloseable`**.
+* You can declare multiple resources inside the parentheses, separated by semicolons:
+
+```java
+try (
+    FileInputStream fis = new FileInputStream("input.txt");
+    FileOutputStream fos = new FileOutputStream("output.txt")
+) {
+    // work with fis and fos
+}
+```
+
+---
+
+### ✅ When to Use It?
+
+Use try-with-resources **whenever you're dealing with I/O or any resource that must be closed**:
+
+* Files
+* Network sockets
+* Database connections
+* Streams (File/Input/Output)
+* Custom classes implementing `AutoCloseable`
 
 ---
 
