@@ -1,0 +1,153 @@
+domain,topic,question_text,option_a,option_b,option_c,option_d,option_e,correct_answer,explanation,question_type
+Working with Inheritance,Inheritance,What is the primary benefit of using inheritance in Java?,Reduced memory consumption,Increased execution speed,Code reuse and modeling is-a relationships,Automatic garbage collection,Enhanced security features,C,Inheritance allows classes to reuse fields and methods from other classes and establishes is-a relationships which helps in modeling natural hierarchies.,single
+Working with Inheritance,Inheritance,Which keyword is used to indicate that a class inherits from another class in Java?,implements,uses,extends,inherits,parent,C,The extends keyword is used in Java to specify that a class inherits from another class.,single
+Working with Inheritance,Access Control and Inheritance,Which of the following access modifiers allow a member to be inherited and directly accessible in a subclass regardless of package?,public,private,protected,default package-private,final,"A,C",public and protected members are inherited and accessible in subclasses. private members are not inherited and default members are only inherited and accessible if the subclass is in the same package.,multiple
+Working with Inheritance,Polymorphism,"Consider the following code:
+```java
+class Animal {
+    String name = ""Animal"";
+    void printName() {
+        System.out.print(""Animal"");
+    }
+}
+class Dog extends Animal {
+    String name = ""Dog"";
+    void printName() {
+        System.out.print(""Dog"");
+    }
+}
+public class Test {
+    public static void main(String[] args) {
+        Animal animal = new Dog();
+        System.out.print(animal.name + "":"");
+        animal.printName();
+    }
+}
+```
+What is the output?",Dog:Dog,Animal:Dog,Animal:Animal,Dog:Animal,Compilation error,B,"Instance variables (fields) are resolved at compile time based on the reference type, which is `Animal`. Therefore, `animal.name` refers to the `name` field in the `Animal` class. In contrast, instance methods are overridden at runtime based on the actual object's class, which is `Dog`. So, `animal.printName()` calls the method from the `Dog` class.",single
+Working with Inheritance,Constructors,"What is the result of compiling the following code?
+```java
+class Parent {
+    public Parent(String s) {
+        System.out.println(""Parent constructor"");
+    }
+}
+class Child extends Parent {
+    public Child() {
+        System.out.println(""Child constructor"");
+    }
+}
+```",It prints ""Parent constructor"" followed by ""Child constructor"".,It prints ""Child constructor"" followed by ""Parent constructor"".,It only prints ""Child constructor"".,Compilation error.,Runtime exception.,D,"The `Child` constructor implicitly tries to call the default no-argument constructor of `Parent` (i.e., `super()`). Since `Parent` has a parameterized constructor but no default constructor, the compiler cannot find `Parent()` and raises a compilation error. The `Child` class must explicitly call `super(\""some string\"")`.",single
+Working with Inheritance,Inheritance,"What is the result of attempting to compile and run the following code?
+```java
+class A {}
+class B {}
+public class MultipleInheritanceTest extends A, B {
+    public static void main(String[] args) {
+        System.out.println(""Test"");
+    }
+}
+```",The code compiles and prints ""Test"".,The code compiles but throws a `ClassCastException` at runtime.,The code fails to compile.,The code compiles but throws an `Error` at runtime.,The code compiles but does not print anything.,C,Java does not support multiple inheritance for classes. A class can only extend one other class. The line `public class MultipleInheritanceTest extends A, B` is a syntax error and will cause a compilation failure.,single
+Working with Inheritance,Inheritance,"Which of the following statements about inheritance in Java are true? (Select all that apply)",A class can extend multiple other classes.,All classes implicitly extend the `Object` class if they don't explicitly extend another class.,`private` methods of a superclass are inherited by the subclass.,A subclass can override `static` methods of its superclass.,The `super` keyword can be used to call a method from the parent class.,"B,E","Java supports single class inheritance, so A is false. All classes descend from `Object`, so B is true. Private members are not inherited, so C is false. Static methods are hidden, not overridden, so D is false. `super` is used to access parent members, so E is true.",multiple
+Working with Inheritance,Access Control and Inheritance,"What is the result of compiling and running this code?
+```java
+class SuperClass {
+    private int value = 10;
+}
+class SubClass extends SuperClass {
+    public void printValue() {
+        System.out.println(value);
+    }
+}
+public class Test {
+    public static void main(String[] args) {
+        new SubClass().printValue();
+    }
+}
+```",It prints 10.,It prints 0.,It throws a `NullPointerException`.,It fails to compile.,It prints null.,D,"The code fails to compile because the `value` field in `SuperClass` is declared as `private`. Private members are not inherited and cannot be accessed directly from a subclass. The line `System.out.println(value);` in `SubClass` will cause a 'value has private access in SuperClass' compilation error.",single
+Working with Inheritance,Constructors,"What is the output of the following code?
+```java
+class A {
+    A() { System.out.print(""A ""); }
+}
+class B extends A {
+    B() { System.out.print(""B ""); }
+}
+class C extends B {
+    C() { System.out.print(""C ""); }
+}
+public class Test {
+    public static void main(String[] args) {
+        new C();
+    }
+}
+```",C B A,A B C,C,A,Compilation error,B,Constructors are called up the inheritance chain, starting from the supermost class. When `new C()` is called it first calls the constructor of its parent `B`. The `B` constructor first calls the constructor of its parent `A`. So `A`'s constructor runs first then `B`'s then `C`'s.,single
+Working with Inheritance,Polymorphism,"Consider the following code. What is the result?
+```java
+class Vehicle {
+    public void start() {
+        System.out.println(""Vehicle starting"");
+    }
+}
+class Car extends Vehicle {
+    public void honk() {
+        System.out.println(""Beep beep!"");
+    }
+}
+public class Test {
+    public static void main(String[] args) {
+        Vehicle v = new Car();
+        v.honk();
+    }
+}
+```",It prints ""Beep beep!"",It prints ""Vehicle starting"",It fails to compile.,It compiles but throws a `RuntimeException`.,It prints nothing.,C,"The code fails to compile because the reference variable `v` is of type `Vehicle`. The `Vehicle` class does not have a `honk()` method. Even though the object is a `Car` the compiler only knows about the methods available in the reference type `Vehicle`.",single
+Working with Inheritance,Method Overriding,"What is the output of this program?
+```java
+class Parent {
+    static void sayHello() {
+        System.out.print(""Parent "");
+    }
+}
+class Child extends Parent {
+    static void sayHello() {
+        System.out.print(""Child "");
+    }
+}
+public class Test {
+    public static void main(String[] args) {
+        Parent p = new Child();
+        p.sayHello();
+    }
+}
+```",Child,Parent,Compilation error because static methods cannot be overridden.,Runtime error.,Parent Child,B,"Static methods cannot be overridden; they can only be hidden. The method call is resolved at compile time based on the reference type. Since the reference `p` is of type `Parent`, `Parent.sayHello()` is called. This is a common pitfall as it looks like polymorphism, but polymorphism does not apply to static methods.",single
+Working with Inheritance,Constructors,"What is the result of compiling this code?
+```java
+public class MyClass {
+    MyClass() {
+        this(1);
+        super();
+    }
+    MyClass(int x) {
+        super();
+    }
+}
+```",It compiles successfully.,It fails to compile because a constructor cannot call both `this()` and `super()`.,It fails to compile because `super()` is called in the second constructor.,It fails to compile because `this()` is called.,It fails to compile because the class does not extend any other class explicitly.,B,A constructor can call another constructor in the same class using `this()` or a superclass constructor using `super()`, but this call must be the very first statement. It is a compilation error to have both `this()` and `super()` in the same constructor because only one can be the first statement.,single
+Working with Inheritance,Access Control and Inheritance,"What will be the result of compiling and running the following code?
+```java
+class ParentClass {
+    private void display() {
+        System.out.print(""ParentClass "");
+    }
+}
+class ChildClass extends ParentClass {
+    public void display() {
+        System.out.print(""ChildClass "");
+    }
+}
+public class Test {
+    public static void main(String[] args) {
+        ParentClass obj = new ChildClass();
+        obj.display();
+    }
+}
+```",ParentClass ChildClass,ChildClass ParentClass,Compilation error,Runtime exception,No output,
