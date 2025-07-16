@@ -1,0 +1,153 @@
+domain,topic,question_text,option_a,option_b,option_c,option_d,option_e,correct_answer,explanation,question_type
+"Working with Inheritance","Polymorphism","What is the output of the following code?
+
+```java
+class Animal {
+    String name = ""Animal"";
+    void speak() {
+        System.out.println(""Animal speaks"");
+    }
+}
+
+class Dog extends Animal {
+    String name = ""Dog"";
+    void speak() {
+        System.out.println(""Dog barks"");
+    }
+    void fetch() {
+        System.out.println(""Dog fetches"");
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        Animal a = new Dog();
+        System.out.println(a.name);
+        a.speak();
+    }
+}
+```","Animal
+Dog barks","Dog
+Animal speaks","Animal
+Animal speaks","Dog
+Dog barks","Compilation error",A,"Fields are not polymorphic in Java. The field access a.name uses the reference type (Animal), so it prints ""Animal"". However, method calls are polymorphic - a.speak() calls the Dog's overridden speak() method, printing ""Dog barks"". The output is ""Animal"" followed by ""Dog barks"".",single
+"Working with Inheritance","Polymorphism","Which of the following statements about polymorphism in Java are true?","Only overridden instance methods exhibit polymorphic behavior","Static methods can be overridden and exhibit polymorphic behavior","Instance variables (fields) are resolved polymorphically at runtime","Constructor calls are resolved polymorphically","Polymorphism works with method overloading at compile time","A,E","Polymorphism in Java works with overridden instance methods (resolved at runtime) and method overloading (resolved at compile time). Static methods use method hiding, not overriding. Instance variables are resolved based on reference type, not object type. Constructors are not resolved polymorphically - they follow inheritance chain but not polymorphic dispatch.",multiple
+"Working with Inheritance","Polymorphism","What happens when compiling and running the following code?
+
+```java
+abstract class Shape {
+    protected String color = ""Red"";
+    
+    public abstract double getArea();
+    
+    public void display() {
+        System.out.println(color + "" shape with area: "" + getArea());
+    }
+}
+
+class Circle extends Shape {
+    private double radius = 5.0;
+    
+    public double getArea() {
+        return Math.PI * radius * radius;
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        Shape s = new Circle();
+        s.display();
+    }
+}
+```","Compilation error - cannot instantiate abstract class","Runtime exception - abstract method cannot be called","Red shape with area: 78.53981633974483","Red shape with area: 0.0","Compilation error - missing constructor",C,"The code compiles and runs successfully. The abstract class Shape defines an abstract method getArea() which is properly implemented in Circle. When s.display() is called, it uses the polymorphic getArea() method from Circle class, calculating π * 5² ≈ 78.539. The output shows ""Red shape with area: 78.53981633974483"".",single
+"Working with Inheritance","Polymorphism","What is the output of the following code?
+
+```java
+class Animal {
+    public void speak() {
+        System.out.println(""Animal speaks"");
+    }
+    
+    public static void info() {
+        System.out.println(""Animal info"");
+    }
+}
+
+class Dog extends Animal {
+    public void speak() {
+        System.out.println(""Dog barks"");
+    }
+    
+    public static void info() {
+        System.out.println(""Dog info"");
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        Animal a = new Dog();
+        a.speak();
+        a.info();
+    }
+}
+```","Dog barks
+Dog info","Animal speaks
+Animal info","Dog barks
+Animal info","Animal speaks
+Dog info","Compilation error",C,"Instance method speak() is overridden and exhibits polymorphic behavior, so Dog's speak() is called. Static method info() uses method hiding, not polymorphism - it's resolved based on the reference type (Animal), not the object type (Dog). Output: ""Dog barks"" followed by ""Animal info"".",single
+"Working with Inheritance","Polymorphism","Which of the following code snippets demonstrate valid polymorphic behavior?","```java
+class Animal { public void speak() {} }
+class Dog extends Animal { public void speak() { System.out.print(""Dog ""); } }
+class Cat extends Animal { public void speak() { System.out.print(""Cat ""); } }
+public class Test {
+    public static void main(String[] args) {
+        Animal[] zoo = {new Dog(), new Cat()};
+        for(Animal a : zoo) a.speak();
+    }
+}
+```","Animal a = new Dog();
+a.fetch(); // fetch() only in Dog class","List<Animal> animals = new ArrayList<>();
+animals.add(new Dog());
+animals.get(0).speak();","Animal a = new Dog();
+System.out.println(a.name); // name field in both classes","interface Drawable { void draw(); }
+Drawable d = new Circle(); d.draw();","A,C,E","Valid polymorphic behavior occurs when: A) Array of superclass references holding subclass objects calling overridden methods, C) Collections with superclass type holding subclass objects calling overridden methods, E) Interface reference holding implementing class object calling implemented methods. Option B fails compilation (method not in reference type), Option D is field access (not polymorphic).",multiple
+"Working with Inheritance","Polymorphism","What is the output of the following code?
+
+```java
+class Vehicle {
+    public Vehicle() {
+        System.out.println(""Vehicle constructor"");
+        start();
+    }
+    
+    public void start() {
+        System.out.println(""Vehicle starting"");
+    }
+}
+
+class Car extends Vehicle {
+    private String model = ""Toyota"";
+    
+    public Car() {
+        System.out.println(""Car constructor"");
+    }
+    
+    public void start() {
+        System.out.println(""Car starting: "" + model);
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        Vehicle v = new Car();
+    }
+}
+```","Vehicle constructor
+Car starting: Toyota
+Car constructor","Vehicle constructor
+Vehicle starting
+Car constructor","Car constructor
+Vehicle constructor
+Car starting: Toyota","Vehicle constructor
+Car starting: null
+Car constructor","Compilation error",D,"During object construction, the superclass constructor runs first. When Vehicle() calls start(), polymorphism applies and Car's start() method is called. However, the Car constructor hasn't run yet, so the model field is still null (default value). Output: ""Vehicle constructor"", ""Car starting: null"", ""Car constructor"".",single
