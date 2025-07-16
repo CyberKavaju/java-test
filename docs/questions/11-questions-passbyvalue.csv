@@ -1,0 +1,116 @@
+domain,topic,question_text,option_a,option_b,option_c,option_d,option_e,correct_answer,explanation,question_type
+Working with Methods and Encapsulation,Pass by Value vs Reference,"What will be the output of the following code?
+
+```java
+public class Test {
+    public static void changeName(Dog dog) {
+        dog.name = \"Max\";
+    }
+
+    public static void main(String[] args) {
+        Dog dog = new Dog();
+        dog.name = \"Rex\";
+        changeName(dog);
+        System.out.println(dog.name);
+    }
+}
+
+class Dog {
+    String name;
+}
+```",Rex,Max,null,Compilation error,Runtime exception,B,"Although Java is pass-by-value, the value passed for objects is a copy of the reference. Both references point to the same object, so the object's fields can be changed.",single
+Working with Methods and Encapsulation,Pass by Value vs Reference,"What is the output of the following code?
+
+```java
+public class Test {
+    public static void reset(Dog dog) {
+        dog = new Dog();
+        dog.name = \"Buddy\";
+    }
+
+    public static void main(String[] args) {
+        Dog myDog = new Dog();
+        myDog.name = \"Charlie\";
+        reset(myDog);
+        System.out.println(myDog.name);
+    }
+}
+
+class Dog {
+    String name;
+}
+```",Buddy,Charlie,null,Compilation error,Buddy Charlie,B,"The method assigns a new object to the parameter, but only the local copy of the reference is affected. The original reference in `main` remains unchanged.",single
+Working with Methods and Encapsulation,Pass by Value vs Reference,"Which of the following statements about Java parameter passing are true?",Primitive types are passed by value,Object references are passed by reference,Modifying an object through a method modifies the caller's object,Assigning a new object to a parameter reference affects the caller,Only primitive types follow pass-by-value,"A,C","Java is always pass-by-value. Objects are passed by copying the reference. You can mutate the object via its reference, but reassigning the reference has no effect outside the method.",multiple
+Working with Methods and Encapsulation,Pass by Value vs Reference,"What will be the output of the following code?
+
+```java
+public class Test {
+    public static void main(String[] args) {
+        String s = \"Original\";
+        update(s);
+        System.out.println(s);
+    }
+
+    static void update(String str) {
+        str = \"Modified\";
+    }
+}
+```",Original,Modified,null,Compilation error,s,A,"Strings are immutable. The method receives a copy of the reference, but cannot modify the original string object. The assignment creates a new string object locally, which doesn't affect the original reference.",single
+Working with Methods and Encapsulation,Pass by Value vs Reference,"Which of the following modifications to a List parameter affect the original list seen by the caller?",Adding an element to the list,Removing all elements from the list,Assigning a new list to the parameter,Setting the parameter to null,Modifying an element inside the list,"A,B,E","Mutating the contents of the object (like adding/removing elements or modifying an element) affects the original object. Assigning a new list or null only affects the local reference.",multiple
+Working with Methods and Encapsulation,Pass by Value vs Reference,"What will the following code print?
+
+```java
+public class Test {
+    public static void update(int x) {
+        x = 42;
+    }
+
+    public static void main(String[] args) {
+        int x = 10;
+        update(x);
+        System.out.println(x);
+    }
+}
+```",42,10,0,null,Compilation error,B,"Primitives are passed by value, so the method receives a copy of `x`. Changes to `x` inside the method do not affect the original.",single
+Working with Methods and Encapsulation,Pass by Value vs Reference,"Which statements about Java object references are true?",A method can change the fields of an object passed to it,A method can assign a new object and affect the caller's reference,"A method receives a reference, but it is a copy of the original",A method can set a reference to null and make the caller's variable null,A method can change both the object's fields and its identity,"A,C","In Java, object references are passed by value. The method receives a copy of the reference, so field changes are visible, but reassigning the reference does not affect the original.",multiple
+Working with Methods and Encapsulation,Pass by Value vs Reference,"What will be the output of the following code?
+
+```java
+public class Test {
+    public static void nullify(Car car) {
+        car = null;
+    }
+
+    public static void main(String[] args) {
+        Car car = new Car(\"Tesla\");
+        nullify(car);
+        System.out.println(car.getModel());
+    }
+}
+
+class Car {
+    private String model;
+    public Car(String model) { this.model = model; }
+    public String getModel() { return model; }
+}
+```",Tesla,null,Compilation error,Runtime exception,NullPointerException,A,"The method sets the local reference to null, but this does not affect the caller's reference. So the original car object remains intact.",single
+Working with Methods and Encapsulation,Pass by Value vs Reference,"What will be printed by the following program?
+
+```java
+import java.util.*;
+
+public class Test {
+    public static void modifyList(List<String> list) {
+        list.add(\"Java\");
+        list = new ArrayList<>();
+        list.add(\"C++\");
+    }
+
+    public static void main(String[] args) {
+        List<String> langs = new ArrayList<>();
+        langs.add(\"Python\");
+        modifyList(langs);
+        System.out.println(langs);
+    }
+}
+```",[Python],"[Python, Java]","[Python, C++]",[C++],,"B","The first `add` modifies the original list. Reassigning `list` to a new ArrayList only changes the local reference, not the original list.",single

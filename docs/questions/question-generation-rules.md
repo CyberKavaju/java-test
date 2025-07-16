@@ -647,6 +647,96 @@ Before finalizing questions with code:
 - Use double quotes around fields containing commas: `"Hello, World"`
 - Escape internal quotes by doubling them: `"He said ""Hello"""`
 - Avoid unnecessary quotes around simple text
+- **CRITICAL**: Always quote fields that contain commas, even if they seem like simple text
+
+### Common CSV Formatting Issues to Avoid
+
+#### 1. Unquoted Commas in Option Text
+**Problem**: Options containing commas without proper quoting cause field misalignment
+```csv
+# Wrong - comma in option text without quotes
+option_c,A method receives a reference, but it is a copy of the original
+```
+
+**Solution**: Always quote options containing commas
+```csv
+# Correct - comma in option text with quotes
+option_c,"A method receives a reference, but it is a copy of the original"
+```
+
+#### 2. Unicode Characters
+**Problem**: Smart quotes (', ', ", ") cause parsing issues
+```csv
+# Wrong - Unicode smart quotes
+explanation,"The caller's reference won't be affected"
+```
+
+**Solution**: Use regular ASCII quotes and apostrophes
+```csv
+# Correct - ASCII quotes and apostrophes
+explanation,"The caller's reference won't be affected"
+```
+
+#### 3. Malformed CSV Headers
+**Problem**: Missing commas or merged fields in headers
+```csv
+# Wrong - missing comma between fields
+domain,topic,question_text,option_a,option_b,option_c,option_d,option_ecorrect_answer
+```
+
+**Solution**: Ensure proper comma separation
+```csv
+# Correct - proper comma separation
+domain,topic,question_text,option_a,option_b,option_c,option_d,option_e,correct_answer
+```
+
+#### 4. Multi-line Content with Embedded Quotes
+**Problem**: Code blocks with quotes can break CSV parsing
+```csv
+# Potentially problematic - code with quotes
+question_text,"What is the output?
+public class Test {
+    public static void main(String[] args) {
+        System.out.println("Hello");
+    }
+}"
+```
+
+**Solution**: Escape quotes in code blocks
+```csv
+# Correct - escaped quotes in code
+question_text,"What is the output?
+public class Test {
+    public static void main(String[] args) {
+        System.out.println(\"Hello\");
+    }
+}"
+```
+
+### CSV Validation Checklist
+Before importing CSV files, verify:
+- [ ] All fields containing commas are properly quoted
+- [ ] No Unicode characters (smart quotes, special apostrophes)
+- [ ] Header row has proper comma separation
+- [ ] All quotes in code blocks are escaped
+- [ ] File can be parsed by standard CSV parsers (test with csv-parser library)
+
+### Testing CSV Files
+Always test your CSV file before importing:
+```javascript
+const csv = require('csv-parser');
+const fs = require('fs');
+
+fs.createReadStream('your-file.csv')
+    .pipe(csv())
+    .on('data', (data) => {
+        // Check if fields are correctly parsed
+        console.log('Correct answer:', data.correct_answer);
+    })
+    .on('error', (error) => {
+        console.error('CSV parsing error:', error);
+    });
+```
 
 ### Line Breaks in Fields
 - Use `\n` for intentional line breaks within fields
@@ -684,9 +774,91 @@ Before finalizing questions with code:
 "Which are primitive types?","int","String","boolean","char","Object","A,C,D","int, boolean, and char are primitive types","multiple"
 ```
 
-## 🚀 Auto-Formatting Features
+## � Common Import Errors and Solutions
 
-The system automatically applies these formatting improvements:
+### Error: "Correct answer must be a comma-separated list of A, B, C, D, or E"
+
+**Cause**: This error occurs when the CSV parser incorrectly interprets the field structure, usually due to:
+1. Unquoted commas in option text causing field misalignment
+2. Unicode characters (smart quotes) breaking CSV parsing
+3. Malformed CSV headers with missing commas
+
+**Solution**:
+1. **Check for unquoted commas**: Ensure all options containing commas are properly quoted
+2. **Replace Unicode characters**: Convert smart quotes to regular ASCII quotes
+3. **Verify CSV structure**: Test parsing with csv-parser library
+4. **Validate headers**: Ensure proper comma separation in header row
+
+**Example Fix**:
+```csv
+# Before (causes field misalignment)
+option_c,A method receives a reference, but it is a copy of the original
+
+# After (proper quoting)
+option_c,"A method receives a reference, but it is a copy of the original"
+```
+
+### Error: CSV parsing shows wrong number of rows
+
+**Cause**: Multi-line content with embedded quotes confuses the CSV parser
+
+**Solution**: Escape quotes in code blocks and ensure proper field quoting
+
+### Error: Fields contain wrong data
+
+**Cause**: Field misalignment due to improper CSV formatting
+
+**Solution**: Count commas manually and ensure field count matches header count
+
+## 📋 Pre-Import Validation Process
+
+Before importing any CSV file:
+
+1. **Text Editor Check**: Open in a text editor and verify:
+   - No Unicode characters (', ', ", ")
+   - Proper comma separation
+   - Consistent field count per row
+
+2. **CSV Parser Test**: Test with csv-parser library:
+   ```javascript
+   const csv = require('csv-parser');
+   const fs = require('fs');
+   
+   fs.createReadStream('your-file.csv')
+       .pipe(csv())
+       .on('data', (data) => {
+           console.log('Parsed row:', Object.keys(data).length, 'fields');
+       });
+   ```
+
+3. **Field Count Verification**: Ensure all rows have the same number of fields as the header
+
+4. **Answer Validation**: Verify correct_answer fields contain only A, B, C, D, E combinations
+
+## 🔧 CSV Repair Tools
+
+### Quick Fix Commands
+```bash
+# Replace Unicode quotes with regular quotes
+sed -i 's/'/'"'"'/g' filename.csv
+sed -i 's/'/'"'"'/g' filename.csv
+sed -i 's/"/"/g' filename.csv
+sed -i 's/"/"/g' filename.csv
+
+# Check for field count consistency
+awk -F',' '{print NF}' filename.csv | sort -u
+```
+
+### Field Alignment Debugging
+```javascript
+// Check field alignment
+const line = 'your,csv,line,here';
+const fields = line.split(',');
+console.log('Field count:', fields.length);
+fields.forEach((field, i) => {
+    console.log(`Field ${i}: '${field}'`);
+});
+```
 
 ### Question Text
 - Proper code block formatting with line breaks
@@ -837,4 +1009,4 @@ domain,topic,question_text,option_a,option_b,option_c,option_d,correct_answer,ex
 
 ---
 
-*Document updated July 1, 2025 - Multi-selection support implemented and tested**
+*Document updated July 16, 2025 - Added CSV formatting troubleshooting section and common import error solutions. Multi-selection support implemented and tested.*
