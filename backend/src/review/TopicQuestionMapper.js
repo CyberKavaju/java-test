@@ -17,7 +17,7 @@ class TopicQuestionMapper {
             '10-bitwise-operators': ['Bitwise vs Logical Operators', 'Bitwise', 'Bitwise Operators'],
             '11-operator-precedence': ['Using Operators and Decision Constructs'],
             '12-if-else-statement': ['Using Operators and Decision Constructs', 'Nested if/else', 'Assignment in if condition'],
-            '13-switch-statement': ['Using Operators and Decision Constructs', 'Switch Statement Fall-Through', 'Switch with Strings'],
+            '13-switch-statement': ['Switch Statement Fall-Through', 'Switch with Strings'],
             '14-when-to-use-if-else-or-switch': ['Using Operators and Decision Constructs'],
             '15-the-enum-field': ['Working With Java Data Types'],
             '16-random-object': ['Working with Selected classes from the Java API'],

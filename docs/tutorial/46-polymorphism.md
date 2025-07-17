@@ -70,19 +70,149 @@ public class Test {
 
 ---
 
-## 🔄 Compile-Time vs Runtime Behavior
+## 🔄 **Compile-Time vs Runtime in Java (Method Calls)**
+
+### ⚙️ Scenario Setup
+
+```java
+Animal a = new Dog(); 
+a.speak(); // Which 'speak()' gets called?
+```
+
+To fully understand what's going on, let's say we have the following class structure:
+
+```java
+class Animal {
+    void speak() {
+        System.out.println("Animal speaks");
+    }
+}
+
+class Dog extends Animal {
+    void speak() {
+        System.out.println("Dog barks");
+    }
+}
+
+class Cat extends Animal {
+    void speak() {
+        System.out.println("Cat meows");
+    }
+}
+```
+
+---
+
+### 🧠 Now the Key Concepts:
+
+### ✅ **Compile-Time (aka Static Binding):**
+
+This is when the Java compiler checks:
+
+> “Which methods can I *see* from the variable's declared type?”
+
+In:
 
 ```java
 Animal a = new Dog();
-a.speak(); // Runtime: Dog's speak()
-
-a = new Cat();
-a.speak(); // Runtime: Cat's speak()
 ```
 
-📌 Which method is called? Depends on **object type at runtime**
-📌 Which methods are available to call? Depends on **reference type at compile time**
+* The **reference type** is `Animal`.
+* So, at compile time, **only methods in `Animal`** are *visible* to the compiler.
+* That means you *can’t* call methods that exist *only* in `Dog`, unless you cast.
 
+```java
+a.speak(); // OK ✅ because Animal has a speak() method
+a.fetch(); // ❌ COMPILE ERROR - Animal doesn’t have a fetch() method
+```
+
+---
+
+### ✅ **Runtime (aka Dynamic Binding or Late Binding):**
+
+At runtime, Java checks:
+
+> “What is the *actual object* behind the reference?”
+
+In this case:
+
+```java
+Animal a = new Dog();
+```
+
+* `a` is **pointing to a Dog object**
+* So at runtime, **Dog’s version** of `speak()` is executed.
+* Even though `a` is declared as `Animal`, it behaves like a `Dog`.
+
+```java
+a.speak(); // OUTPUT: Dog barks 🐶
+```
+
+Then later:
+
+```java
+a = new Cat();
+a.speak(); // OUTPUT: Cat meows 🐱
+```
+
+---
+
+### 🧬 Final Summary
+
+| Aspect                          | What It Depends On            | Example                                     |
+| ------------------------------- | ----------------------------- | ------------------------------------------- |
+| ✅ **What methods can I call?**  | Reference type (Compile Time) | `a.speak()` is OK if `Animal` has `speak()` |
+| ✅ **Which method is executed?** | Object type (Runtime)         | Executes `Dog.speak()` or `Cat.speak()`     |
+
+---
+
+### 💡 Visual Analogy
+
+Think of the **reference type** as the *TV remote* 📺 — it defines what buttons you’re allowed to press.
+
+And the **object type** as the *actual TV brand* — determines what happens when you press a button.
+
+So:
+
+```java
+Animal a = new Dog(); // Remote is Animal, TV is Dog
+```
+
+You press `speak()` — and Dog barks, because it’s a Dog TV!
+
+---
+
+Want a quick test code to run this behavior? I got you 👇
+
+```java
+public class Demo {
+    static class Animal {
+        void speak() {
+            System.out.println("Animal speaks");
+        }
+    }
+
+    static class Dog extends Animal {
+        void speak() {
+            System.out.println("Dog barks");
+        }
+    }
+
+    static class Cat extends Animal {
+        void speak() {
+            System.out.println("Cat meows");
+        }
+    }
+
+    public static void main(String[] args) {
+        Animal a = new Dog();
+        a.speak(); // Dog barks
+
+        a = new Cat();
+        a.speak(); // Cat meows
+    }
+}
+```
 ---
 
 ## ✅ Method Overriding Enables Polymorphism
@@ -348,6 +478,7 @@ d.draw(); // Calls Circle's draw() method
 - [Java Polymorphism Fully Explained In 7 Minutes - Coding with John](https://www.youtube.com/watch?v=jhDUxynEQRI)
 - [Java polymorphism 🏁 - Bro Code](https://www.youtube.com/watch?v=2hkngtWLGvE)
 - [Polymorphism - ForrestKnight](https://www.youtube.com/shorts/CWX3txO1jP0)
+- [Learn RUNTIME POLYMORPHISM in 5 minutes! 🤷‍♂️ - Bro Code](https://www.youtube.com/watch?v=YDKHfqzaF30)
 
 ---
 
