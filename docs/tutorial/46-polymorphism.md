@@ -341,6 +341,13 @@ class Circle implements Drawable {
 Drawable d = new Circle();
 d.draw(); // Calls Circle's draw() method
 ```
+---
+
+## Video Tutorial
+
+- [Java Polymorphism Fully Explained In 7 Minutes - Coding with John](https://www.youtube.com/watch?v=jhDUxynEQRI)
+- [Java polymorphism 🏁 - Bro Code](https://www.youtube.com/watch?v=2hkngtWLGvE)
+- [Polymorphism - ForrestKnight](https://www.youtube.com/shorts/CWX3txO1jP0)
 
 ---
 
